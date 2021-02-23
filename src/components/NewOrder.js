@@ -32,7 +32,7 @@ class NewOrder extends React.Component {
     })
   }
 
-  isDisabled(sandwich, ingredients) {
+  notEnoughIngredients(sandwich, ingredients) {
     return !sandwich.recipe.every((recipeIngredientId) => {
       return ingredients.filter((stockIngredient) => recipeIngredientId === stockIngredient.id)[0].amount > 0
     })
@@ -41,6 +41,10 @@ class NewOrder extends React.Component {
   placeOrder(newOrderDispatcher){
     newOrderDispatcher(this.state.sandwiches)
     this.setState(initialState);
+  }
+
+  noSandwichSelected() {
+    return this.state.newSandwich === initialState.newSandwich
   }
 
   render(props) {
@@ -79,7 +83,7 @@ class NewOrder extends React.Component {
                   return (
                     <option
                       value={s.id}
-                      disabled={this.isDisabled(s, this.props.ingredients)}
+                      disabled={this.notEnoughIngredients(s, this.props.ingredients)}
                     >
                       #{s.id} - {s.name} - ${s.cost}
                     </option>
@@ -88,7 +92,7 @@ class NewOrder extends React.Component {
               }
             </select>
 
-            <button onClick={this.addSandwich} > + </button>
+            <button onClick={this.addSandwich} disabled={this.noSandwichSelected()}> + </button>
           </td>
 
           <td>
