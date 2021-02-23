@@ -21,9 +21,9 @@ When I go to the order creation form
 Then I should see the PBJ Sandwhich as "Out of ingredients"
 
 Given I am a user
-And an order of PBJ, Egg Salad and Reuben
 When I go to the order creation form
-Then I should see an order of PBJ, Egg Salad and Reuben
+And I add PBJ, Egg Salad, and Reuben
+Then I should see PBJ, Egg Salad and Reuben on my order
 
 Given I am a user
 And an order costing $9.99
