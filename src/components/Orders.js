@@ -35,6 +35,7 @@ class Orders extends React.Component {
     return (<div>
       <h1>Please complete some orders</h1>
 
+
       <table>
 
         <tr>
@@ -51,6 +52,7 @@ class Orders extends React.Component {
               <td>
                 {/* {this.sandwichNamesOfOrder(order)} */}
 
+                <ul>
                 {
                   order.sandwiches.map((sandwich) => {
                     return (<Recipe
@@ -59,6 +61,7 @@ class Orders extends React.Component {
                     />);
                   })
                 }
+                </ul>
 
                 
                 

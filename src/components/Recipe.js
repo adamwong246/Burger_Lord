@@ -1,11 +1,11 @@
 import React from "react";
 
-import IngredientPicker from "./IngredientPicker.js";
-
 class Recipe extends React.Component {
 
   constructor(props) {
     super(props);
+
+    this.state = {collapsed: true}
   }
 
   ingredientName(id, ingredients) {
@@ -19,10 +19,12 @@ class Recipe extends React.Component {
   render() {
     const { sandwhich } = this.props;
 
-    return (<div>
+    return (<li>
 
-        <p>{sandwhich.name}</p>
-      <ol>
+      <button onClick={(e) => this.setState({collapsed: !this.state.collapsed})}> {sandwhich.name} </button>
+
+      {
+        this.state.collapsed ? <div/> : <ol>
         {sandwhich.recipe.map((ingredientId, ndx) => {
           return (<li>
             {
@@ -31,9 +33,11 @@ class Recipe extends React.Component {
           </li>);
         })}
 
-      </ol>
+      </ol> 
+      }
+      
 
-    </div>);
+    </li>);
   }
 }
 

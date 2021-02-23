@@ -34,9 +34,6 @@ function App(props) {
                 <Link to="/orders">View and complete orders!</Link>
               </li>
               <li>
-                <Link to="/utils/sandwiches">sandwichTemplates?</Link>
-              </li>
-              <li>
                 <Link to="/utils/ingredients">Ingredients?</Link>
               </li>
               <li>
@@ -67,13 +64,6 @@ function App(props) {
             />
           </Route>
 
-          <Route path="/utils/sandwiches">
-            <div>
-              <h1>sandwichTemplates</h1>
-              <pre>{JSON.stringify(props.sandwichTemplates, null, 2)}</pre>
-            </div>
-          </Route>
-
           <Route path="/utils/ingredients">
             <div>
               <h1>ingredients</h1>
@@ -92,7 +82,6 @@ function App(props) {
             <div>
               <h1>Welcome to BURGER LORD</h1>
               <h2>"Have it _your_ way!" (tm)</h2>
-              <pre>{JSON.stringify(props, null, 2)}</pre>
             </div>
           </Route>
         </Switch>
