@@ -1,6 +1,6 @@
 import React from "react";
 
-import RecipeForm from "./RecipeForm.js";
+import RecipeForm from "../small/RecipeForm.js";
 
 const initialState = {
   sandwiches: [

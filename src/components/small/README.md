@@ -1,0 +1,1 @@
+"small" components are widget components with very little state

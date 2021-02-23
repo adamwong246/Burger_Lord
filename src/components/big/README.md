@@ -1,0 +1,1 @@
+"big" components are top-level components with state
