@@ -4,6 +4,7 @@ import RecipeForm from "./RecipeForm.js";
 
 const initialState = {
   sandwiches: [
+    { name: "everything", recipe: [1, 2, 3, 4, 5, 6, 7], toPush: 0 },
     { name: "loaf", recipe: [1, 1, 1], toPush: 0 },
     { name: "loaf2", recipe: [1] },
     { name: "Adams", recipe: [1, 2, 3], toPush: 0 },

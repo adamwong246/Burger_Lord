@@ -16,6 +16,14 @@ class RecipeForm extends React.Component {
     return ingredients.find((ingredient) => ingredient.id === id).cost
   }
 
+  ingredientBackground(id, ingredients) {
+    return ingredients.find((ingredient) => ingredient.id === id).bg
+  }
+
+  ingredientColor(id, ingredients) {
+    return ingredients.find((ingredient) => ingredient.id === id).fg
+  }
+
   render() {
     const { sandwhich } = this.props;
 
@@ -24,9 +32,13 @@ class RecipeForm extends React.Component {
       <table>
         {sandwhich.recipe.map((ingredientId, ndx) => {
           return (<tr>
-            <td>{
-              this.ingredientName(ingredientId, this.props.ingredients)
-            }</td>
+            
+            <td style={{
+              backgroundColor: this.ingredientBackground(ingredientId, this.props.ingredients),
+              color: this.ingredientColor(ingredientId, this.props.ingredients)
+              }}>
+              {this.ingredientName(ingredientId, this.props.ingredients)}
+            </td>
 
             <td>+ ${this.ingredientCost(ingredientId, this.props.ingredients)}</td>
 

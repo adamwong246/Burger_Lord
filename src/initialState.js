@@ -1,12 +1,12 @@
 export default {
   ingredients: [
-    { id: 1, name: 'WHITE BREAD', amount: 100, cost: 1 },
-    { id: 2, name: 'WHOLE WHEAT BREAD', amount: 0, cost: 1 },
-    { id: 3, name: 'PEANUT BUTTER', amount: 1, cost: 2 },
-    { id: 4, name: 'JELLY', amount: 1, cost: 2 },
-    { id: 5, name: 'EGG SALAD', amount: 5, cost: 5 },
-    { id: 6, name: 'HAM', amount: 1, cost: 2 },
-    { id: 7, name: 'CHEESE', amount: 1, cost: 2 },
+    { id: 1, name: 'WHITE BREAD', amount: 100, cost: 1, fg: "#ffffff", bg: "#bb992c" },
+    { id: 2, name: 'WHOLE WHEAT BREAD', amount: 0, cost: 1, fg: "#ffffff", bg: "#947923" },
+    { id: 3, name: 'PEANUT BUTTER', amount: 1, cost: 2, fg: "aabbcc", bg: "ccbbaa" },
+    { id: 4, name: 'JELLY', amount: 1, cost: 2, fg: "#de80d9", bg: "#ec15e0" },
+    { id: 5, name: 'EGG SALAD', amount: 5, cost: 5, fg: "aabbcc", bg: "112233" },
+    { id: 6, name: 'HAM', amount: 1, cost: 2, fg: "aabbcc", bg: "112233" },
+    { id: 7, name: 'CHEESE', amount: 1, cost: 2, fg: "aabbcc", bg: "112233" },
 
   ],
   sandwichTemplates: [
@@ -21,11 +21,25 @@ export default {
       "status": "open",
       "sandwiches": [
         {
+          "name": "everything",
+          "recipe": [
+            1,
+            2,
+            3,
+            4,
+            5,
+            6,
+            7,
+          ],
+          "toPush": 0
+        },
+
+        {
           "name": "loaf",
           "recipe": [
             1,
-            1,
-            1
+            2,
+            3
           ],
           "toPush": 0
         },
