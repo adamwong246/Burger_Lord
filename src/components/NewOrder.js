@@ -29,8 +29,8 @@ class NewOrder extends React.Component {
     })
   }
 
-  isDisabled(sandwich, ingredients){
-    return ! sandwich.recipe.every((recipeIngredientId) => {
+  isDisabled(sandwich, ingredients) {
+    return !sandwich.recipe.every((recipeIngredientId) => {
       return ingredients.filter((stockIngredient) => recipeIngredientId === stockIngredient.id)[0].amount > 0
     })
   }
@@ -86,11 +86,11 @@ class NewOrder extends React.Component {
 
         <button onClick={this.addSandwich} > Add Sandwhich to order</button>
       </div>
-      
+
       <p>
         Total Price: {this.state.sandwiches.reduce((mm, stateSandwichId) => {
-          return mm + this.props.sandwiches.filter((propsSandwich) => stateSandwichId === propsSandwich.id)[0].cost
-        }, 0)}
+        return mm + this.props.sandwiches.filter((propsSandwich) => stateSandwichId === propsSandwich.id)[0].cost
+      }, 0)}
       </p>
 
       <button > Complete Order</button>
