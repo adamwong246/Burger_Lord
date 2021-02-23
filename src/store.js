@@ -40,8 +40,15 @@ function sandwiches(state = [], action) {
 
 function orders(state = [], action) {
   switch (action.type) {
-    case 'ADD_ORDER':
-      return state.concat([action.payload])
+    case 'NEW_ORDER':
+      return [
+        ...state,
+        {
+          id: state.reduce((mm, s)=> s.id > mm) + 1,
+          sandwiches: action.payload,
+          status: "open"
+        }
+      ]
     default:
       return state
   }

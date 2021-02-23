@@ -6,14 +6,17 @@ import Orders from "./components/Orders.js";
 
 class App extends React.Component {
 
-  render(props) {
+  render() {
+
+    
 
     return (
       <div>
+        <pre>{JSON.stringify(this.props.orders, null, 2)}</pre>
         <NewOrder
           sandwiches={this.props.sandwiches}
           ingredients={this.props.ingredients}
-          dispatcher={(order) => props.dispatch({ type: "NEW_ORDER", payload: order })}
+          newOrder={(sandwiches) => this.props.dispatch({ type: "NEW_ORDER", payload: sandwiches })}
         />
         <Orders orders={this.props.orders} />
 

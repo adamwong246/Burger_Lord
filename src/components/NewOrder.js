@@ -35,6 +35,9 @@ class NewOrder extends React.Component {
     })
   }
 
+  placeOrder(dispatcher){
+
+  }
 
   render(props) {
     return (<div>
@@ -42,9 +45,9 @@ class NewOrder extends React.Component {
       <table>
 
         <tr>
-          <td>#</td>
+          <td>id</td>
           <td>name</td>
-          <td>$</td>
+          <td>cost</td>
         </tr>
 
         {
@@ -53,47 +56,51 @@ class NewOrder extends React.Component {
             const propsSandwich = this.props.sandwiches.filter((propsSandwich) => propsSandwich.id == stateSandwichId)[0];
             return (
               <tr>
-                <td>{propsSandwich.id}</td>
+                <td>#{propsSandwich.id}</td>
                 <td>{propsSandwich.name}</td>
-                <td>{propsSandwich.cost}</td>
+                <td>${propsSandwich.cost}</td>
               </tr>
             );
           })
         }
 
+        <tr>
+          <td></td>
+          <td>
+            <select name="sandwiches" id="sandwiches" value={this.state.newSandwich} onChange={this.setSandwich}>
+
+              <option value="" disabled selected hidden>Pick a sandwich</option>
+              {
+                this.props.sandwiches.map((s) => {
+                  return (
+                    <option
+                      value={s.id}
+                      disabled={this.isDisabled(s, this.props.ingredients)}
+                    >
+                      #{s.id} - {s.name} - ${s.cost}
+                    </option>
+                  );
+                })
+              }
+            </select>
+
+            <button onClick={this.addSandwich} > + </button>
+          </td>
+
+          <td>
+
+            <p>
+              Total Price: ${this.state.sandwiches.reduce((mm, stateSandwichId) => {
+              return mm + this.props.sandwiches.filter((propsSandwich) => stateSandwichId === propsSandwich.id)[0].cost
+            }, 0)}
+            </p>
+
+          </td>
+
+        </tr>
       </table>
 
-      <div>
-
-        <label for="sandwiches">Choose a sandiwch:</label>
-
-        <select name="sandwiches" id="sandwiches" value={this.state.newSandwich} onChange={this.setSandwich}>
-
-          <option value="" disabled selected hidden>Please Choose...</option>
-          {
-            this.props.sandwiches.map((s) => {
-              return (
-                <option
-                  value={s.id}
-                  disabled={this.isDisabled(s, this.props.ingredients)}
-                >
-                  #{s.id} - {s.name} - ${s.cost}
-                </option>
-              );
-            })
-          }
-        </select>
-
-        <button onClick={this.addSandwich} > Add Sandwhich to order</button>
-      </div>
-
-      <p>
-        Total Price: {this.state.sandwiches.reduce((mm, stateSandwichId) => {
-        return mm + this.props.sandwiches.filter((propsSandwich) => stateSandwichId === propsSandwich.id)[0].cost
-      }, 0)}
-      </p>
-
-      <button > Complete Order</button>
+      <button onClick={() => this.props.newOrder(this.state.sandwiches)} > Place Order</button>
     </div>);
   }
 }

@@ -1,9 +1,9 @@
 export default {
   ingredients: [
-    { id: 0, name: 'PB', amount: 0 },
+    { id: 0, name: 'PB', amount: 1 },
     { id: 1, name: 'J', amount: 1 },
-    { id: 2, name: 'EGG SALAD', amount: 1 },
-    { id: 3, name: 'HAM', amount: 0 },
+    { id: 2, name: 'EGG SALAD', amount: 0 },
+    { id: 3, name: 'HAM', amount: 1 },
     { id: 4, name: 'CHEESE', amount: 1 },
   ],
   sandwiches: [

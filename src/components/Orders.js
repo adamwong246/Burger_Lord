@@ -22,7 +22,7 @@ class Orders extends React.Component {
             <tr>
               <td>{order.id}</td>
               <td>{order.sandwiches}</td>
-              <td>{order.status ? "open" : "picked-up"}</td>
+              <td>{order.status ? <button> Complete Order</button> : "picked-up"}</td>
             </tr>
           ))
         }
