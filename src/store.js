@@ -2,24 +2,6 @@ import { combineReducers, createStore } from 'redux'
 
 import initialState from "./initialState.js";
 
-function todos(state = [], action) {
-  switch (action.type) {
-    case 'ADD_TODO':
-      return state.concat([action.text])
-    default:
-      return state
-  }
-}
-function counter(state = 0, action) {
-  switch (action.type) {
-    case 'INCREMENT':
-      return state + 1
-    case 'DECREMENT':
-      return state - 1
-    default:
-      return state
-  }
-}
 function ingredients(state = [], action) {
   switch (action.type) {
     case 'ADD_INGREDIENT':
@@ -49,14 +31,23 @@ function orders(state = [], action) {
           status: "open"
         }
       ]
+    case 'COMPLETE_ORDER':
+      return state.map((order) => {
+        if(order.id === action.payload){
+          return {
+            ...order,
+            status: false
+          }
+        } else {
+          return order 
+        }
+      })
     default:
       return state
   }
 }
 
 const rootReducer = combineReducers({
-  todos,
-  counter,
   ingredients,
   sandwiches,
   orders

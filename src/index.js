@@ -10,8 +10,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
   wrapper
     ? ReactDOM.render(<Provider store={store}>
       <App
-        dispatcher={store.dispatch}
+        dispatchNewOrder={(sandwiches) => store.dispatch({ type: "NEW_ORDER", payload: sandwiches })}
+        dispatchCompleteOrder={(orderId) => store.dispatch({ type: "COMPLETE_ORDER", payload: orderId })}
       />
     </Provider >, wrapper)
     : false;
 })
+

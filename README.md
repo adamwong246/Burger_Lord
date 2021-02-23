@@ -41,4 +41,4 @@ Please submit here:https://form.jotform.com/202607461040039
 
 3.Some tasks are open-ended, how should I proceed?
 
-Feel free to make assumptions, butplease document them for the grader.Questions? Email Lana at ​lana@deliverr.com
+Feel free to make assumptions, but please document them for the grader. Questions? Email Lana at ​lana@deliverr.com

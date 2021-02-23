@@ -1,12 +1,15 @@
 import React from "react";
 
+const initialState = {
+  sandwiches: [],
+  newSandwich: ""
+};
+
 class NewOrder extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      sandwiches: []
-    };
+    this.state = initialState;
 
     this.setSandwich = this.setSandwich.bind(this);
     this.addSandwich = this.addSandwich.bind(this);
@@ -35,8 +38,9 @@ class NewOrder extends React.Component {
     })
   }
 
-  placeOrder(dispatcher){
-
+  placeOrder(newOrderDispatcher){
+    newOrderDispatcher(this.state.sandwiches)
+    this.setState(initialState);
   }
 
   render(props) {
@@ -56,9 +60,9 @@ class NewOrder extends React.Component {
             const propsSandwich = this.props.sandwiches.filter((propsSandwich) => propsSandwich.id == stateSandwichId)[0];
             return (
               <tr>
-                <td>#{propsSandwich.id}</td>
-                <td>{propsSandwich.name}</td>
-                <td>${propsSandwich.cost}</td>
+                <td>id{propsSandwich.id}</td>
+                <td>name{propsSandwich.name}</td>
+                <td>cost{propsSandwich.cost}</td>
               </tr>
             );
           })
@@ -100,7 +104,7 @@ class NewOrder extends React.Component {
         </tr>
       </table>
 
-      <button onClick={() => this.props.newOrder(this.state.sandwiches)} > Place Order</button>
+      <button onClick={() => this.placeOrder(this.props.newOrder)} > Place Order</button>
     </div>);
   }
 }
