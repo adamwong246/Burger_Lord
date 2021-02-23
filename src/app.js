@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { connect } from "react-redux";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Switch,
   Route,
   Link
@@ -26,10 +26,13 @@ function App(props) {
               <Link to="/orders">View and complete orders!</Link>
             </li>
             <li>
-              <Link to="/sandwiches">Sandwiches?</Link>
+              <Link to="/utils/sandwiches">Sandwiches?</Link>
             </li>
             <li>
-              <Link to="/ingredients">Ingredients?</Link>
+              <Link to="/utils/ingredients">Ingredients?</Link>
+            </li>
+            <li>
+              <Link to="/utils/orders">Orders?</Link>
             </li>
           </ul>
         </nav>
@@ -50,15 +53,24 @@ function App(props) {
             />
           </Route>
 
-          <Route path="/sandwiches">
+          <Route path="/utils/sandwiches">
             <div>
+              <h1>sandwiches</h1>
               <pre>{JSON.stringify(props.sandwiches, null, 2)}</pre>
             </div>
           </Route>
 
-          <Route path="/ingredients">
+          <Route path="/utils/ingredients">
             <div>
+              <h1>ingredients</h1>
               <pre>{JSON.stringify(props.ingredients, null, 2)}</pre>
+            </div>
+          </Route>
+
+          <Route path="/utils/orders">
+            <div>
+              <h1>orders</h1>
+              <pre>{JSON.stringify(props.orders, null, 2)}</pre>
             </div>
           </Route>
 
