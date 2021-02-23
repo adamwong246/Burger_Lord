@@ -26,7 +26,7 @@ function orders(state = [], action) {
       return [
         ...state,
         {
-          id: state.reduce((mm, s)=> s.id > mm) + 1,
+          id: Math.max(...state.map((o)=> o.id)) + 1, 
           sandwiches: action.payload,
           status: "open"
         }
