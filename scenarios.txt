@@ -1,0 +1,70 @@
+Given I am a user
+And the PBJ Sandwhich of Peanutbutter and Jelly
+And 10 Peanutbutter
+And 10 Jelly
+When I go to the order creation form
+Then I should see the PBJ Sandwhich for $4.99
+
+Given I am a user
+And the PBJ Sandwhich of Peanutbutter and Jelly
+And 10 Peanutbutter
+And 10 Jelly
+When I go to the order creation form
+And I click the "add sandwhich" button for the "PBJ Sandwhich"
+Then my order should have 1 PBJ Sandwhich
+
+Given I am a user
+And the PBJ Sandwhich of Peanutbutter and Jelly
+And 10 Peanutbutter
+And 0 Jelly
+When I go to the order creation form
+Then I should see the PBJ Sandwhich as "Out of ingredients"
+
+Given I am a user
+And an order of PBJ, Egg Salad and Reuben
+When I go to the order creation form
+Then I should see an order of PBJ, Egg Salad and Reuben
+
+Given I am a user
+And an order costing $9.99
+When I go to the order creation form
+Then I should see an order costing $9.99
+
+Given I am a user
+And an order #9
+When I go to the order creation form
+And I click the order button for order #9
+Then the order should be complete
+
+----
+
+Given I am a user
+And order #1
+And order #2
+And order #3
+When I go the the orders index
+Then I should be able to see order #1
+And I should be able to see order #2
+And I should be able to see order #3
+
+Given I am a user
+And order with PBJ and Rueben
+When I go the the orders index
+Then I should be able to see order with PBJ and Rueben
+
+Given I am a user
+And order #2 costing $9.99
+When I go the the orders index
+Then I should be able to see order #2 costing $9.99
+
+Given I am a user
+And order #3
+When I go the the orders index
+And I click the "picked-up" button for order #3
+
+Given I am a user
+And order #4 status "open"
+And order #5 status "picked-up"
+When I go the the orders index
+Then I should see that order #4 is "open"
+Then I should see that order #5 is "closed"
