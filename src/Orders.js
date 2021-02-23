@@ -1,9 +1,36 @@
 import React from "react";
 
-export default () => {
-  return (
-    <div>
-        <h2>Hello Orders</h2>
-    </div>
-  );
+class Orders extends React.Component {
+
+  constructor(props) {
+    super(props);
+
+  }
+
+  render(props) {
+    return (<div>
+      <h2>Orders</h2>
+      <table>
+
+        <tr>
+          <th>#</th>
+          <th>sandwiches</th>
+          <th>status</th>
+        </tr>
+        {
+          this.props.orders.map((order) => (
+            <tr>
+              <td>{order.id}</td>
+              <td>{order.sandwiches}</td>
+              <td>{order.status ? "open" : "picked-up"}</td>
+            </tr>
+          ))
+        }
+      </table>
+
+
+    </div>);
+  }
 }
+
+export default Orders;

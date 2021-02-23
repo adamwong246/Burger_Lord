@@ -6,17 +6,18 @@ import Orders from "./Orders.js";
 
 class App extends React.Component {
 
-  render() {
+  render(props) {
 
     return (
       <div>
+        <pre>{ JSON.stringify(this.props, null, 2) }</pre>
         <h1>Hello Deliverr Challenge</h1>
-        <pre>{JSON.stringify(this.props)}</pre>
-        <button onClick={() => this.props.dispatcher({
-          type: 'INCREMENT'
-        })} >increase counter</button>
-        <NewOrder />
-        <Orders />
+        <NewOrder
+          sandwiches={this.props.sandwiches}
+          ingredients={this.props.ingredients}
+          dispatcher={(order) => props.dispatch({type: "NEW_ORDER", payload: order})}
+        />
+        <Orders orders={this.props.orders}/>
 
       </div>
     );

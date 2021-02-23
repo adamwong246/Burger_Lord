@@ -67,4 +67,4 @@ And order #4 status "open"
 And order #5 status "picked-up"
 When I go the the orders index
 Then I should see that order #4 is "open"
-Then I should see that order #5 is "closed"
+Then I should see that order #5 is "picked-up"
