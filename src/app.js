@@ -7,38 +7,49 @@ import {
   Link
 } from "react-router-dom";
 
+import 'normalize.css';
+
 import NewOrder from "./components/NewOrder.js";
 import Orders from "./components/Orders.js";
+
+import './style.scss';
 
 function App(props) {
   return (
     <Router>
-      <div>
-        <nav>
-          <ul>
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li></li>
-            <li>
-              <Link to="/orders/new">Order some Sandwiches!</Link>
-            </li>
-            <li>
-              <Link to="/orders">View and complete orders!</Link>
-            </li>
-            <li></li>
-            <li>
-              <Link to="/utils/sandwiches">sandwichTemplates?</Link>
-            </li>
-            <li>
-              <Link to="/utils/ingredients">Ingredients?</Link>
-            </li>
-            <li>
-              <Link to="/utils/orders">Orders?</Link>
-            </li>
-          </ul>
-        </nav>
+      <div id="app">
+        
+        <header>
 
+                  
+          <nav>
+            <ul>
+              <li>
+                <Link to="/">Home</Link>
+              </li>
+              <li>
+                <Link to="/orders/new">Order some Sandwiches!</Link>
+              </li>
+              <li>
+                <Link to="/orders">View and complete orders!</Link>
+              </li>
+              <li>
+                <Link to="/utils/sandwiches">sandwichTemplates?</Link>
+              </li>
+              <li>
+                <Link to="/utils/ingredients">Ingredients?</Link>
+              </li>
+              <li>
+                <Link to="/utils/orders">Orders?</Link>
+              </li>
+            </ul>
+          </nav>
+
+
+        </header>
+
+
+        <main>
         <Switch>
           <Route path="/orders/new">
             <NewOrder
@@ -85,6 +96,9 @@ function App(props) {
             </div>
           </Route>
         </Switch>
+
+        </main>
+
       </div>
     </Router >
   );

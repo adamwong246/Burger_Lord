@@ -121,8 +121,8 @@ class NewOrder extends React.Component {
     return (this.subTotal(sandwiches, ingredients) * (1 + (this.state.gratuity / 100))).toFixed(2)
   }
 
-  placeOrder(props, state, grandTotal){
-    props.newOrder({...state, grandTotal})
+  placeOrder(props, state, grandTotal) {
+    props.newOrder({ ...state, grandTotal })
   }
 
   render() {
@@ -132,7 +132,7 @@ class NewOrder extends React.Component {
     return (<div>
       <h1>Please place an order</h1>
 
-      <ul>{
+      <ul id="order-form" >{
         this.state.sandwiches.map((stateSandwiche) =>
           <li>
             <input
@@ -165,24 +165,26 @@ class NewOrder extends React.Component {
         </li>
       </ul>
 
-      <table>
-        <tr><td>SUB TOTAL</td><td>${this.subTotal(this.state.sandwiches, this.props.ingredients)}</td></tr>
-        <tr><td>GRATUITY</td><td>          <input
-          type="number"
-          placeholder={25}
-          value={this.state.gratuity}
-          onChange={this.onGratuityChange}
-        />%</td></tr>
-        <tr>
-          <td>GRAND TOTAL</td>
-          <td>
-            {/* <button onClick={() => this.props.newOrder(this.state)}> */}
-            <button onClick={() => this.placeOrder(this.props, this.state, grandTotal)}>
-              Submit Order for ${grandTotal}
-            </button>
-          </td>
-        </tr>
-      </table>
+      <div id="totaler">
+        <table>
+          <tr><td>SUB TOTAL</td><td>${this.subTotal(this.state.sandwiches, this.props.ingredients)}</td></tr>
+          <tr><td>GRATUITY</td><td>          <input
+            type="number"
+            placeholder={25}
+            value={this.state.gratuity}
+            onChange={this.onGratuityChange}
+          />%</td></tr>
+          <tr>
+            <td>GRAND TOTAL</td>
+            <td>
+              {/* <button onClick={() => this.props.newOrder(this.state)}> */}
+              <button onClick={() => this.placeOrder(this.props, this.state, grandTotal)}>
+                Submit Order for ${grandTotal}
+              </button>
+            </td>
+          </tr>
+        </table>
+      </div>
 
 
       {/* <IngredientPicker ingredients={this.props.ingredients}/>
