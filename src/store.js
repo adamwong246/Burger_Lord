@@ -11,7 +11,7 @@ function ingredients(state = [], action) {
   }
 }
 
-function sandwiches(state = [], action) {
+function sandwichTemplates(state = [], action) {
   switch (action.type) {
     case 'ADD_SANDWICH':
       return state.concat([action.text])
@@ -26,9 +26,9 @@ function orders(state = [], action) {
       return [
         ...state,
         {
-          id: Math.max(...state.map((o)=> o.id)) + 1, 
-          sandwiches: action.payload,
-          status: "open"
+          id: Math.max(...state.map((o)=> o.id).concat([0])) + 1,
+          status: "open",
+          ...action.payload
         }
       ]
     case 'COMPLETE_ORDER':
@@ -49,7 +49,7 @@ function orders(state = [], action) {
 
 const rootReducer = combineReducers({
   ingredients,
-  sandwiches,
+  sandwichTemplates,
   orders
 })
 

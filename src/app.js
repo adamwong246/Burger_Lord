@@ -19,14 +19,16 @@ function App(props) {
             <li>
               <Link to="/">Home</Link>
             </li>
+            <li></li>
             <li>
-              <Link to="/orders/new">Order a Sandwich!</Link>
+              <Link to="/orders/new">Order some Sandwiches!</Link>
             </li>
             <li>
               <Link to="/orders">View and complete orders!</Link>
             </li>
+            <li></li>
             <li>
-              <Link to="/utils/sandwiches">Sandwiches?</Link>
+              <Link to="/utils/sandwiches">sandwichTemplates?</Link>
             </li>
             <li>
               <Link to="/utils/ingredients">Ingredients?</Link>
@@ -49,14 +51,15 @@ function App(props) {
             <Orders
               orders={props.orders}
               sandwiches={props.sandwiches}
+              ingredients={props.ingredients}
               completeOrder={props.dispatchCompleteOrder}
             />
           </Route>
 
           <Route path="/utils/sandwiches">
             <div>
-              <h1>sandwiches</h1>
-              <pre>{JSON.stringify(props.sandwiches, null, 2)}</pre>
+              <h1>sandwichTemplates</h1>
+              <pre>{JSON.stringify(props.sandwichTemplates, null, 2)}</pre>
             </div>
           </Route>
 
@@ -76,8 +79,9 @@ function App(props) {
 
           <Route path="/">
             <div>
-              <h1>hello deliverr challenge</h1>
-              <h2>aka sandwich shop</h2>
+              <h1>Welcome to BURGER LORD</h1>
+              <h2>"Have it _your_ way!" (tm)</h2>
+              <pre>{JSON.stringify(props, null, 2)}</pre>
             </div>
           </Route>
         </Switch>

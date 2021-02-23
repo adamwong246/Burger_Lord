@@ -1,5 +1,7 @@
 import React from "react";
 
+import Recipe from "./Recipe.js";
+
 class Orders extends React.Component {
 
   constructor(props) {
@@ -7,24 +9,25 @@ class Orders extends React.Component {
 
   }
 
-  sandwichNamesOfOrder(order, allSandwiches){
-
-    const orderSandwicheIds = order.sandwiches
-
-    return orderSandwicheIds.map((orderSandwicheId) => {
-      return allSandwiches.filter((propsSandwich) =>  propsSandwich.id === orderSandwicheId)[0].name
-    }).map((name) => {
-      return (<li>{name}</li>)
-    })
+  sandwichNamesOfOrder(order) {
+    return (
+      <ul>
+        {
+          order.sandwiches.map((sandwich) => {
+            return (<li>{sandwich.name}</li>)
+          })
+        }
+      </ul>
+    )
   }
 
 
-  computedPrice(order, allSandwiches){
+  computedPrice(order, allSandwiches) {
 
     const orderSandwicheIds = order.sandwiches
 
     return orderSandwicheIds.reduce((mm, orderSandwicheId) => {
-      return mm + allSandwiches.filter((propsSandwich) =>  propsSandwich.id === orderSandwicheId)[0].cost
+      return mm + allSandwiches.filter((propsSandwich) => propsSandwich.id === orderSandwicheId)[0].cost
     }, 0)
   }
 
@@ -37,27 +40,38 @@ class Orders extends React.Component {
         <tr>
           <th>#</th>
           <th>sandwiches</th>
-          <th>status</th>
           <th>cost</th>
+          <th>status</th>
         </tr>
         {
           this.props.orders.map((order) => (
             <tr>
               <td>{order.id}</td>
+
               <td>
-                <ul>
+                {/* {this.sandwichNamesOfOrder(order)} */}
 
-                  {this.sandwichNamesOfOrder(order, this.props.sandwiches)}
+                {
+                  order.sandwiches.map((sandwich) => {
+                    return (<Recipe
+                      sandwhich={sandwich}
+                      ingredients={this.props.ingredients}
+                    />);
+                  })
+                }
 
-                </ul>
                 
+                
+
               </td>
+
               <td>${
-                this.computedPrice(order, this.props.sandwiches)
+                order.grandTotal
                 }</td>
               <td>{
                 order.status ? <button onClick={() => this.props.completeOrder(order.id)}> Complete Order</button> : "picked-up"}
               </td>
+            
             </tr>
           ))
         }
