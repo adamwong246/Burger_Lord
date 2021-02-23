@@ -87,8 +87,6 @@ class NewOrder extends React.Component {
       </table>
       }
 
-      
-
       <select name="sandwiches" id="sandwiches" value={this.state.newSandwich} onChange={this.setSandwich}>
 
         <option value="" disabled selected hidden>Pick a sandwich</option>

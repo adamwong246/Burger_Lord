@@ -39,6 +39,7 @@ function App(props) {
           <Route path="/orders">
           <Orders
             orders={props.orders}
+            sandwiches={props.sandwiches}
             completeOrder={props.dispatchCompleteOrder}
           />
 

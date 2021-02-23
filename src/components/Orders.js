@@ -7,6 +7,18 @@ class Orders extends React.Component {
 
   }
 
+  sandwichNamesOfOrder(order, allSandwiches){
+
+    const orderSandwicheIdss = order.sandwiches
+
+    return orderSandwicheIdss.map((orderSandwicheId) => {
+      return allSandwiches.filter((propsSandwich) =>  propsSandwich.id === orderSandwicheId)[0].name
+    }).map((name) => {
+      return (<li>{name}</li>)
+    })
+
+  }
+
   render(props) {
     return (<div>
       <h2>Orders</h2>
@@ -21,7 +33,14 @@ class Orders extends React.Component {
           this.props.orders.map((order) => (
             <tr>
               <td>{order.id}</td>
-              <td>{order.sandwiches}</td>
+              <td>
+                <ul>
+
+                  {this.sandwichNamesOfOrder(order, this.props.sandwiches)}
+
+                </ul>
+                
+              </td>
               <td>{order.status ? <button onClick={() => this.props.completeOrder(order.id)}> Complete Order</button> : "picked-up"}</td>
             </tr>
           ))
