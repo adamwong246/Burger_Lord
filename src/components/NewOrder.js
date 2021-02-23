@@ -59,7 +59,7 @@ class NewOrder extends React.Component {
 
   render(props) {
     return (<div>
-      <h2>New Order</h2>
+      <h1>Please place an order</h1>
 
       {
         this.orderIsInValid() ?
@@ -92,12 +92,13 @@ class NewOrder extends React.Component {
         <option value="" disabled selected hidden>Pick a sandwich</option>
         {
           this.props.sandwiches.map((s) => {
+            const notEnoughIngredients = this.notEnoughIngredients(s, this.props.ingredients)
             return (
               <option
                 value={s.id}
-                disabled={this.notEnoughIngredients(s, this.props.ingredients)}
+                disabled={notEnoughIngredients}
               >
-                #{s.id} - {s.name} - ${s.cost}
+                #{s.id} - {s.name} - ${s.cost} { notEnoughIngredients ? "(OUT OF STOCK)" : "" }
               </option>
             );
           })
