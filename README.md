@@ -28,7 +28,8 @@ Graders will consider the following:
 ● Typing (if use TS)
 ● Separation of components
 ● File structure
-● Semantic Markup● Accessibility
+● Semantic Markup
+● Accessibility
 ● Comments / Documentation FAQ
 
 ## FAQ
