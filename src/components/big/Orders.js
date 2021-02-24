@@ -20,15 +20,6 @@ class Orders extends React.Component {
     )
   }
 
-  computedPrice(order, allSandwiches) {
-
-    const orderSandwicheIds = order.sandwiches
-
-    return orderSandwicheIds.reduce((mm, orderSandwicheId) => {
-      return mm + allSandwiches.filter((propsSandwich) => propsSandwich.id === orderSandwicheId)[0].cost
-    }, 0)
-  }
-
   render() {
     return (<div>
       <h1>Please complete some orders</h1>

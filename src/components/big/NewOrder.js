@@ -201,7 +201,10 @@ class NewOrder extends React.Component {
             <td>GRAND TOTAL</td>
             <td>
               {/* <button onClick={() => this.props.newOrder(this.state)}> */}
-              <button onClick={() => this.placeOrder(this.props, this.state, grandTotal)}>
+              <button
+                disabled={!this.state.sandwiches.length}
+                onClick={() => this.placeOrder(this.props, this.state, grandTotal)}
+              >
                 Submit Order for ${grandTotal}
               </button>
             </td>
