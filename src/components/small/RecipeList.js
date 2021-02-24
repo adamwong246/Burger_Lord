@@ -9,16 +9,19 @@ class RecipeList extends React.Component {
   render() {
     const { sandwich, ingredients } = this.props;
 
-    return ( <ol>
-        {sandwich.recipe.map((ingredientId, ndx) => {
-          return (<li>
-            {
-              this.ingredientName(ingredientId, ingredients)
-            }
-          </li>);
-        })}
-
-      </ol>);
+    return (
+      <ol>
+        {
+          sandwich.recipe.map((ingredientId, ndx) =>
+            <li>
+              {
+                this.ingredientName(ingredientId, ingredients)
+              }
+            </li>
+          )
+        }
+      </ol>
+    );
   }
 }
 

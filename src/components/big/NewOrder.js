@@ -48,7 +48,6 @@ class NewOrder extends React.Component {
   }
 
   pushIngredient(sandwhichName, sandwhiches, runningTally, ingredients) {
-    console.log("pushIngredient")
     const sandwich = sandwhiches.find((s) => s.name === sandwhichName);
     const ingredientId = sandwich.toPush;
     const oldTally = runningTally[ingredientId]
