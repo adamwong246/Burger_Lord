@@ -49,20 +49,20 @@ class Orders extends React.Component {
 
               <td>
                 <ul>
-                {
-                  order.sandwiches.map((sandwich) => {
-                    return (<Recipe
-                      sandwhich={sandwich}
-                      ingredients={this.props.ingredients}
-                    />);
-                  })
-                }
+                  {
+                    order.sandwiches.map((sandwich) => {
+                      return (<Recipe
+                        sandwhich={sandwich}
+                        ingredients={this.props.ingredients}
+                      />);
+                    })
+                  }
                 </ul>
               </td>
 
               <td>${
                 order.grandTotal
-                }</td>
+              }</td>
               <td>{
                 order.status === "open" ? <button onClick={() => this.props.completeOrder(orderKey)}> Complete Order {orderKey}</button> : "picked-up"}
               </td>

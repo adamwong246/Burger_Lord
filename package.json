@@ -1,6 +1,6 @@
 {
   "name": "deliverrChallenge",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "You run a restaurant selling sandwiches and need some way of keeping track orders.",
   "main": "index.js",
   "author": "adam wong <adamwong246@gmail.com>",

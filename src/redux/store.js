@@ -13,7 +13,7 @@ export default createStore((state = [], action) => {
         action.payload.sandwiches.forEach((sandwich) => {
           sandwich.recipe.forEach((ingredientId) => {
             if (ingredientId === ingredient.id) {
-              ingredient.amount = ingredient.amount -1
+              ingredient.amount = ingredient.amount - 1
             }
           })
         })

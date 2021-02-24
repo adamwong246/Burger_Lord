@@ -7,7 +7,7 @@ class IngredientPicker extends React.Component {
   }
 
   notEnoughIngredients(ingredient, runningTally) {
-    return ! (runningTally[ingredient.id] > 0);
+    return !(runningTally[ingredient.id] > 0);
   }
 
   render() {
@@ -28,7 +28,7 @@ class IngredientPicker extends React.Component {
               >
                 {i.name}
                 {
-                  notEnoughIngredients ? " (out of stock)": ""
+                  notEnoughIngredients ? " (out of stock)" : ""
                 }
               </option>
             );

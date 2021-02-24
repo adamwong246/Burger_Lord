@@ -58,7 +58,7 @@ class NewOrder extends React.Component {
       }),
       runningTally: {
         ...this.state.runningTally,
-        [ingredientId]: oldTally-1
+        [ingredientId]: oldTally - 1
       }
     })
   }
@@ -208,72 +208,6 @@ class NewOrder extends React.Component {
           </tr>
         </table>
       </div>
-
-
-      {/* <IngredientPicker ingredients={this.props.ingredients}/>
-
-      <input type="text" placeholder="Eater and name this sandwich"/>
-      <button>Add to Order</button> */}
-
-
-      {/* {
-        this.orderIsInValid() ?
-          <div/> :
-          <table>
-
-        <tr>
-          <td>id</td>
-          <td>name</td>
-          <td>cost</td>
-        </tr>
-
-        {
-          this.state.sandwiches.map((stateSandwichId) => {
-            const propsSandwich = this.props.sandwiches.filter((propsSandwich) => propsSandwich.id == stateSandwichId)[0];
-            return (
-              <tr>
-                <td>#{propsSandwich.id}</td>
-                <td>{propsSandwich.name}</td>
-                <td>${propsSandwich.cost}</td>
-              </tr>
-            );
-          })
-        }
-      </table>
-      }
-
-      <select name="sandwiches" id="sandwiches" value={this.state.newSandwich} onChange={this.setSandwich}>
-
-        <option value="" disabled selected hidden>Pick a sandwich</option>
-        {
-          this.props.sandwiches.map((s) => {
-            const notEnoughIngredients = this.notEnoughIngredients(s, this.props.ingredients)
-            return (
-              <option
-                value={s.id}
-                disabled={notEnoughIngredients}
-              >
-                #{s.id} - {s.name} - ${s.cost} { notEnoughIngredients ? "(OUT OF STOCK)" : "" }
-              </option>
-            );
-          })
-        }
-      </select>
-
-      {
-        this.noSandwichSelected() ?
-          <div/> :
-          <button onClick={this.addSandwich}> + </button>
-      }
-      <br />
-      {
-        this.orderIsInValid() ?
-          <div/> :
-          <button onClick={() => this.placeOrder(this.props.newOrder)}>
-            Place Order for ${this.calculatePrice(this.props)}
-          </button>
-      } */}
-
     </div>);
   }
 }

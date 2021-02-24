@@ -5,7 +5,7 @@ class Recipe extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = {collapsed: true}
+    this.state = { collapsed: true }
   }
 
   ingredientName(id, ingredients) {
@@ -21,21 +21,20 @@ class Recipe extends React.Component {
 
     return (<li>
 
-      <button onClick={(e) => this.setState({collapsed: !this.state.collapsed})}> {sandwhich.name} {this.state.collapsed ? "+" : "-"} </button>
+      <button onClick={(e) => this.setState({ collapsed: !this.state.collapsed })}> {sandwhich.name} {this.state.collapsed ? "+" : "-"} </button>
 
       {
-        this.state.collapsed ? <div/> : <ol>
-        {sandwhich.recipe.map((ingredientId, ndx) => {
-          return (<li>
-            {
-              this.ingredientName(ingredientId, this.props.ingredients)
-            }
-          </li>);
-        })}
+        this.state.collapsed ? <div /> : <ol>
+          {sandwhich.recipe.map((ingredientId, ndx) => {
+            return (<li>
+              {
+                this.ingredientName(ingredientId, this.props.ingredients)
+              }
+            </li>);
+          })}
 
-      </ol> 
+        </ol>
       }
-      
 
     </li>);
   }

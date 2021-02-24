@@ -20,8 +20,6 @@ function App(props) {
       <div id="app">
         
         <header>
-
-                  
           <nav>
             <ul>
               <li>
@@ -41,10 +39,7 @@ function App(props) {
               </li>
             </ul>
           </nav>
-
-
         </header>
-
 
         <main>
         <Switch>
