@@ -4,11 +4,11 @@ import RecipeForm from "../small/RecipeForm.js";
 
 const initialState = {
   sandwiches: [
-    { name: "everything", recipe: [1, 2, 3, 4, 5, 6, 7], toPush: 0 },
-    { name: "loaf", recipe: [1, 1, 1], toPush: 0 },
-    { name: "loaf2", recipe: [1] },
-    { name: "Adams", recipe: [1, 2, 3], toPush: 0 },
-    { name: "Chaches", recipe: [4, 4, 4], toPush: 1 }
+    // { name: "everything", recipe: [1, 2, 3, 4, 5, 6, 7], toPush: 0 },
+    // { name: "loaf", recipe: [1, 1, 1], toPush: 0 },
+    // { name: "loaf2", recipe: [1] },
+    // { name: "Adams", recipe: [1, 2, 3], toPush: 0 },
+    // { name: "Chaches", recipe: [4, 4, 4], toPush: 1 }
   ],
   gratuity: 25
 };
@@ -17,7 +17,14 @@ class NewOrder extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = initialState;
+
+    const runningTally = {};
+    props.ingredients.forEach((ingredient) => runningTally[ingredient.id] = ingredient.amount)
+
+    this.state = {
+      ...initialState,
+      runningTally
+    };
 
     this.onGratuityChange = this.onGratuityChange.bind(this);
   }
@@ -34,7 +41,12 @@ class NewOrder extends React.Component {
     })
   }
 
-  pushIngredient(sandwhichName) {
+  pushIngredient(sandwhichName, sandwhiches, runningTally, ingredients) {
+
+    const sandwhich = sandwhiches.find((s) => s.name === sandwhichName);
+    const ingredientId = sandwhich.toPush;
+    const oldTally = runningTally[ingredientId]
+
     this.setState({
       ...this.state,
       sandwiches: this.state.sandwiches.map((sandwhich) => {
@@ -43,7 +55,11 @@ class NewOrder extends React.Component {
           sandwhich.toPush = ""
         }
         return sandwhich
-      })
+      }),
+      runningTally: {
+        ...this.state.runningTally,
+        [ingredientId]: oldTally-1
+      }
     })
   }
 
@@ -55,7 +71,11 @@ class NewOrder extends React.Component {
           sandwhich.recipe.pop()
         }
         return sandwhich
-      })
+      }),
+      runningTally: {
+        ...this.state.runningTally,
+        [sandwhichName]: this.state.runningTally[sandwhichName] + 1
+      }
     })
   }
 
@@ -67,7 +87,6 @@ class NewOrder extends React.Component {
   }
 
   onChangeSandwhichName(event, oldSandwichName) {
-    console.log(event)
     this.setState({
       ...this.state,
       sandwiches: this.state.sandwiches.map((sandwhich) => {
@@ -115,7 +134,6 @@ class NewOrder extends React.Component {
       return mm + this.recipeCost(sandwich.recipe, ingredients)
     }, 0
     )
-    // return recipe.reduce((mm, id) => mm + ingredients.find((ingredient) => ingredient.id === id).cost)
   }
 
   formatGrandTotal(sandwiches, ingredients) {
@@ -123,7 +141,10 @@ class NewOrder extends React.Component {
   }
 
   placeOrder(props, state, grandTotal) {
-    props.newOrder({ ...state, grandTotal })
+    props.newOrder({
+      sandwiches: state.sandwiches,
+      grandTotal
+    })
   }
 
   render() {
@@ -147,9 +168,10 @@ class NewOrder extends React.Component {
               sandwhich={stateSandwiche}
               ingredients={this.props.ingredients}
               cost={this.recipeCost(stateSandwiche.recipe, this.props.ingredients)}
+              runningTally={this.state.runningTally}
               popIngredient={(sandwhichName) => this.popIngredient(sandwhichName)}
               selectIngredientToPush={(sandwhichName, ingredientId) => this.selectIngredientToPush(sandwhichName, ingredientId)}
-              pushIngredient={(sandwhichName) => this.pushIngredient(sandwhichName)}
+              pushIngredient={(sandwhichName) => this.pushIngredient(sandwhichName, this.state.sandwiches, this.state.runningTally, this.props.ingredients)}
             />
           </li>
         )

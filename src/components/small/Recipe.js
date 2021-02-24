@@ -21,7 +21,7 @@ class Recipe extends React.Component {
 
     return (<li>
 
-      <button onClick={(e) => this.setState({collapsed: !this.state.collapsed})}> {sandwhich.name} </button>
+      <button onClick={(e) => this.setState({collapsed: !this.state.collapsed})}> {sandwhich.name} {this.state.collapsed ? "+" : "-"} </button>
 
       {
         this.state.collapsed ? <div/> : <ol>

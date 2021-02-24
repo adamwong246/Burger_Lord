@@ -1,1 +1,1 @@
-"small" components are widget components with very little state
+"small" components are widget components with very little state and which are likely to be re-used.

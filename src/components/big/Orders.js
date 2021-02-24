@@ -6,7 +6,6 @@ class Orders extends React.Component {
 
   constructor(props) {
     super(props);
-
   }
 
   sandwichNamesOfOrder(order) {
@@ -21,7 +20,6 @@ class Orders extends React.Component {
     )
   }
 
-
   computedPrice(order, allSandwiches) {
 
     const orderSandwicheIds = order.sandwiches
@@ -31,10 +29,9 @@ class Orders extends React.Component {
     }, 0)
   }
 
-  render(props) {
+  render() {
     return (<div>
       <h1>Please complete some orders</h1>
-
 
       <table>
 
@@ -45,13 +42,12 @@ class Orders extends React.Component {
           <th>status</th>
         </tr>
         {
-          this.props.orders.map((order) => (
-            <tr>
-              <td>{order.id}</td>
+          Object.keys(this.props.orders).map((orderKey) => {
+            const order = this.props.orders[orderKey];
+            return (<tr>
+              <td>{orderKey}</td>
 
               <td>
-                {/* {this.sandwichNamesOfOrder(order)} */}
-
                 <ul>
                 {
                   order.sandwiches.map((sandwich) => {
@@ -62,21 +58,17 @@ class Orders extends React.Component {
                   })
                 }
                 </ul>
-
-                
-                
-
               </td>
 
               <td>${
                 order.grandTotal
                 }</td>
               <td>{
-                order.status ? <button onClick={() => this.props.completeOrder(order.id)}> Complete Order</button> : "picked-up"}
+                order.status === "open" ? <button onClick={() => this.props.completeOrder(orderKey)}> Complete Order {orderKey}</button> : "picked-up"}
               </td>
-            
-            </tr>
-          ))
+
+            </tr>)
+          })
         }
       </table>
 

@@ -1,58 +1,54 @@
-import { combineReducers, createStore } from 'redux'
+import { createStore } from 'redux'
 
 import initialState from "./initialState.js";
 
-function ingredients(state = [], action) {
-  switch (action.type) {
-    case 'ADD_INGREDIENT':
-      return state.concat([action.text])
-    default:
-      return state
-  }
-}
+export default createStore((state = [], action) => {
 
-function sandwichTemplates(state = [], action) {
   switch (action.type) {
-    case 'ADD_SANDWICH':
-      return state.concat([action.text])
-    default:
-      return state
-  }
-}
 
-function orders(state = [], action) {
-  switch (action.type) {
     case 'NEW_ORDER':
-      return [
-        ...state,
-        {
-          id: Math.max(...state.map((o)=> o.id).concat([0])) + 1,
-          status: "open",
-          ...action.payload
-        }
-      ]
-    case 'COMPLETE_ORDER':
-      return state.map((order) => {
-        if(order.id === action.payload){
-          return {
-            ...order,
-            status: false
-          }
-        } else {
-          return order 
-        }
+      const newKey = Math.max(Object.keys(state.orders).map((oid) => parseInt(oid))) + 1
+
+      const ingredients = state.ingredients.map((ingredient) => {
+        action.payload.sandwiches.forEach((sandwich) => {
+          sandwich.recipe.forEach((ingredientId) => {
+            if (ingredientId === ingredient.id) {
+              ingredient.amount = ingredient.amount -1
+            }
+          })
+        })
+
+        return ingredient
       })
+
+      return {
+        ...state,
+        orders: {
+          ...state.orders,
+          [newKey]: {
+            status: "open",
+            ...action.payload
+          }
+        },
+        ingredients
+      }
+
+    case 'COMPLETE_ORDER':
+      const newOrders = {};
+      Object.keys(state.orders).forEach((ok) => {
+        newOrders[ok] = state.orders[ok];
+        if (ok === action.payload) {
+          newOrders[ok].status = "closed";
+        }
+
+      })
+
+      return {
+        ...state,
+        orders: newOrders
+      }
+
     default:
       return state
   }
-}
-
-const rootReducer = combineReducers({
-  ingredients,
-  sandwichTemplates,
-  orders
-})
-
-const store = createStore(rootReducer, initialState)
-
-export default store
+}, initialState)

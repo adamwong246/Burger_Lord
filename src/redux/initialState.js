@@ -9,67 +9,31 @@ export default {
     { id: 7, name: 'CHEESE', amount: 1, cost: 2, fg: "aabbcc", bg: "112233" },
 
   ],
-  sandwichTemplates: [
-    { id: 1, name: 'PBJ on white', recipe: [1, 3, 1, 1] },
-    { id: 2, name: 'PBJ on wheat', recipe: [6, 0, 1, 6] },
-    { id: 3, name: 'Ham and Cheese', recipe: [5, 3, 4, 5] },
-    { id: 4, name: 'Egg Salad', recipe: [5, 2, 5] }
-  ],
-  orders: [
-    {
-      "id": 1,
-      "status": "open",
-      "sandwiches": [
-        {
-          "name": "everything",
-          "recipe": [
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-          ],
-          "toPush": 0
-        },
 
-        {
-          "name": "loaf",
-          "recipe": [
-            1,
-            2,
-            3
-          ],
-          "toPush": 0
-        },
-        {
-          "name": "loaf2",
-          "recipe": [
-            1
-          ]
-        },
-        {
-          "name": "Adams",
-          "recipe": [
-            1,
-            2,
-            3
-          ],
-          "toPush": 0
-        },
-        {
-          "name": "Chaches",
-          "recipe": [
-            4,
-            4,
-            4
-          ],
-          "toPush": 1
-        }
-      ],
-      "gratuity": 25,
-      "grandTotal": "17.50"
-    }
-  ]
+  orders: {
+    // "1": {
+    //   "status": "open",
+    //   "sandwiches": [
+    //     {
+    //       "name": "asdasd",
+    //       "recipe": [
+    //         1
+    //       ],
+    //       "toPush": ""
+    //     }
+    //   ],
+    //   "gratuity": 25,
+    //   "runningTally": {
+    //     "1": 99,
+    //     "2": 0,
+    //     "3": 1,
+    //     "4": 1,
+    //     "5": 5,
+    //     "6": 1,
+    //     "7": 1
+    //   },
+    //   "stagedSandwhich": "",
+    //   "grandTotal": "1.25"
+    // }
+  }
 }

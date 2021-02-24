@@ -6,24 +6,30 @@ class IngredientPicker extends React.Component {
     super(props);
   }
 
-  notEnoughIngredients(ingredient) {
-    return ingredient.amount > 0;
+  notEnoughIngredients(ingredient, runningTally) {
+    return ! (runningTally[ingredient.id] > 0);
   }
 
   render() {
     return (<div>
-      <select value={this.props.value} onChange={(event) => this.props.selectIngredientToPush(parseInt(event.target.value))}>
+      <select
+        value={this.props.value}
+        onChange={(event) => this.props.selectIngredientToPush(parseInt(event.target.value))}
+      >
 
         <option value="" disabled selected hidden>Please Choose...</option>
         {
           this.props.ingredients.map((i) => {
-            const notEnoughIngredients = this.notEnoughIngredients(i)
+            const notEnoughIngredients = this.notEnoughIngredients(i, this.props.runningTally)
             return (
               <option
                 value={i.id}
-                // disabled={notEnoughIngredients}
+                disabled={notEnoughIngredients}
               >
                 {i.name}
+                {
+                  notEnoughIngredients ? " (out of stock)": ""
+                }
               </option>
             );
           })

@@ -32,11 +32,11 @@ class RecipeForm extends React.Component {
       <table>
         {sandwhich.recipe.map((ingredientId, ndx) => {
           return (<tr>
-            
+
             <td style={{
               backgroundColor: this.ingredientBackground(ingredientId, this.props.ingredients),
               color: this.ingredientColor(ingredientId, this.props.ingredients)
-              }}>
+            }}>
               {this.ingredientName(ingredientId, this.props.ingredients)}
             </td>
 
@@ -57,6 +57,7 @@ class RecipeForm extends React.Component {
             <IngredientPicker
               value={sandwhich.toPush}
               ingredients={this.props.ingredients}
+              runningTally={this.props.runningTally}
               selectIngredientToPush={(ingredientId) => this.props.selectIngredientToPush(sandwhich.name, ingredientId)}
             />
 
@@ -64,15 +65,15 @@ class RecipeForm extends React.Component {
 
           <td>
             {
-              sandwhich.toPush ? (<div>+ ${this.ingredientCost(sandwhich.toPush, this.props.ingredients)}</div>) : (<div/>)
+              sandwhich.toPush ? (<div>+ ${this.ingredientCost(sandwhich.toPush, this.props.ingredients)}</div>) : (<div />)
             }
-            </td>
+          </td>
 
           <td>
             {
-              sandwhich.toPush ? (<button onClick={() => this.props.pushIngredient(sandwhich.name)}> Push Ingredient</button>) : (<div/>)
+              sandwhich.toPush ? (<button onClick={() => this.props.pushIngredient(sandwhich.name)}> Push Ingredient</button>) : (<div />)
             }
-            
+
           </td>
 
         </tr>
