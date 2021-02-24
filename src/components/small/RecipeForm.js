@@ -25,12 +25,12 @@ class RecipeForm extends React.Component {
   }
 
   render() {
-    const { sandwhich } = this.props;
+    const { sandwich } = this.props;
 
     return (<div>
 
       <table>
-        {sandwhich.recipe.map((ingredientId, ndx) => {
+        {sandwich.recipe.map((ingredientId, ndx) => {
           return (<tr>
 
             <td style={{
@@ -43,7 +43,7 @@ class RecipeForm extends React.Component {
             <td>+ ${this.ingredientCost(ingredientId, this.props.ingredients)}</td>
 
             <td>{
-              ndx === sandwhich.recipe.length - 1 ? <button onClick={() => this.props.popIngredient(sandwhich.name)}> Pop Ingredient</button> : <div />
+              ndx === sandwich.recipe.length - 1 ? <button onClick={() => this.props.popIngredient(sandwich.name)}> Pop Ingredient</button> : <div />
             }</td>
 
 
@@ -55,23 +55,23 @@ class RecipeForm extends React.Component {
           <td>
 
             <IngredientPicker
-              value={sandwhich.toPush}
+              value={sandwich.toPush}
               ingredients={this.props.ingredients}
               runningTally={this.props.runningTally}
-              selectIngredientToPush={(ingredientId) => this.props.selectIngredientToPush(sandwhich.name, ingredientId)}
+              selectIngredientToPush={(ingredientId) => this.props.selectIngredientToPush(sandwich.name, ingredientId)}
             />
 
           </td>
 
           <td>
             {
-              sandwhich.toPush ? (<div>+ ${this.ingredientCost(sandwhich.toPush, this.props.ingredients)}</div>) : (<div />)
+              sandwich.toPush ? (<div>+ ${this.ingredientCost(sandwich.toPush, this.props.ingredients)}</div>) : (<div />)
             }
           </td>
 
           <td>
             {
-              sandwhich.toPush ? (<button onClick={() => this.props.pushIngredient(sandwhich.name)}> Push Ingredient</button>) : (<div />)
+              sandwich.toPush ? (<button onClick={() => this.props.pushIngredient(sandwich.name)}> Push Ingredient</button>) : (<div />)
             }
 
           </td>
@@ -81,11 +81,11 @@ class RecipeForm extends React.Component {
         <tr>
 
           <td>
-            <strong>Price for "{sandwhich.name}"</strong>
+            <strong>Price for "{sandwich.name}"</strong>
           </td>
 
           <td>
-            {/* <strong>${this.recipeCost(sandwhich.recipe, this.props.ingredients)}</strong> */}
+            {/* <strong>${this.recipeCost(sandwich.recipe, this.props.ingredients)}</strong> */}
             <strong>${this.props.cost}</strong>
           </td>
 

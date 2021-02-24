@@ -43,7 +43,7 @@ class Orders extends React.Component {
                   {
                     order.sandwiches.map((sandwich) => {
                       return (<Recipe
-                        sandwhich={sandwich}
+                        sandwich={sandwich}
                         ingredients={this.props.ingredients}
                       />);
                     })

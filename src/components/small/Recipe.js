@@ -10,7 +10,7 @@ class Recipe extends React.Component {
   }
 
   render() {
-    const { sandwhich } = this.props;
+    const { sandwich } = this.props;
 
     return (
       <li>
@@ -18,11 +18,11 @@ class Recipe extends React.Component {
         <button
           onClick={(e) => this.setState({ collapsed: !this.state.collapsed })}
         >
-          {sandwhich.name} {this.state.collapsed ? "+" : "-"}
+          {sandwich.name} {this.state.collapsed ? "+" : "-"}
         </button>
 
         {
-          this.state.collapsed ? <div /> : <RecipeList sandwhich={sandwhich} ingredients={this.props.ingredients} />
+          this.state.collapsed ? <div /> : <RecipeList sandwich={sandwich} ingredients={this.props.ingredients} />
         }
 
       </li>

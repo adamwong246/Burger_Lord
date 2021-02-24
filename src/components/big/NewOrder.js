@@ -32,29 +32,29 @@ class NewOrder extends React.Component {
   selectIngredientToPush(sandwhichName, ingredientId) {
     this.setState({
       ...this.state,
-      sandwiches: this.state.sandwiches.map((sandwhich) => {
-        if (sandwhich.name === sandwhichName) {
-          sandwhich.toPush = ingredientId
+      sandwiches: this.state.sandwiches.map((sandwich) => {
+        if (sandwich.name === sandwhichName) {
+          sandwich.toPush = ingredientId
         }
-        return sandwhich
+        return sandwich
       })
     })
   }
 
   pushIngredient(sandwhichName, sandwhiches, runningTally, ingredients) {
 
-    const sandwhich = sandwhiches.find((s) => s.name === sandwhichName);
-    const ingredientId = sandwhich.toPush;
+    const sandwich = sandwhiches.find((s) => s.name === sandwhichName);
+    const ingredientId = sandwich.toPush;
     const oldTally = runningTally[ingredientId]
 
     this.setState({
       ...this.state,
-      sandwiches: this.state.sandwiches.map((sandwhich) => {
-        if (sandwhich.name === sandwhichName) {
-          sandwhich.recipe.push(sandwhich.toPush)
-          sandwhich.toPush = ""
+      sandwiches: this.state.sandwiches.map((sandwich) => {
+        if (sandwich.name === sandwhichName) {
+          sandwich.recipe.push(sandwich.toPush)
+          sandwich.toPush = ""
         }
-        return sandwhich
+        return sandwich
       }),
       runningTally: {
         ...this.state.runningTally,
@@ -66,11 +66,11 @@ class NewOrder extends React.Component {
   popIngredient(sandwhichName) {
     this.setState({
       ...this.state,
-      sandwiches: this.state.sandwiches.map((sandwhich) => {
-        if (sandwhich.name === sandwhichName) {
-          sandwhich.recipe.pop()
+      sandwiches: this.state.sandwiches.map((sandwich) => {
+        if (sandwich.name === sandwhichName) {
+          sandwich.recipe.pop()
         }
-        return sandwhich
+        return sandwich
       }),
       runningTally: {
         ...this.state.runningTally,
@@ -89,11 +89,11 @@ class NewOrder extends React.Component {
   onChangeSandwhichName(event, oldSandwichName) {
     this.setState({
       ...this.state,
-      sandwiches: this.state.sandwiches.map((sandwhich) => {
-        if (sandwhich.name === oldSandwichName) {
-          sandwhich.name = event.target.value
+      sandwiches: this.state.sandwiches.map((sandwich) => {
+        if (sandwich.name === oldSandwichName) {
+          sandwich.name = event.target.value
         }
-        return sandwhich
+        return sandwich
       })
     })
   }
@@ -165,7 +165,7 @@ class NewOrder extends React.Component {
             <button onClick={() => this.removeSandwhich(stateSandwiche.name)}> Remove "{stateSandwiche.name}" from the order</button>
 
             <RecipeForm
-              sandwhich={stateSandwiche}
+              sandwich={stateSandwiche}
               ingredients={this.props.ingredients}
               cost={this.recipeCost(stateSandwiche.recipe, this.props.ingredients)}
               runningTally={this.state.runningTally}
@@ -184,7 +184,7 @@ class NewOrder extends React.Component {
             placeholder="sandwich description"
             onChange={(e) => this.changeStagedSandwhich(e)}
           />
-          <button onClick={() => this.addSandwhich()}> Add a sandwhich</button>
+          <button onClick={() => this.addSandwhich()}> Add a sandwich</button>
         </li>
       </ul>
 

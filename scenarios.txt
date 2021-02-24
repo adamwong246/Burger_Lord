@@ -10,7 +10,7 @@ And the PBJ Sandwhich of Peanutbutter and Jelly
 And 10 Peanutbutter
 And 10 Jelly
 When I go to the order creation form
-And I click the "add sandwhich" button for the "PBJ Sandwhich"
+And I click the "add sandwich" button for the "PBJ Sandwhich"
 Then my order should have 1 PBJ Sandwhich
 
 Given I am a user

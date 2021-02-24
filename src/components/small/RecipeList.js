@@ -7,10 +7,10 @@ class RecipeList extends React.Component {
   }
 
   render() {
-    const { sandwhich, ingredients } = this.props;
+    const { sandwich, ingredients } = this.props;
 
     return ( <ol>
-        {sandwhich.recipe.map((ingredientId, ndx) => {
+        {sandwich.recipe.map((ingredientId, ndx) => {
           return (<li>
             {
               this.ingredientName(ingredientId, ingredients)
