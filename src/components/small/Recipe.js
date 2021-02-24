@@ -22,7 +22,14 @@ class Recipe extends React.Component {
         </button>
 
         {
-          this.state.collapsed ? <div /> : <RecipeList sandwich={sandwich} ingredients={this.props.ingredients} />
+          this.state.collapsed
+            ?
+            <div />
+            :
+            <RecipeList
+              sandwich={sandwich}
+              ingredients={this.props.ingredients}
+            />
         }
 
       </li>

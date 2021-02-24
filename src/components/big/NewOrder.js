@@ -1,6 +1,7 @@
 import React from "react";
 
-import RecipeForm from "../small/RecipeForm.js";
+import RecipeForms from "../small/RecipeForms.js";
+import Check from "../small/Check.js";
 
 const initialState = {
   sandwiches: [
@@ -26,7 +27,12 @@ class NewOrder extends React.Component {
       runningTally
     };
 
+    this.addSandwhich = this.addSandwhich.bind(this);
+    this.changeStagedSandwhich = this.changeStagedSandwhich.bind(this);
+    this.onChangeSandwhichName = this.onChangeSandwhichName.bind(this);
     this.onGratuityChange = this.onGratuityChange.bind(this);
+    this.pushIngredient = this.pushIngredient.bind(this);
+    this.selectIngredientToPush = this.selectIngredientToPush.bind(this);
   }
 
   selectIngredientToPush(sandwhichName, ingredientId) {
@@ -42,7 +48,7 @@ class NewOrder extends React.Component {
   }
 
   pushIngredient(sandwhichName, sandwhiches, runningTally, ingredients) {
-
+    console.log("pushIngredient")
     const sandwich = sandwhiches.find((s) => s.name === sandwhichName);
     const ingredientId = sandwich.toPush;
     const oldTally = runningTally[ingredientId]
@@ -129,18 +135,7 @@ class NewOrder extends React.Component {
     })
   }
 
-  subTotal(sandwiches, ingredients) {
-    return sandwiches.reduce((mm, sandwich) => {
-      return mm + this.recipeCost(sandwich.recipe, ingredients)
-    }, 0
-    )
-  }
-
-  formatGrandTotal(sandwiches, ingredients) {
-    return (this.subTotal(sandwiches, ingredients) * (1 + (this.state.gratuity / 100))).toFixed(2)
-  }
-
-  placeOrder(props, state, grandTotal) {
+  placeOrder(props, grandTotal, state) {
     props.newOrder({
       sandwiches: state.sandwiches,
       grandTotal
@@ -148,69 +143,34 @@ class NewOrder extends React.Component {
   }
 
   render() {
+    const props = this.props;
 
-    const grandTotal = this.formatGrandTotal(this.state.sandwiches, this.props.ingredients);
+    return (
+      <div>
+        <h1>Please place an order</h1>
 
-    return (<div>
-      <h1>Please place an order</h1>
+        <RecipeForms
+          addSandwhich={this.addSandwhich}
+          changeStagedSandwhich={this.changeStagedSandwhich}
+          ingredients={this.props.ingredients}
+          pushIngredient={this.pushIngredient}
+          runningTally={this.state.runningTally}
+          sandwiches={this.state.sandwiches}
+          selectIngredientToPush={this.selectIngredientToPush}
+          stagedSandwhich={this.state.stagedSandwhich}
+          onChangeSandwhichName={this.onChangeSandwhichName}
+        />
 
-      <ul id="order-form" >{
-        this.state.sandwiches.map((stateSandwiche) =>
-          <li>
-            <input
-              type="text"
-              value={stateSandwiche.name}
-              onChange={(event) => this.onChangeSandwhichName(event, stateSandwiche.name)}
-            />
-            <button onClick={() => this.removeSandwhich(stateSandwiche.name)}> Remove "{stateSandwiche.name}" from the order</button>
+        <Check
+          ingredients={this.props.ingredients}
+          sandwiches={this.state.sandwiches}
+          placeOrder={(grandTotal) => this.placeOrder(props, grandTotal, this.state)}
+          onGratuityChange={this.onGratuityChange}
+          gratuity={this.state.gratuity}
+        />
 
-            <RecipeForm
-              sandwich={stateSandwiche}
-              ingredients={this.props.ingredients}
-              cost={this.recipeCost(stateSandwiche.recipe, this.props.ingredients)}
-              runningTally={this.state.runningTally}
-              popIngredient={(sandwhichName) => this.popIngredient(sandwhichName)}
-              selectIngredientToPush={(sandwhichName, ingredientId) => this.selectIngredientToPush(sandwhichName, ingredientId)}
-              pushIngredient={(sandwhichName) => this.pushIngredient(sandwhichName, this.state.sandwiches, this.state.runningTally, this.props.ingredients)}
-            />
-          </li>
-        )
-
-      }
-        <li>
-          <input
-            type="text"
-            value={this.state.stagedSandwhich}
-            placeholder="sandwich description"
-            onChange={(e) => this.changeStagedSandwhich(e)}
-          />
-          <button onClick={() => this.addSandwhich()}> Add a sandwich</button>
-        </li>
-      </ul>
-
-      <div id="totaler">
-        <table>
-          <tr><td>SUB TOTAL</td><td>${this.subTotal(this.state.sandwiches, this.props.ingredients)}</td></tr>
-          <tr><td>GRATUITY</td><td>          <input
-            type="number"
-            placeholder={25}
-            value={this.state.gratuity}
-            onChange={this.onGratuityChange}
-          />%</td></tr>
-          <tr>
-            <td>GRAND TOTAL</td>
-            <td>
-              <button
-                disabled={!this.state.sandwiches.length}
-                onClick={() => this.placeOrder(this.props, this.state, grandTotal)}
-              >
-                Submit Order for ${grandTotal}
-              </button>
-            </td>
-          </tr>
-        </table>
       </div>
-    </div>);
+    );
   }
 }
 

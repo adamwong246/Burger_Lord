@@ -25,7 +25,7 @@ class RecipeForm extends React.Component {
   }
 
   render() {
-    const { sandwich } = this.props;
+    const { popIngredient, sandwich, ingredients, pushIngredient } = this.props;
 
     return (<div>
 
@@ -34,16 +34,18 @@ class RecipeForm extends React.Component {
           return (<tr>
 
             <td style={{
-              backgroundColor: this.ingredientBackground(ingredientId, this.props.ingredients),
-              color: this.ingredientColor(ingredientId, this.props.ingredients)
+              backgroundColor: this.ingredientBackground(ingredientId, ingredients),
+              color: this.ingredientColor(ingredientId, ingredients)
             }}>
-              {this.ingredientName(ingredientId, this.props.ingredients)}
+              {this.ingredientName(ingredientId, ingredients)}
             </td>
 
-            <td>+ ${this.ingredientCost(ingredientId, this.props.ingredients)}</td>
+            <td>+ ${this.ingredientCost(ingredientId, ingredients)}</td>
 
             <td>{
-              ndx === sandwich.recipe.length - 1 ? <button onClick={() => this.props.popIngredient(sandwich.name)}> Pop Ingredient</button> : <div />
+              ndx === sandwich.recipe.length - 1 ?
+                <button onClick={() => popIngredient(sandwich.name)}> Pop Ingredient</button>
+                : <div />
             }</td>
 
 
@@ -53,33 +55,25 @@ class RecipeForm extends React.Component {
         <tr>
 
           <td>
-
             <IngredientPicker
               value={sandwich.toPush}
               ingredients={this.props.ingredients}
               runningTally={this.props.runningTally}
               selectIngredientToPush={(ingredientId) => this.props.selectIngredientToPush(sandwich.name, ingredientId)}
             />
-
           </td>
 
-          <td>
-            {
-              sandwich.toPush ? (<div>+ ${this.ingredientCost(sandwich.toPush, this.props.ingredients)}</div>) : (<div />)
-            }
-          </td>
+          <td>{
+            sandwich.toPush ? (<div>+ ${this.ingredientCost(sandwich.toPush, this.props.ingredients)}</div>) : (<div />)
+          }</td>
 
-          <td>
-            {
-              sandwich.toPush ? (<button onClick={() => this.props.pushIngredient(sandwich.name)}> Push Ingredient</button>) : (<div />)
-            }
-
-          </td>
+          <td>{
+            sandwich.toPush ? (<button onClick={(e) => pushIngredient(sandwich.name)}> Push Ingredient!</button>) : (<div />)
+          }</td>
 
         </tr>
 
         <tr>
-
           <td>
             <strong>Price for "{sandwich.name}"</strong>
           </td>
