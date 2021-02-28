@@ -10,9 +10,15 @@ import 'normalize.css';
 
 import NewOrder from "./components/NewOrder/Index.js";
 import Orders from "./components/Orders/Index.js";
-import './style.scss';
-import store from "./state/store.js";
+
+import storeCreator from "./state/store.js";
+import initialState from "./state/initialState.js";
+
 import { NewOrderSelector, OrdersSelector } from "./state/selectors.js";
+
+import './style.scss';
+
+const store = storeCreator(initialState);
 
 document.addEventListener('DOMContentLoaded', (event) => {
 
@@ -35,12 +41,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
                   </li>
                   <li>
                     <Link to="/orders">View and complete orders!</Link>
-                  </li>
-                  <li>
-                    <Link to="/utils/ingredients">Ingredients?</Link>
-                  </li>
-                  <li>
-                    <Link to="/utils/orders">Orders?</Link>
                   </li>
                 </ul>
               </nav>
@@ -73,21 +73,6 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     completeOrder={(orderId) => store.dispatch({ type: "COMPLETE_ORDER", payload: orderId })}
                   />
                 </Route>
-
-                <Route path="/utils/ingredients">
-                  <div>
-                    <h1>ingredients</h1>
-                    <pre>{JSON.stringify(storeState.ingredients, null, 2)}</pre>
-                  </div>
-                </Route>
-
-                <Route path="/utils/orders">
-                  <div>
-                    <h1>orders</h1>
-                    <pre>{JSON.stringify(storeState.orders, null, 2)}</pre>
-                  </div>
-                </Route>
-
                 <Route path="/">
                   <div>
                     <h1>Welcome to BURGER LORD</h1>

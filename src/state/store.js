@@ -1,8 +1,6 @@
 import { createStore } from 'redux'
 
-import initialState from "./initialState.js";
-
-export default createStore((state = [], action) => {
+export default (initialState) => createStore((state = [], action) => {
 
   switch (action.type) {
     case 'INITIALIZE':

@@ -50,9 +50,6 @@ class OrdersList extends React.Component {
           }
         </table>
       }
-
-
-
     </div>);
   }
 }
