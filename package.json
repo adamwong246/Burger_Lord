@@ -8,7 +8,7 @@
   "scripts": {
     "make": "webpack",
     "dev": "webpack serve --config webpack.config.js --progress --profile --content-base dist/",
-    "test": "mocha src/state/test.js"
+    "test": "webpack --config webpack.test.config.js && mocha dist/test.js"
   },
   "devDependencies": {
     "webpack-cli": "^4.5.0",
