@@ -11,40 +11,40 @@ class RecipeForms extends React.Component {
   render() {
     const {
       addSandwich,
-      changeStagedSandwhich,
+      changeStagedSandwich,
       ingredients,
-      onChangeSandwhichName,
+      onChangeSandwichName,
       popIngredient,
       pushIngredient,
       removeSandwich,
       runningTally,
       sandwiches,
       selectIngredientToPush,
-      stagedSandwhich
+      stagedSandwich
     }
       = this.props
 
     return (<ul id="order-form" >{
-      sandwiches.map((sandwich) =>
+      sandwiches.map((sandwich, ndx) =>
         <li>
           <input
             type="text"
             value={sandwich.name}
-            onChange={(event) => onChangeSandwhichName(event, sandwich.name)}
+            onChange={(event) => onChangeSandwichName(ndx, event.target.value)}
           />
           <button
-            onClick={(e) => removeSandwich(sandwich.name)}
+            onClick={(e) => removeSandwich(ndx)}
           >
             Remove "{sandwich.name}" (${this.recipeCost(sandwich.recipe, ingredients)})
           </button>
 
           <RecipeForm
-            sandwich={sandwich}
             ingredients={ingredients}
+            popIngredient={popIngredient}
+            pushIngredient={() => pushIngredient(ndx)}
             runningTally={runningTally}
-            popIngredient={(sandwhichName) => popIngredient(sandwhichName)}
+            sandwich={sandwich}
             selectIngredientToPush={(sandwhichName, ingredientId) => selectIngredientToPush(sandwhichName, ingredientId)}
-            pushIngredient={(sandwhichName) => pushIngredient(sandwhichName, sandwiches, runningTally, ingredients)}
           />
         </li>
       )
@@ -53,9 +53,9 @@ class RecipeForms extends React.Component {
       <li>
         <input
           type="text"
-          value={stagedSandwhich}
+          value={stagedSandwich}
           placeholder="sandwich description"
-          onChange={(e) => changeStagedSandwhich(e)}
+          onChange={(e) => changeStagedSandwich(e.target.value)}
         />
         <button onClick={() => addSandwich()}> Add a sandwich</button>
       </li>

@@ -24,7 +24,7 @@ class IngredientPicker extends React.Component {
               >
                 {i.name} 
                 {
-                  notEnoughIngredients ? " (out of stock)" : ""
+                  notEnoughIngredients ? " (out of stock)" : ` (${this.props.runningTally[i.id]} left)`
                 }
               </option>
             );

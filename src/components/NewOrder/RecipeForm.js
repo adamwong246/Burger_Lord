@@ -24,11 +24,7 @@ class RecipeForm extends React.Component {
     const { popIngredient, sandwich, ingredients, pushIngredient } = this.props;
 
     return (<div>
-
       <table>
-
-
-
         {sandwich.recipe.map((ingredientId, ndx) => {
           return (<tr>
 
@@ -46,8 +42,6 @@ class RecipeForm extends React.Component {
                 <button onClick={() => popIngredient(sandwich.name)}> Pop Ingredient</button>
                 : <div />
             }</td>
-
-
           </tr>);
         })}
 
@@ -67,7 +61,7 @@ class RecipeForm extends React.Component {
           }</td>
 
           <td>{
-            sandwich.toPush ? (<button onClick={(e) => pushIngredient(sandwich.name)}> Push Ingredient!</button>) : (<div />)
+            sandwich.toPush ? (<button onClick={(e) => pushIngredient()}> Push Ingredient!</button>) : (<div />)
           }</td>
 
         </tr>

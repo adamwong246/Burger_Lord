@@ -46,13 +46,26 @@ function App(props) {
           <Switch>
             <Route path="/orders/new">
               <NewOrder
-                sandwiches={props.sandwiches}
+                addSandwich={props.dispatchAddSandwich}
+                changeStagedSandwich={props.dispatchStagedSandwichNameChange}
+                gratuity={props.gratuity}
                 ingredients={props.ingredients}
+                onChangeGratuity={(event) => props.dispatchChangeGratuity(parseInt(event.target.value))}
+                onChangeSandwichName={props.dispatchChangeSandwichName}
+                placeOrder={props.dispatchPlaceOrder}
+                popIngredient={props.dispatchPopIngredient}
+                pushIngredient={props.dispatchPushIngredient}
+                removeSandwich={props.dispatchRemoveSandwich}
+                sandwiches={props.sandwiches}
+                selectIngredientToPush={props.dispatchSelectIngredientToPush}
+                stagedSandwich={props.stagedSandwich}
+
                 newOrder={(sandwiches) => {
                   props.dispatchNewOrder(sandwiches, () => {
                     alert("Your order was submitted")                    
                   })
                 }}
+
               />
             </Route>
             <Route path="/orders">
