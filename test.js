@@ -1933,6 +1933,154 @@ if (false) {}
 
 
 
+;// CONCATENATED MODULE: ./src/state/store.js
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function store_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { store_ownKeys(Object(source), true).forEach(function (key) { store_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { store_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function store_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+/* harmony default export */ const state_store = (function (initialState) {
+  return createStore(function () {
+    var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
+    var action = arguments.length > 1 ? arguments[1] : undefined;
+
+    switch (action.type) {
+      case 'INITIALIZE':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          INITAILIZED: true
+        });
+
+      case 'REMOVE_SANDWICH':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          sandwiches: state.sandwiches.filter(function (s, ndx) {
+            return ndx !== action.payload;
+          })
+        });
+
+      case 'CHANGE_GRATUITY':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          gratuity: action.payload
+        });
+
+      case 'SELECT_INGREDIENT_TO_PUSH':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          sandwiches: state.sandwiches.map(function (sandwich) {
+            if (sandwich.name === action.payload.sandwichName) {
+              sandwich.toPush = action.payload.ingredientId;
+            }
+
+            return sandwich;
+          })
+        });
+
+      case 'PUSH_INGREDIENT':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          sandwiches: state.sandwiches.map(function (sandwich, ndx) {
+            if (ndx === action.payload) {
+              sandwich.recipe.push(sandwich.toPush);
+              sandwich.toPush = "";
+            }
+
+            return sandwich;
+          })
+        });
+
+      case 'POP_INGREDIENT':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          sandwiches: state.sandwiches.map(function (s) {
+            if (s.name === action.payload) {
+              s.recipe.pop();
+            }
+
+            return s;
+          })
+        });
+
+      case 'CHANGE_SANDWICH_NAME':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          sandwiches: state.sandwiches.map(function (s, ndx) {
+            if (ndx === action.payload.index) {
+              s.name = action.payload.sandwichName;
+            }
+
+            return s;
+          })
+        });
+
+      case 'ADD_SANDWICH':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          stagedSandwich: "",
+          sandwiches: [].concat(_toConsumableArray(state.sandwiches), [{
+            name: state.stagedSandwich,
+            recipe: [],
+            toPush: ""
+          }])
+        });
+
+      case 'CHANGE_STAGED_SANDWICH_NAME':
+        return _objectSpread(_objectSpread({}, state), {}, {
+          stagedSandwich: action.payload
+        });
+
+      case 'NEW_ORDER':
+        var existingKeys = Object.keys(state.orders);
+        return _objectSpread(_objectSpread({}, state), {}, {
+          sandwiches: [],
+          orders: _objectSpread(_objectSpread({}, state.orders), {}, store_defineProperty({}, Math.max.apply(Math, _toConsumableArray(existingKeys.length ? existingKeys.map(function (oid) {
+            return parseInt(oid);
+          }) : [0])) + 1, {
+            status: "open",
+            sandwiches: state.sandwiches.map(function (s) {
+              return {
+                name: s.name,
+                recipe: s.recipe
+              };
+            })
+          })),
+          ingredients: state.ingredients.map(function (ingredient) {
+            state.sandwiches.forEach(function (sandwich) {
+              sandwich.recipe.forEach(function (ingredientId) {
+                if (ingredientId === ingredient.id) {
+                  ingredient.amount = ingredient.amount - 1;
+                }
+              });
+            });
+            return ingredient;
+          })
+        });
+
+      case 'COMPLETE_ORDER':
+        var newOrders = {};
+        Object.keys(state.orders).forEach(function (ok) {
+          newOrders[ok] = state.orders[ok];
+
+          if (ok === action.payload) {
+            newOrders[ok].status = "closed";
+          }
+        });
+        return _objectSpread(_objectSpread({}, state), {}, {
+          orders: newOrders
+        });
+
+      default:
+        return state;
+    }
+  }, initialState);
+});
 ;// CONCATENATED MODULE: ./src/state/initialState.js
 /* harmony default export */ const initialState = ({
   INITAILIZED: false,
@@ -2019,168 +2167,219 @@ if (false) {}
     }
   }
 });
-;// CONCATENATED MODULE: ./src/state/store.js
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+;// CONCATENATED MODULE: ./node_modules/reselect/es/index.js
+function defaultEqualityCheck(a, b) {
+  return a === b;
+}
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function store_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { store_ownKeys(Object(source), true).forEach(function (key) { store_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { store_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function store_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-/* harmony default export */ const store = (createStore(function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
-  var action = arguments.length > 1 ? arguments[1] : undefined;
-
-  switch (action.type) {
-    case 'INITIALIZE':
-      return _objectSpread(_objectSpread({}, state), {}, {
-        INITAILIZED: true
-      });
-
-    case 'REMOVE_SANDWICH':
-      return _objectSpread(_objectSpread({}, state), {}, {
-        sandwiches: state.sandwiches.filter(function (s, ndx) {
-          return ndx !== action.payload;
-        })
-      });
-
-    case 'CHANGE_GRATUITY':
-      return _objectSpread(_objectSpread({}, state), {}, {
-        gratuity: action.payload
-      });
-
-    case 'SELECT_INGREDIENT_TO_PUSH':
-      return _objectSpread(_objectSpread({}, state), {}, {
-        sandwiches: state.sandwiches.map(function (sandwich) {
-          if (sandwich.name === action.payload.sandwichName) {
-            sandwich.toPush = action.payload.ingredientId;
-          }
-
-          return sandwich;
-        })
-      });
-
-    case 'PUSH_INGREDIENT':
-      return _objectSpread(_objectSpread({}, state), {}, {
-        sandwiches: state.sandwiches.map(function (sandwich, ndx) {
-          if (ndx === action.payload) {
-            sandwich.recipe.push(sandwich.toPush);
-            sandwich.toPush = "";
-          }
-
-          return sandwich;
-        })
-      });
-
-    case 'POP_INGREDIENT':
-      return _objectSpread(_objectSpread({}, state), {}, {
-        sandwiches: state.sandwiches.map(function (s) {
-          if (s.name === action.payload) {
-            s.recipe.pop();
-          }
-
-          return s;
-        })
-      });
-
-    case 'CHANGE_SANDWICH_NAME':
-      return _objectSpread(_objectSpread({}, state), {}, {
-        sandwiches: state.sandwiches.map(function (s, ndx) {
-          if (ndx === action.payload.index) {
-            s.name = action.payload.sandwichName;
-          }
-
-          return s;
-        })
-      });
-
-    case 'ADD_SANDWICH':
-      return _objectSpread(_objectSpread({}, state), {}, {
-        stagedSandwich: "",
-        sandwiches: [].concat(_toConsumableArray(state.sandwiches), [{
-          name: state.stagedSandwich,
-          recipe: [],
-          toPush: ""
-        }])
-      });
-
-    case 'CHANGE_STAGED_SANDWICH_NAME':
-      return _objectSpread(_objectSpread({}, state), {}, {
-        stagedSandwich: action.payload
-      });
-
-    case 'NEW_ORDER':
-      var existingKeys = Object.keys(state.orders);
-      return _objectSpread(_objectSpread({}, state), {}, {
-        sandwiches: [],
-        orders: _objectSpread(_objectSpread({}, state.orders), {}, store_defineProperty({}, Math.max.apply(Math, _toConsumableArray(existingKeys.length ? existingKeys.map(function (oid) {
-          return parseInt(oid);
-        }) : [0])) + 1, {
-          status: "open",
-          sandwiches: state.sandwiches.map(function (s) {
-            return {
-              name: s.name,
-              recipe: s.recipe
-            };
-          })
-        })),
-        ingredients: state.ingredients.map(function (ingredient) {
-          state.sandwiches.forEach(function (sandwich) {
-            sandwich.recipe.forEach(function (ingredientId) {
-              if (ingredientId === ingredient.id) {
-                ingredient.amount = ingredient.amount - 1;
-              }
-            });
-          });
-          return ingredient;
-        })
-      });
-
-    case 'COMPLETE_ORDER':
-      var newOrders = {};
-      Object.keys(state.orders).forEach(function (ok) {
-        newOrders[ok] = state.orders[ok];
-
-        if (ok === action.payload) {
-          newOrders[ok].status = "closed";
-        }
-      });
-      return _objectSpread(_objectSpread({}, state), {}, {
-        orders: newOrders
-      });
-
-    default:
-      return state;
+function areArgumentsShallowlyEqual(equalityCheck, prev, next) {
+  if (prev === null || next === null || prev.length !== next.length) {
+    return false;
   }
-}, initialState));
+
+  // Do this in a for loop (and not a `forEach` or an `every`) so we can determine equality as fast as possible.
+  var length = prev.length;
+  for (var i = 0; i < length; i++) {
+    if (!equalityCheck(prev[i], next[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function defaultMemoize(func) {
+  var equalityCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultEqualityCheck;
+
+  var lastArgs = null;
+  var lastResult = null;
+  // we reference arguments instead of spreading them for performance reasons
+  return function () {
+    if (!areArgumentsShallowlyEqual(equalityCheck, lastArgs, arguments)) {
+      // apply arguments instead of spreading for performance.
+      lastResult = func.apply(null, arguments);
+    }
+
+    lastArgs = arguments;
+    return lastResult;
+  };
+}
+
+function getDependencies(funcs) {
+  var dependencies = Array.isArray(funcs[0]) ? funcs[0] : funcs;
+
+  if (!dependencies.every(function (dep) {
+    return typeof dep === 'function';
+  })) {
+    var dependencyTypes = dependencies.map(function (dep) {
+      return typeof dep;
+    }).join(', ');
+    throw new Error('Selector creators expect all input-selectors to be functions, ' + ('instead received the following types: [' + dependencyTypes + ']'));
+  }
+
+  return dependencies;
+}
+
+function createSelectorCreator(memoize) {
+  for (var _len = arguments.length, memoizeOptions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    memoizeOptions[_key - 1] = arguments[_key];
+  }
+
+  return function () {
+    for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      funcs[_key2] = arguments[_key2];
+    }
+
+    var recomputations = 0;
+    var resultFunc = funcs.pop();
+    var dependencies = getDependencies(funcs);
+
+    var memoizedResultFunc = memoize.apply(undefined, [function () {
+      recomputations++;
+      // apply arguments instead of spreading for performance.
+      return resultFunc.apply(null, arguments);
+    }].concat(memoizeOptions));
+
+    // If a selector is called with the exact same arguments we don't need to traverse our dependencies again.
+    var selector = memoize(function () {
+      var params = [];
+      var length = dependencies.length;
+
+      for (var i = 0; i < length; i++) {
+        // apply arguments instead of spreading and mutate a local list of params for performance.
+        params.push(dependencies[i].apply(null, arguments));
+      }
+
+      // apply arguments instead of spreading for performance.
+      return memoizedResultFunc.apply(null, params);
+    });
+
+    selector.resultFunc = resultFunc;
+    selector.dependencies = dependencies;
+    selector.recomputations = function () {
+      return recomputations;
+    };
+    selector.resetRecomputations = function () {
+      return recomputations = 0;
+    };
+    return selector;
+  };
+}
+
+var createSelector = createSelectorCreator(defaultMemoize);
+
+function createStructuredSelector(selectors) {
+  var selectorCreator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : createSelector;
+
+  if (typeof selectors !== 'object') {
+    throw new Error('createStructuredSelector expects first argument to be an object ' + ('where each property is a selector, instead received a ' + typeof selectors));
+  }
+  var objectKeys = Object.keys(selectors);
+  return selectorCreator(objectKeys.map(function (key) {
+    return selectors[key];
+  }), function () {
+    for (var _len3 = arguments.length, values = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      values[_key3] = arguments[_key3];
+    }
+
+    return values.reduce(function (composition, value, index) {
+      composition[objectKeys[index]] = value;
+      return composition;
+    }, {});
+  });
+}
+;// CONCATENATED MODULE: ./src/state/selectors.js
+function selectors_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var baseSelector = function baseSelector(state) {
+  return state;
+};
+
+var NewOrderSelector = createSelector([baseSelector], function (base) {
+  var _ref;
+
+  var subTotal = base.sandwiches.reduce(function (mm, sandwich) {
+    return mm + sandwich.recipe.reduce(function (mm2, recipeIngredientId) {
+      return mm2 + base.ingredients.find(function (ingredient) {
+        return ingredient.id === recipeIngredientId;
+      }).cost;
+    }, 0);
+  }, 0);
+  var grandTotal = subTotal * (1 + base.gratuity / 100);
+  var runningTally = {};
+  base.ingredients.forEach(function (ingredient) {
+    return runningTally[ingredient.id] = ingredient.amount;
+  });
+  base.sandwiches.forEach(function (sandwich) {
+    sandwich.recipe.forEach(function (recipeIngredientId) {
+      runningTally[recipeIngredientId] = runningTally[recipeIngredientId] - 1;
+    });
+  });
+  return _ref = {
+    ingredients: base.orders,
+    sandwiches: base.sandwiches
+  }, selectors_defineProperty(_ref, "ingredients", base.ingredients), selectors_defineProperty(_ref, "gratuity", base.gratuity), selectors_defineProperty(_ref, "stagedSandwich", base.stagedSandwich), selectors_defineProperty(_ref, "subTotal", subTotal), selectors_defineProperty(_ref, "grandTotal", grandTotal), selectors_defineProperty(_ref, "runningTally", runningTally), _ref;
+});
+var OrdersSelector = createSelector([baseSelector], function (base) {
+  var _ref2;
+
+  return _ref2 = {
+    ingredients: base.orders,
+    sandwiches: base.sandwiches
+  }, selectors_defineProperty(_ref2, "ingredients", base.ingredients), selectors_defineProperty(_ref2, "orders", base.orders), _ref2;
+});
 ;// CONCATENATED MODULE: ./src/state/test.js
 
 
-describe('Inital state', function () {
+
+
+describe('Initial state', function () {
   it('gratuity should be 25', function () {
+    var store = state_store(initialState);
     assert_default().equal(store.getState().gratuity, 25);
   });
 });
 describe('Initalization', function () {
   it('initialized should be false, then true', function () {
+    var store = state_store(initialState);
     assert_default().equal(store.getState().INITAILIZED, false);
     store.dispatch({
       type: "INITIALIZE"
     });
     assert_default().equal(store.getState().INITAILIZED, true);
+  });
+});
+describe('Selectors', function () {
+  it('you can change the name of a sandwich', function () {
+    var store = state_store(initialState);
+    var sandwichName = "The new name of a sandwich";
+    store.dispatch({
+      type: "CHANGE_STAGED_SANDWICH_NAME",
+      payload: sandwichName
+    });
+    assert_default().equal(NewOrderSelector(store.getState()).stagedSandwich, sandwichName);
+  });
+  it('you can add a sandwich', function () {
+    var store = state_store(initialState);
+    var sandwichName = "The new name of a sandwich";
+    assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
+    store.dispatch({
+      type: "CHANGE_STAGED_SANDWICH_NAME",
+      payload: sandwichName
+    });
+    store.dispatch({
+      type: "ADD_SANDWICH"
+    });
+    assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 1);
+    store.dispatch({
+      type: "ADD_SANDWICH"
+    });
+    store.dispatch({
+      type: "ADD_SANDWICH"
+    });
+    assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 3);
   });
 });
 })();
