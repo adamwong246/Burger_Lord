@@ -15,7 +15,7 @@ class Check extends React.Component {
               type="number"
               placeholder={25}
               value={gratuity}
-              onChange={onChangeGratuity}
+              onChange={(event) => onChangeGratuity(parseInt(event.target.value))}
             />%
           </td>
         </tr>

@@ -5,6 +5,12 @@ import initialState from "./initialState.js";
 export default createStore((state = [], action) => {
 
   switch (action.type) {
+    case 'INITIALIZE':
+      return {
+        ...state,
+        INITAILIZED: true
+      }
+
     case 'REMOVE_SANDWICH':
       return {
         ...state,

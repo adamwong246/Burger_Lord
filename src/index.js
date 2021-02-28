@@ -1,34 +1,157 @@
 import React from 'react'
 import ReactDOM from 'react-dom'
-import { Provider } from 'react-redux'
+import {
+  HashRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
+import { createSelector } from "reselect"
 
-import App from "./app.js";
+import 'normalize.css';
+
+import NewOrder from "./components/NewOrder/Index.js";
+import Orders from "./components/Orders/Index.js";
+
+import './style.scss';
 
 import store from "./redux/store.js";
 
 document.addEventListener('DOMContentLoaded', (event) => {
 
   const wrapper = document.getElementById("root");
-  wrapper
-    ? ReactDOM.render(<Provider store={store}>
-      <App
-        dispatchAddSandwich={(sandwichName) => store.dispatch({ type: "ADD_SANDWICH", payload: sandwichName })}
-        dispatchChangeGratuity={(gratuity) => store.dispatch({ type: "CHANGE_GRATUITY", payload: gratuity })}
-        dispatchChangeSandwichName={(index, sandwichName) => store.dispatch({ type: "CHANGE_SANDWICH_NAME", payload: {index, sandwichName} })}
-        dispatchCompleteOrder={(orderId) => store.dispatch({ type: "COMPLETE_ORDER", payload: orderId })}
-        dispatchPopIngredient={(name) => store.dispatch({ type: "POP_INGREDIENT", payload: name })}
-        dispatchPushIngredient={(name) => store.dispatch({ type: "PUSH_INGREDIENT", payload: name })}
-        dispatchRemoveSandwich={(ndx) => store.dispatch({ type: "REMOVE_SANDWICH", payload: ndx })}
-        dispatchSelectIngredientToPush={(sandwichName, ingredientId) => store.dispatch({ type: "SELECT_INGREDIENT_TO_PUSH", payload: {sandwichName, ingredientId} })}
-        dispatchStagedSandwichNameChange={(sandwichName) => store.dispatch({ type: "CHANGE_STAGED_SANDWICH_NAME", payload: sandwichName })}
-        dispatchPlaceOrder={(grandTotal) => store.dispatch({ type: "NEW_ORDER", payload: grandTotal })}
 
-        dispatchNewOrder={(sandwiches, callback) => {
-          store.dispatch({ type: "NEW_ORDER", payload: sandwiches })
-          callback()
-        }}
-      />
-    </Provider >, wrapper)
-    : false;
+  const baseSelector = state => state;
+
+  const NewOrderSelector = createSelector([baseSelector], (base) => {
+
+    const subTotal = base.sandwiches.reduce((mm, sandwich) => {
+      return mm + sandwich.recipe.reduce((mm2, recipeIngredientId) => {
+        return mm2 + base.ingredients.find((ingredient) => ingredient.id === recipeIngredientId).cost
+      }, 0)
+    }, 0);
+
+    const grandTotal = (subTotal * (1 + (base.gratuity / 100)))
+
+    const runningTally = {};
+    base.ingredients.forEach((ingredient) => runningTally[ingredient.id] = ingredient.amount)
+    base.sandwiches.forEach((sandwich) => {
+      sandwich.recipe.forEach((recipeIngredientId) => {
+        runningTally[recipeIngredientId] = runningTally[recipeIngredientId] -1
+      })
+    })
+
+    return {
+      ingredients: base.orders,
+      sandwiches: base.sandwiches,
+      ingredients: base.ingredients,
+
+      gratuity: base.gratuity,
+      stagedSandwich: base.stagedSandwich,
+
+      subTotal, grandTotal, runningTally
+    }
+  });
+  const OrdersSelector = createSelector([baseSelector], (base) => {
+    return {
+      ingredients: base.orders,
+      sandwiches: base.sandwiches,
+      ingredients: base.ingredients,
+
+      orders: base.orders
+    }
+  });
+
+  store.subscribe(() => {
+    const storeState = store.getState();
+    wrapper
+      ? ReactDOM.render(
+
+        <Router>
+          <div id="app">
+
+
+            <header>
+              <nav>
+                <ul>
+                  <li>
+                    <Link to="/">Home</Link>
+                  </li>
+                  <li>
+                    <Link to="/orders/new">Order some Sandwiches!</Link>
+                  </li>
+                  <li>
+                    <Link to="/orders">View and complete orders!</Link>
+                  </li>
+                  <li>
+                    <Link to="/utils/ingredients">Ingredients?</Link>
+                  </li>
+                  <li>
+                    <Link to="/utils/orders">Orders?</Link>
+                  </li>
+                </ul>
+              </nav>
+            </header>
+
+            <main>
+              <Switch>
+                <Route path="/orders/new">
+                  <NewOrder
+                    {
+                    ...NewOrderSelector(storeState)
+                    }
+                    addSandwich={(sandwichName) => store.dispatch({ type: "ADD_SANDWICH", payload: sandwichName })}
+                    changeStagedSandwich={(sandwichName) => store.dispatch({ type: "CHANGE_STAGED_SANDWICH_NAME", payload: sandwichName })}
+                    newOrder={(sandwiches) => store.dispatch({ type: "NEW_ORDER", payload: sandwiches })}
+                    onChangeGratuity={(gratuity) => store.dispatch({ type: "CHANGE_GRATUITY", payload: gratuity })}
+                    onChangeSandwichName={(index, sandwichName) => store.dispatch({ type: "CHANGE_SANDWICH_NAME", payload: { index, sandwichName } })}
+                    placeOrder={(grandTotal) => store.dispatch({ type: "NEW_ORDER", payload: grandTotal })}
+                    popIngredient={(name) => store.dispatch({ type: "POP_INGREDIENT", payload: name })}
+                    pushIngredient={(name) => store.dispatch({ type: "PUSH_INGREDIENT", payload: name })}
+                    removeSandwich={(ndx) => store.dispatch({ type: "REMOVE_SANDWICH", payload: ndx })}
+                    selectIngredientToPush={(sandwichName, ingredientId) => store.dispatch({ type: "SELECT_INGREDIENT_TO_PUSH", payload: { sandwichName, ingredientId } })}
+                  />
+                </Route>
+                <Route path="/orders">
+                  <Orders
+                    completeOrder={(orderId) => store.dispatch({ type: "COMPLETE_ORDER", payload: orderId })}
+                    {
+                    ...OrdersSelector(storeState)
+                    }
+                  />
+                </Route>
+
+                <Route path="/utils/ingredients">
+                  <div>
+                    <h1>ingredients</h1>
+                    <pre>{JSON.stringify(storeState.ingredients, null, 2)}</pre>
+                  </div>
+                </Route>
+
+                <Route path="/utils/orders">
+                  <div>
+                    <h1>orders</h1>
+                    <pre>{JSON.stringify(storeState.orders, null, 2)}</pre>
+                  </div>
+                </Route>
+
+                <Route path="/">
+                  <div>
+                    <h1>Welcome to BURGER LORD</h1>
+                    <p> Here at BURGER LORD, we believe the customer is always right. That's why you can order a sandwich with ANY ingredients (provided we have them in stock). You can make a boring White bread + Peanut Butter + Jelly + White Bread Sandwich, or you could have 99 slices of cheese on top of a pile of Ham Salad. "Have it _your_ way!" (tm)</p>
+
+                    <p>We also believe there's a right way and wrong way to make a sandwich. Our competitors like to take the easy way and make their sandiches from the bottom up. That's why at BURGER LORD, we build our sandwiches the RIGHT way- from the top down. </p>
+                  </div>
+                </Route>
+              </Switch>
+            </main>
+
+          </div>
+        </Router >, wrapper)
+      : false;
+  }
+  )
+  store.dispatch({ type: "INITIALIZE" })
+
 })
 

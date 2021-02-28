@@ -21,29 +21,29 @@ export default {
     // }
   ],
   orders: {
-    // "1": {
-    //   "status": "open",
-    //   "sandwiches": [
-    //     {
-    //       "name": "asdasd",
-    //       "recipe": [
-    //         1
-    //       ],
-    //       "toPush": ""
-    //     }
-    //   ],
-    //   "gratuity": 25,
-    //   "runningTally": {
-    //     "1": 99,
-    //     "2": 0,
-    //     "3": 1,
-    //     "4": 1,
-    //     "5": 5,
-    //     "6": 1,
-    //     "7": 1
-    //   },
-    //   "stagedSandwich": "",
-    //   "grandTotal": "1.25"
-    // }
+    "1": {
+      "status": "open",
+      "sandwiches": [
+        {
+          "name": "asdasd",
+          "recipe": [
+            1
+          ],
+          "toPush": ""
+        }
+      ],
+      "gratuity": 25,
+      "runningTally": {
+        "1": 99,
+        "2": 0,
+        "3": 1,
+        "4": 1,
+        "5": 5,
+        "6": 1,
+        "7": 1
+      },
+      "stagedSandwich": "",
+      "grandTotal": "1.25"
+    }
   }
 }

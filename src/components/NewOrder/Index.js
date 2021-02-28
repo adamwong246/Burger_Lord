@@ -7,22 +7,6 @@ class NewOrder extends React.Component {
 
   render() {
 
-    const subTotal = this.props.sandwiches.reduce((mm, sandwich) => {
-      return mm + sandwich.recipe.reduce((mm2, recipeIngredientId) => {
-        return mm2 + this.props.ingredients.find((ingredient) => ingredient.id === recipeIngredientId).cost
-      }, 0)
-    }, 0);
-
-    const grandTotal = (subTotal * (1 + (this.props.gratuity / 100)))
-
-    const runningTally = {};
-    this.props.ingredients.forEach((ingredient) => runningTally[ingredient.id] = ingredient.amount)
-    this.props.sandwiches.forEach((sandwich) => {
-      sandwich.recipe.forEach((recipeIngredientId) => {
-        runningTally[recipeIngredientId] = runningTally[recipeIngredientId] -1
-      })
-    })
-
     return (
       <div>
         <h1>Please place an order</h1>
@@ -34,20 +18,19 @@ class NewOrder extends React.Component {
           popIngredient={this.props.popIngredient}
           pushIngredient={this.props.pushIngredient}
           removeSandwich={this.props.removeSandwich}
+          runningTally={this.props.runningTally}
           sandwiches={this.props.sandwiches}
           selectIngredientToPush={this.props.selectIngredientToPush}
           stagedSandwich={this.props.stagedSandwich}
-
-          runningTally={runningTally}
         />
 
         <Check
-          grandTotal={grandTotal}
+          disabled={false}
+          grandTotal={this.props.grandTotal}
           gratuity={this.props.gratuity}
           onChangeGratuity={this.props.onChangeGratuity}
-          placeOrder={() => this.props.placeOrder(grandTotal)}
-          subTotal={subTotal}
-          disabled={false}
+          placeOrder={() => this.props.placeOrder(this.props.grandTotal)}
+          subTotal={this.props.subTotal}
         />
 
       </div>

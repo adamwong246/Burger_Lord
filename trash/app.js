@@ -12,6 +12,8 @@ import 'normalize.css';
 import NewOrder from "./components/NewOrder/Index.js";
 import Orders from "./components/Orders/Index.js";
 
+import {NewOrderSelector, OrdersSelector} from "./selector.js";
+
 import './style.scss';
 
 function App(props) {
@@ -46,34 +48,41 @@ function App(props) {
           <Switch>
             <Route path="/orders/new">
               <NewOrder
-                addSandwich={props.dispatchAddSandwich}
-                changeStagedSandwich={props.dispatchStagedSandwichNameChange}
-                gratuity={props.gratuity}
-                ingredients={props.ingredients}
-                onChangeGratuity={(event) => props.dispatchChangeGratuity(parseInt(event.target.value))}
-                onChangeSandwichName={props.dispatchChangeSandwichName}
-                placeOrder={props.dispatchPlaceOrder}
-                popIngredient={props.dispatchPopIngredient}
-                pushIngredient={props.dispatchPushIngredient}
-                removeSandwich={props.dispatchRemoveSandwich}
-                sandwiches={props.sandwiches}
-                selectIngredientToPush={props.dispatchSelectIngredientToPush}
-                stagedSandwich={props.stagedSandwich}
+                {
+                  ...NewOrderSelector(props)
+                }
+                // newOrder={NewOrderSelector(props)}
+                // addSandwich={props.dispatchAddSandwich}
+                // changeStagedSandwich={props.dispatchStagedSandwichNameChange}
+                // gratuity={props.gratuity}
+                // ingredients={props.ingredients}
+                // onChangeGratuity={(event) => props.dispatchChangeGratuity(parseInt(event.target.value))}
+                // onChangeSandwichName={props.dispatchChangeSandwichName}
+                // placeOrder={props.dispatchPlaceOrder}
+                // popIngredient={props.dispatchPopIngredient}
+                // pushIngredient={props.dispatchPushIngredient}
+                // removeSandwich={props.dispatchRemoveSandwich}
+                // sandwiches={props.sandwiches}
+                // selectIngredientToPush={props.dispatchSelectIngredientToPush}
+                // stagedSandwich={props.stagedSandwich}
 
-                newOrder={(sandwiches) => {
-                  props.dispatchNewOrder(sandwiches, () => {
-                    alert("Your order was submitted")                    
-                  })
-                }}
+                // newOrder={(sandwiches) => {
+                //   props.dispatchNewOrder(sandwiches, () => {
+                //     alert("Your order was submitted")                    
+                //   })
+                // }}
 
               />
             </Route>
             <Route path="/orders">
               <Orders
-                orders={props.orders}
-                sandwiches={props.sandwiches}
-                ingredients={props.ingredients}
-                completeOrder={props.dispatchCompleteOrder}
+                {
+                  ...OrdersSelector(props)
+                }
+                // orders={props.orders}
+                // sandwiches={props.sandwiches}
+                // ingredients={props.ingredients}
+                // completeOrder={props.dispatchCompleteOrder}
               />
             </Route>
 

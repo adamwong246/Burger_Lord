@@ -57,7 +57,7 @@ class RecipeForms extends React.Component {
           placeholder="sandwich description"
           onChange={(e) => changeStagedSandwich(e.target.value)}
         />
-        <button onClick={() => addSandwich()}> Add a sandwich</button>
+        <button onClick={() => {console.log("hi"); addSandwich()}}> Add a sandwich</button>
       </li>
     </ul>);
   }
