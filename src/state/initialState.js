@@ -1,4 +1,5 @@
 export default {
+  INITAILIZED: false, 
   gratuity: 25,     
   ingredients: [
     { id: 1, name: 'WHITE BREAD', amount: 100, cost: 1, fg: "#ffffff", bg: "#bb992c" },
