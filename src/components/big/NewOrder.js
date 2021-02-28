@@ -33,6 +33,8 @@ class NewOrder extends React.Component {
     this.onGratuityChange = this.onGratuityChange.bind(this);
     this.pushIngredient = this.pushIngredient.bind(this);
     this.selectIngredientToPush = this.selectIngredientToPush.bind(this);
+    this.popIngredient = this.popIngredient.bind(this);
+    this.removeSandwich = this.removeSandwich.bind(this);
   }
 
   selectIngredientToPush(sandwhichName, ingredientId) {
@@ -41,7 +43,10 @@ class NewOrder extends React.Component {
       sandwiches: this.state.sandwiches.map((sandwich) => {
         if (sandwich.name === sandwhichName) {
           sandwich.toPush = ingredientId
+          // sandwich.recipe.push(ingredientId)
         }
+        // sandwich.recipe = sandwich.recipe
+
         return sandwich
       })
     })
@@ -116,7 +121,7 @@ class NewOrder extends React.Component {
     })
   }
 
-  removeSandwhich(name) {
+  removeSandwich(name) {
     this.setState({
       ...this.state,
       sandwiches: this.state.sandwiches.filter((s) => s.name !== name)
@@ -149,23 +154,31 @@ class NewOrder extends React.Component {
         <h1>Please place an order</h1>
 
         <RecipeForms
-          addSandwhich={this.addSandwhich}
-          changeStagedSandwhich={this.changeStagedSandwhich}
           ingredients={this.props.ingredients}
-          pushIngredient={this.pushIngredient}
+          
           runningTally={this.state.runningTally}
           sandwiches={this.state.sandwiches}
-          selectIngredientToPush={this.selectIngredientToPush}
           stagedSandwhich={this.state.stagedSandwhich}
+
+          addSandwhich={this.addSandwhich}
+          removeSandwich={this.removeSandwich}
+          changeStagedSandwhich={this.changeStagedSandwhich}
+          popIngredient={this.popIngredient}
+          pushIngredient={this.pushIngredient}
+          selectIngredientToPush={this.selectIngredientToPush}
           onChangeSandwhichName={this.onChangeSandwhichName}
         />
 
         <Check
           ingredients={this.props.ingredients}
-          sandwiches={this.state.sandwiches}
-          placeOrder={(grandTotal) => this.placeOrder(props, grandTotal, this.state)}
-          onGratuityChange={this.onGratuityChange}
+          
           gratuity={this.state.gratuity}
+          sandwiches={this.state.sandwiches}
+          
+          onGratuityChange={this.onGratuityChange}
+
+          placeOrder={(grandTotal) => this.placeOrder(props, grandTotal, this.state)}
+          
         />
 
       </div>

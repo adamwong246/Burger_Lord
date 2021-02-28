@@ -4,10 +4,6 @@ import IngredientPicker from "./IngredientPicker.js";
 
 class RecipeForm extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   ingredientName(id, ingredients) {
     return ingredients.find((ingredient) => ingredient.id === id).name
   }
@@ -30,6 +26,9 @@ class RecipeForm extends React.Component {
     return (<div>
 
       <table>
+
+
+
         {sandwich.recipe.map((ingredientId, ndx) => {
           return (<tr>
 
@@ -70,18 +69,6 @@ class RecipeForm extends React.Component {
           <td>{
             sandwich.toPush ? (<button onClick={(e) => pushIngredient(sandwich.name)}> Push Ingredient!</button>) : (<div />)
           }</td>
-
-        </tr>
-
-        <tr>
-          <td>
-            <strong>Price for "{sandwich.name}"</strong>
-          </td>
-
-          <td>
-            {/* <strong>${this.recipeCost(sandwich.recipe, this.props.ingredients)}</strong> */}
-            <strong>${this.props.cost}</strong>
-          </td>
 
         </tr>
 

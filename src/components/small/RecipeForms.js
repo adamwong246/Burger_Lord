@@ -16,7 +16,7 @@ class RecipeForms extends React.Component {
       onChangeSandwhichName,
       popIngredient,
       pushIngredient,
-      removeSandwhich,
+      removeSandwich,
       runningTally,
       sandwiches,
       selectIngredientToPush,
@@ -33,15 +33,14 @@ class RecipeForms extends React.Component {
             onChange={(event) => onChangeSandwhichName(event, sandwich.name)}
           />
           <button
-            onClick={() => removeSandwhich(sandwich.name)}
+            onClick={(e) => removeSandwich(sandwich.name)}
           >
-            Remove "{sandwich.name}" from the order
+            Remove "{sandwich.name}" (${this.recipeCost(sandwich.recipe, ingredients)})
           </button>
 
           <RecipeForm
             sandwich={sandwich}
             ingredients={ingredients}
-            cost={this.recipeCost(sandwich.recipe, ingredients)}
             runningTally={runningTally}
             popIngredient={(sandwhichName) => popIngredient(sandwhichName)}
             selectIngredientToPush={(sandwhichName, ingredientId) => selectIngredientToPush(sandwhichName, ingredientId)}

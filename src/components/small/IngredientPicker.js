@@ -2,10 +2,6 @@ import React from "react";
 
 class IngredientPicker extends React.Component {
 
-  constructor(props) {
-    super(props);
-  }
-
   notEnoughIngredients(ingredient, runningTally) {
     return !(runningTally[ingredient.id] > 0);
   }
@@ -26,7 +22,7 @@ class IngredientPicker extends React.Component {
                 value={i.id}
                 disabled={notEnoughIngredients}
               >
-                {i.name}
+                {i.name} 
                 {
                   notEnoughIngredients ? " (out of stock)" : ""
                 }
@@ -35,8 +31,6 @@ class IngredientPicker extends React.Component {
           })
         }
       </select>
-
-
     </div>);
   }
 }
