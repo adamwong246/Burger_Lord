@@ -6,71 +6,24 @@ import {
   Route,
   Link
 } from "react-router-dom";
-import { createSelector } from "reselect"
-
 import 'normalize.css';
 
 import NewOrder from "./components/NewOrder/Index.js";
 import Orders from "./components/Orders/Index.js";
-
 import './style.scss';
-
-import store from "./redux/store.js";
+import store from "./state.js";
+import { NewOrderSelector, OrdersSelector } from "./selectors.js";
 
 document.addEventListener('DOMContentLoaded', (event) => {
 
   const wrapper = document.getElementById("root");
 
-  const baseSelector = state => state;
-
-  const NewOrderSelector = createSelector([baseSelector], (base) => {
-
-    const subTotal = base.sandwiches.reduce((mm, sandwich) => {
-      return mm + sandwich.recipe.reduce((mm2, recipeIngredientId) => {
-        return mm2 + base.ingredients.find((ingredient) => ingredient.id === recipeIngredientId).cost
-      }, 0)
-    }, 0);
-
-    const grandTotal = (subTotal * (1 + (base.gratuity / 100)))
-
-    const runningTally = {};
-    base.ingredients.forEach((ingredient) => runningTally[ingredient.id] = ingredient.amount)
-    base.sandwiches.forEach((sandwich) => {
-      sandwich.recipe.forEach((recipeIngredientId) => {
-        runningTally[recipeIngredientId] = runningTally[recipeIngredientId] -1
-      })
-    })
-
-    return {
-      ingredients: base.orders,
-      sandwiches: base.sandwiches,
-      ingredients: base.ingredients,
-
-      gratuity: base.gratuity,
-      stagedSandwich: base.stagedSandwich,
-
-      subTotal, grandTotal, runningTally
-    }
-  });
-  const OrdersSelector = createSelector([baseSelector], (base) => {
-    return {
-      ingredients: base.orders,
-      sandwiches: base.sandwiches,
-      ingredients: base.ingredients,
-
-      orders: base.orders
-    }
-  });
-
   store.subscribe(() => {
     const storeState = store.getState();
     wrapper
       ? ReactDOM.render(
-
         <Router>
           <div id="app">
-
-
             <header>
               <nav>
                 <ul>
@@ -114,10 +67,10 @@ document.addEventListener('DOMContentLoaded', (event) => {
                 </Route>
                 <Route path="/orders">
                   <Orders
-                    completeOrder={(orderId) => store.dispatch({ type: "COMPLETE_ORDER", payload: orderId })}
                     {
                     ...OrdersSelector(storeState)
                     }
+                    completeOrder={(orderId) => store.dispatch({ type: "COMPLETE_ORDER", payload: orderId })}
                   />
                 </Route>
 
