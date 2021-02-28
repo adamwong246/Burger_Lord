@@ -11,8 +11,8 @@ import 'normalize.css';
 import NewOrder from "./components/NewOrder/Index.js";
 import Orders from "./components/Orders/Index.js";
 import './style.scss';
-import store from "./state.js";
-import { NewOrderSelector, OrdersSelector } from "./selectors.js";
+import store from "./state/store.js";
+import { NewOrderSelector, OrdersSelector } from "./state/selectors.js";
 
 document.addEventListener('DOMContentLoaded', (event) => {
 

@@ -1,19 +1,23 @@
 {
   "name": "deliverrChallenge",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "You run a restaurant selling sandwiches and need some way of keeping track orders.",
   "main": "index.js",
   "author": "adam wong <adamwong246@gmail.com>",
   "license": "MIT",
   "scripts": {
     "make": "webpack",
-    "dev": "webpack serve --config webpack.config.js --progress --profile --content-base dist/"
+    "dev": "webpack serve --config webpack.config.js --progress --profile --content-base dist/",
+    "test": "mocha src/state/test.js"
   },
-  "dependencies": {
+  "devDependencies": {
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2",
     "@babel/core": "^7.13.0",
     "@babel/preset-env": "^7.13.0",
     "@babel/preset-react": "^7.12.13",
     "babel-loader": "^8.2.2",
+    "mocha": "^8.3.0",
     "node-sass": "^5.0.0",
     "normalize.css": "^8.0.1",
     "react": "^17.0.1",
@@ -24,9 +28,5 @@
     "sass-loader": "^11.0.1",
     "style-loader": "^2.0.0",
     "webpack": "^5.24.0"
-  },
-  "devDependencies": {
-    "webpack-cli": "^4.5.0",
-    "webpack-dev-server": "^3.11.2"
   }
 }
