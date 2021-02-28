@@ -87,8 +87,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
           </div>
         </Router >, wrapper)
       : false;
-  }
-  )
+  })
   store.dispatch({ type: "INITIALIZE" })
 
 })

@@ -30,7 +30,7 @@ describe('Selectors', () => {
 
   });
 
-  it('you can add sandwichs', () => {
+  it('you can add sandwiches', () => {
     const store = storeCreator(initialState);
     const sandwichName = "The new name of a sandwich";
 
