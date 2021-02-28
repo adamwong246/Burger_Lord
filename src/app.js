@@ -9,8 +9,8 @@ import {
 
 import 'normalize.css';
 
-import NewOrder from "./components/big/NewOrder.js";
-import Orders from "./components/big/Orders.js";
+import NewOrder from "./components/NewOrder/Index.js";
+import Orders from "./components/Orders/Index.js";
 
 import './style.scss';
 

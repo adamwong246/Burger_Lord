@@ -1,6 +1,6 @@
 import React from "react";
 
-import OrdersList from "../small/OrdersList.js";
+import OrdersList from "./OrdersList.js";
 
 class Orders extends React.Component {
 

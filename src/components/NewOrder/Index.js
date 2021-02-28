@@ -1,7 +1,7 @@
 import React from "react";
 
-import RecipeForms from "../small/RecipeForms.js";
-import Check from "../small/Check.js";
+import RecipeForms from "./RecipeForms.js";
+import Check from "./Check.js";
 
 const initialState = {
   sandwiches: [

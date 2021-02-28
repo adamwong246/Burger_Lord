@@ -1,6 +1,6 @@
 import React from "react";
 
-import Recipe from "../small/Recipe.js";
+import Recipe from "./Recipe.js";
 
 class OrdersList extends React.Component {
   render() {

@@ -1,6 +1,6 @@
 import React from "react";
 
-import RecipeForm from "../small/RecipeForm.js";
+import RecipeForm from "./RecipeForm.js";
 
 class RecipeForms extends React.Component {
 
