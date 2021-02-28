@@ -10,7 +10,7 @@ class RecipeForms extends React.Component {
 
   render() {
     const {
-      addSandwhich,
+      addSandwich,
       changeStagedSandwhich,
       ingredients,
       onChangeSandwhichName,
@@ -57,7 +57,7 @@ class RecipeForms extends React.Component {
           placeholder="sandwich description"
           onChange={(e) => changeStagedSandwhich(e)}
         />
-        <button onClick={() => addSandwhich()}> Add a sandwich</button>
+        <button onClick={() => addSandwich()}> Add a sandwich</button>
       </li>
     </ul>);
   }

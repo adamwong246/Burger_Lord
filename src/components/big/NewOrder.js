@@ -27,7 +27,7 @@ class NewOrder extends React.Component {
       runningTally
     };
 
-    this.addSandwhich = this.addSandwhich.bind(this);
+    this.addSandwich = this.addSandwich.bind(this);
     this.changeStagedSandwhich = this.changeStagedSandwhich.bind(this);
     this.onChangeSandwhichName = this.onChangeSandwhichName.bind(this);
     this.onGratuityChange = this.onGratuityChange.bind(this);
@@ -108,7 +108,7 @@ class NewOrder extends React.Component {
     })
   }
 
-  addSandwhich() {
+  addSandwich() {
     this.setState({
       ...this.state,
       stagedSandwhich: "",
@@ -160,7 +160,7 @@ class NewOrder extends React.Component {
           sandwiches={this.state.sandwiches}
           stagedSandwhich={this.state.stagedSandwhich}
 
-          addSandwhich={this.addSandwhich}
+          addSandwich={this.addSandwich}
           removeSandwich={this.removeSandwich}
           changeStagedSandwhich={this.changeStagedSandwhich}
           popIngredient={this.popIngredient}
