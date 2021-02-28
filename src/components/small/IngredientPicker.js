@@ -13,7 +13,7 @@ class IngredientPicker extends React.Component {
         onChange={(event) => this.props.selectIngredientToPush(parseInt(event.target.value))}
       >
 
-        <option value="" disabled selected hidden>Please Choose...</option>
+        <option value="" disabled selected hidden>Pick an ingredient</option>
         {
           this.props.ingredients.map((i) => {
             const notEnoughIngredients = this.notEnoughIngredients(i, this.props.runningTally)

@@ -81,7 +81,9 @@ function App(props) {
             <Route path="/">
               <div>
                 <h1>Welcome to BURGER LORD</h1>
-                <h2>"Have it _your_ way!" (tm)</h2>
+                <p> Here at BURGER LORD, we believe the customer is always right. That's why you can order a sandwich with ANY ingredients (provided we have them in stock). You can make a boring White bread + Peanut Butter + Jelly + White Bread Sandwich, or you could have 99 slices of cheese on top of a pile of Ham Salad. "Have it _your_ way!" (tm)</p>
+
+                <p>We also believe there's a right way and wrong way to make a sandwich. Our competitors like to take the easy way and make their sandiches from the bottom up. That's why at BURGER LORD, we build our sandwiches the RIGHT way- from the top down. </p>
               </div>
             </Route>
           </Switch>
