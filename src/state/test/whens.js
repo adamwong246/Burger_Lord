@@ -16,6 +16,11 @@ import {
 
 export default [
   {
+    matcher: /I submit the order with a grand total of '(.*)'/gm,
+    action: NEW_ORDER,
+    payload: (match) => match[0][1]
+  },
+  {
     matcher: /I remove sandwich #(.*)/gm,
     action: REMOVE_SANDWICH,
     payload: (match) => parseInt(match[0][1])

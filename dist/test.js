@@ -1444,7 +1444,7 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
       });
     }),
     ingredients: base.ingredients,
-    gratuity: base.gratuity,
+    gratuity: base.gratuity || 0,
     stagedSandwich: base.stagedSandwich,
     subTotal: subTotal,
     grandTotal: grandTotal,
@@ -1500,6 +1500,11 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
       givens: ["an initial store with ingredient #1 amount '100'"],
       whens: ["I change the staged sandwich name to 'Adams sandwich'", "I add the sandwich", "I select the ingredient '1' for 'Adams sandwich'", "I push the selected ingredient for sandwich '0'", "I pop the top of sandwich 'Adams sandwich'"],
       thens: ["sandwich #0 should have 0 ingredients"]
+    },
+    "Placing an order": {
+      givens: ["an initial store with ingredient #1 amount '100'"],
+      whens: ["I change the staged sandwich name to 'Adams sandwich'", "I add the sandwich", "I select the ingredient '1' for 'Adams sandwich'", "I push the selected ingredient for sandwich '0'", "I submit the order with a grand total of '9.99'"],
+      thens: ["ingredients #1 should have amount 99"]
     }
   }
 });
@@ -1508,6 +1513,13 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
 // "Thens" always correspond to an assertion on the output of a selector
 
 /* harmony default export */ const thens = ([{
+  matcher: /ingredients #(.*) should have amount (.*)/gm,
+  assert: function assert(match, computed) {
+    assert_default().equal(computed.ingredients.find(function (i) {
+      return i.id === parseInt(match[0][1]);
+    }).amount, parseInt(match[0][2]));
+  }
+}, {
   matcher: /sandwich #(.*) should have name '(.*)'/gm,
   assert: function assert(match, computed) {
     assert_default().equal(computed.sandwiches[parseInt(match[0][1])].name, match[0][2]);
@@ -1573,6 +1585,12 @@ var COMPLETE_ORDER = "COMPLETE_ORDER";
 // "Whens" always correspond to a redux action and payload
 
 /* harmony default export */ const whens = ([{
+  matcher: /I submit the order with a grand total of '(.*)'/gm,
+  action: NEW_ORDER,
+  payload: function payload(match) {
+    return match[0][1];
+  }
+}, {
   matcher: /I remove sandwich #(.*)/gm,
   action: REMOVE_SANDWICH,
   payload: function payload(match) {
@@ -2492,53 +2510,8 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
     fg: "yellow",
     bg: "orange"
   }],
-  sandwiches: [// {
-    //   name: "mine",
-    //   recipe: [1]
-    // },
-    // {
-    //   name: "his",
-    //   recipe: [1, 2, 1]
-    // }
-  ],
-  orders: {// "2": {
-    //   "status": "closed",
-    //   "grandTotal": "9.99",
-    //   "sandwiches": [
-    //     {
-    //       "name": "adams",
-    //       "recipe": [
-    //         1, 2, 3
-    //       ]
-    //     },
-    //     {
-    //       "name": "chaches",
-    //       "recipe": [
-    //         2, 3, 4
-    //       ]
-    //     },
-    //     {
-    //       "name": "Kary's",
-    //       "recipe": [
-    //         3, 4, 5
-    //       ]
-    //     }
-    //   ],
-    // },
-    //   "1": {
-    //     "status": "open",
-    //     "sandwiches": [
-    //       {
-    //         "name": "someone's sandwich",
-    //         "recipe": [
-    //           1
-    //         ],
-    //         "toPush": ""
-    //       }
-    //     ],
-    //     "grandTotal": "1.25"
-    //   }
-  }
+  sandwiches: [],
+  orders: {}
 });
 ;// CONCATENATED MODULE: ./src/reduxReselectCucumber.js
 function reduxReselectCucumber_toConsumableArray(arr) { return reduxReselectCucumber_arrayWithoutHoles(arr) || reduxReselectCucumber_iterableToArray(arr) || reduxReselectCucumber_unsupportedIterableToArray(arr) || reduxReselectCucumber_nonIterableSpread(); }
@@ -2696,30 +2669,6 @@ describe('Selectors', function () {
       payload: 0
     });
     assert_default().equal(NewOrderSelector(store.getState()).sandwiches[0].cost, 5);
-  });
-  it('you compute the remaining stock', function () {
-    var store = state_store(initialState);
-    var sandwichName = "The new name of a sandwich";
-    assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
-    store.dispatch({
-      type: "CHANGE_STAGED_SANDWICH_NAME",
-      payload: sandwichName
-    });
-    store.dispatch({
-      type: "ADD_SANDWICH"
-    });
-    store.dispatch({
-      type: "SELECT_INGREDIENT_TO_PUSH",
-      payload: {
-        sandwichName: sandwichName,
-        ingredientId: 1
-      }
-    });
-    store.dispatch({
-      type: "PUSH_INGREDIENT",
-      payload: 0
-    });
-    assert_default().equal(NewOrderSelector(store.getState()).runningTally['1'], 99);
   });
 }); // we can also do cucumber-ish tests combining a component's and it's associated state's test configurations
 

@@ -77,11 +77,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                     <h2>Things I did not have the time/energy to complete</h2>
                     <ul>
-                      <li>Eggegrious use of tables should be replaced with css grid</li>
+                      <li>Eggegrious use of un-semantic tables should be replaced with css grid</li>
                       <li>Styling is lacking</li>
                       <li>.jsx files are not yet supported</li>
                       <li>TS is not yet supported</li>
                       <li>MORE TESTS</li>
+                    </ul>
+
+                    <h2>Features of note</h2>
+                    <ul>
+                      <li>The testable logic has been contained within the state and selectors.</li>
+                      <li>Cucumber DSL maps Given/When/Then to state/actions/selectors.</li>
                     </ul>
                   </>
                 </Route>

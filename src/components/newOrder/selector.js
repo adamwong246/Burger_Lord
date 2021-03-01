@@ -30,7 +30,7 @@ export const NewOrderSelector = createSelector([baseSelector], (base) => {
     }),
     ingredients: base.ingredients,
 
-    gratuity: base.gratuity,
+    gratuity: base.gratuity || 0,
     stagedSandwich: base.stagedSandwich,
 
     subTotal, grandTotal, runningTally,

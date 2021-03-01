@@ -5,6 +5,15 @@ import assert from "assert";
 
 export default [
   {
+    matcher: /ingredients #(.*) should have amount (.*)/gm,
+    assert: (match, computed) => {
+      assert.equal(
+        computed.ingredients.find((i) => i.id === parseInt(match[0][1])).amount,
+        parseInt(match[0][2])
+      )
+    }
+  },
+  {
     matcher: /sandwich #(.*) should have name '(.*)'/gm,
     assert: (match, computed) => {
       assert.equal(
@@ -13,7 +22,6 @@ export default [
       )
     }
   },
-
   {
     matcher: /there should be (.*) sandwiches/gm,
     assert: (match, computed) => {

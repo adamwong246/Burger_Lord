@@ -87,7 +87,19 @@ export default {
         "I push the selected ingredient for sandwich '0'",
         "I pop the top of sandwich 'Adams sandwich'",],
       thens: ["sandwich #0 should have 0 ingredients" ]
+    },
+
+    "Placing an order": {
+      givens: ["an initial store with ingredient #1 amount '100'"],
+      whens: [
+        "I change the staged sandwich name to 'Adams sandwich'",
+        "I add the sandwich",
+        "I select the ingredient '1' for 'Adams sandwich'",
+        "I push the selected ingredient for sandwich '0'",
+        "I submit the order with a grand total of '9.99'",],
+      thens: ["ingredients #1 should have amount 99" ]
     }
+
   }
 
 };

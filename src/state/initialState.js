@@ -11,53 +11,6 @@ export default {
     { id: 7, name: 'CHEESE', amount: 1, cost: 2, fg: "yellow", bg: "orange" },
 
   ],
-  sandwiches : [
-    // {
-    //   name: "mine",
-    //   recipe: [1]
-    // },
-    // {
-    //   name: "his",
-    //   recipe: [1, 2, 1]
-    // }
-  ],
-  orders: {
-    // "2": {
-    //   "status": "closed",
-    //   "grandTotal": "9.99",
-    //   "sandwiches": [
-    //     {
-    //       "name": "adams",
-    //       "recipe": [
-    //         1, 2, 3
-    //       ]
-    //     },
-    //     {
-    //       "name": "chaches",
-    //       "recipe": [
-    //         2, 3, 4
-    //       ]
-    //     },
-    //     {
-    //       "name": "Kary's",
-    //       "recipe": [
-    //         3, 4, 5
-    //       ]
-    //     }
-    //   ],
-    // },
-  //   "1": {
-  //     "status": "open",
-  //     "sandwiches": [
-  //       {
-  //         "name": "someone's sandwich",
-  //         "recipe": [
-  //           1
-  //         ],
-  //         "toPush": ""
-  //       }
-  //     ],
-  //     "grandTotal": "1.25"
-  //   }
-  }
+  sandwiches : [],
+  orders: {}
 }
