@@ -4,9 +4,9 @@ import RecipeForm from "./RecipeForm.js";
 
 class RecipeForms extends React.Component {
 
-  recipeCost(recipe, ingredients) {
-    return recipe.reduce((mm, id) => { return mm + ingredients.find((ingredient) => ingredient.id === id).cost }, 0)
-  }
+  // recipeCost(recipe, ingredients) {
+  //   return recipe.reduce((mm, id) => { return mm + ingredients.find((ingredient) => ingredient.id === id).cost }, 0)
+  // }
 
   render() {
     const {
@@ -35,7 +35,7 @@ class RecipeForms extends React.Component {
           <button
             onClick={(e) => removeSandwich(ndx)}
           >
-            Remove "{sandwich.name}" (${this.recipeCost(sandwich.recipe, ingredients)})
+            Remove "{sandwich.name}" (${sandwich.cost})
           </button>
 
           <RecipeForm
@@ -57,7 +57,7 @@ class RecipeForms extends React.Component {
           placeholder="sandwich description"
           onChange={(e) => changeStagedSandwich(e.target.value)}
         />
-        <button onClick={() => {console.log("hi"); addSandwich()}}> Add a sandwich</button>
+        <button onClick={() => {addSandwich()}}> Add a sandwich</button>
       </li>
     </ul>);
   }

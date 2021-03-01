@@ -26,7 +26,7 @@ export default {
       "status": "open",
       "sandwiches": [
         {
-          "name": "asdasd",
+          "name": "someone's sandwich",
           "recipe": [
             1
           ],

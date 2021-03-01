@@ -21,8 +21,13 @@ export const NewOrderSelector = createSelector([baseSelector], (base) => {
   })
 
   return {
-    ingredients: base.orders,
-    sandwiches: base.sandwiches,
+    orders: base.orders,
+    sandwiches: base.sandwiches.map((sandwich) => {
+      return {
+        ...sandwich,
+        cost: sandwich.recipe.reduce((mm, id) => { return mm + base.ingredients.find((ingredient) => ingredient.id === id).cost }, 0)
+      }
+    }),
     ingredients: base.ingredients,
 
     gratuity: base.gratuity,
@@ -34,10 +39,8 @@ export const NewOrderSelector = createSelector([baseSelector], (base) => {
 
 export const OrdersSelector = createSelector([baseSelector], (base) => {
   return {
-    ingredients: base.orders,
+    orders: base.orders,
     sandwiches: base.sandwiches,
-    ingredients: base.ingredients,
-
-    orders: base.orders
+    ingredients: base.ingredients
   }
 });
