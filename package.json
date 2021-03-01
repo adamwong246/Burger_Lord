@@ -1,12 +1,12 @@
 {
   "name": "deliverrChallenge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "You run a restaurant selling sandwiches and need some way of keeping track orders.",
   "main": "index.js",
   "author": "adam wong <adamwong246@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "make": "webpack",
+    "make": "webpack --config webpack.config.js",
     "dev": "webpack serve --config webpack.config.js --progress --profile --content-base dist/",
     "test": "webpack --config webpack.test.config.js && mocha dist/test.js"
   },
