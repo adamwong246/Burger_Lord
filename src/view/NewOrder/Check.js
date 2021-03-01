@@ -6,7 +6,7 @@ class Check extends React.Component {
   render() {
     const { disabled, onChangeGratuity, subTotal, gratuity, grandTotal, placeOrder } = this.props
 
-    return (<div id="totaler">
+  return (<div id="totaler">
       <table>
         <tr><td>SUB TOTAL</td><td>${subTotal}</td></tr>
         <tr>

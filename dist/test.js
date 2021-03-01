@@ -1933,6 +1933,8 @@ if (false) {}
 
 
 
+;// CONCATENATED MODULE: ./src/state/Actions.js
+var ADD_SANDWICH = "ADD_SANDWICH";
 ;// CONCATENATED MODULE: ./src/state/store.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -1951,6 +1953,7 @@ function store_ownKeys(object, enumerableOnly) { var keys = Object.keys(object);
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { store_ownKeys(Object(source), true).forEach(function (key) { store_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { store_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function store_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 
 
 /* harmony default export */ const state_store = (function (initialState) {
@@ -2021,7 +2024,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
           })
         });
 
-      case 'ADD_SANDWICH':
+      case ADD_SANDWICH:
         return _objectSpread(_objectSpread({}, state), {}, {
           stagedSandwich: "",
           sandwiches: [].concat(_toConsumableArray(state.sandwiches), [{
@@ -2335,7 +2338,8 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
     stagedSandwich: base.stagedSandwich,
     subTotal: subTotal,
     grandTotal: grandTotal,
-    runningTally: runningTally
+    runningTally: runningTally,
+    orderDisabled: base.sandwiches.length === 0
   };
 });
 var OrdersSelector = createSelector([baseSelector], function (base) {

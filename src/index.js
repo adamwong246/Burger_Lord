@@ -7,16 +7,14 @@ import {
 } from "react-router-dom";
 import 'normalize.css';
 
-import NewOrder from "./components/NewOrder/Index.js";
-import Orders from "./components/Orders/Index.js";
-import Navigation from "./components/Navigation.js";
+import NewOrder from "./view/NewOrder/Index.js";
+import Orders from "./view/Orders/Index.js";
+import Navigation from "./view/Navigation.js";
 
 import storeCreator from "./state/store.js";
 import initialState from "./state/initialState.js";
 
 import { NewOrderSelector, OrdersSelector } from "./state/selectors.js";
-
-
 
 import './style.scss';
 
