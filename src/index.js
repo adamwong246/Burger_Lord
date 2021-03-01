@@ -5,7 +5,7 @@
 // - the binding of the react app to the dom
 // - the routing
 // - the landing page
-// - connecting the top-level view components to their selector-ed props and redux actions
+// - re-rendering on state change
 
 import React from 'react'
 import ReactDOM from 'react-dom'
@@ -65,20 +65,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                 {/*The page from where a user places an order.*/}
                 <Route path="/orders/new">
-                  <NewOrder storeState={storeState}/>
+                  <NewOrder storeState={storeState} />
                 </Route>
 
                 {/* The page from where an admin completes an order.*/}
                 <Route path="/orders">
-                  <Orders storeState={storeState}/>
+                  <Orders storeState={storeState} />
                 </Route>
 
                 {/* The landing page */}
                 <Route path="/">
-                  <div>
-                    <h1>Welcome to BURGER LORD</h1>
-                    <p> Here at BURGER LORD, we believe the customer is always right. That's why you can order a sandwich with ANY ingredients (provided we have them in stock). You can make a boring White bread + Peanut Butter + Jelly + White Bread Sandwich, or you could have 99 slices of cheese on top of a pile of Ham Salad. "Have it _your_ way!" (tm)</p>
-                  </div>
+                  <h1>Welcome to BURGER LORD</h1>
+                  <p> Here at BURGER LORD, we believe the customer is always right. That's why you can order a sandwich with ANY ingredients (provided we have them in stock). You can make a boring White bread + Peanut Butter + Jelly + White Bread Sandwich, or you could have 99 slices of cheese on top of a pile of Ham Salad. "Have it _your_ way!" (tm)</p>
                 </Route>
               </Switch>
             </main>

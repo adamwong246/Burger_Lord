@@ -8,14 +8,13 @@ class Link extends React.Component {
 
   render() {
     return (
-      <Typography >
+      <Typography>
         <MaterialLink color="inherit">
           <RouterLink to={this.props.to}>
             {this.props.children}
           </RouterLink>
         </MaterialLink>
       </Typography>
-
     )
   }
 }

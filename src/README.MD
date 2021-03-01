@@ -1,6 +1,6 @@
-./components holds the important React classes which connect to 1) the store dispatcher and 2) selector.
+./components holds the important React classes which connect to 1) the store dispatcher and 2) a selector.
 
-./view holds the simple React classes, broken into 2 folders by route, with a few extras. These components are meant to be so simple that testing of React components is not necessary.
+./view holds the simple React classes, broken into 2 folders by route, with a few extras. These components are meant to be so simple that testing of React components is not necessary. They should very little state and even less logic.
 
 ./state holds the redux store.
 

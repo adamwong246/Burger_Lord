@@ -1,9 +1,15 @@
+// test.js
+// adam wong 2020
+// 
+// The testing strategy focuses on state-tests, which are much easier than integration tests, a bit easier than component tests and almost as fast as unit tests.
+// Each test should create the store, then pass the state of that store to a selector, then test the output of that selector.
+// don't forget to recreate the store for every test!
+
 import assert from "assert";
 
 import storeCreator from "./state/store.js";
 import initialState from "./state/initialState.js";
 import { NewOrderSelector } from "./components/newOrderSelector.js";
-import { OrdersSelector } from "./components/ordersSelector.js";
 
 describe('Initial state', () => {
   it('gratuity should be 25', () => {
