@@ -1,5 +1,6 @@
 import React from "react";
 import RecipeList from "./RecipeList";
+import Button from '@material-ui/core/Button';
 
 class Recipe extends React.Component {
 
@@ -15,11 +16,14 @@ class Recipe extends React.Component {
     return (
       <li>
 
-        <button
+        <Button
+          variant="contained"
+          color="secondary"
+          size="small"
           onClick={(e) => this.setState({ collapsed: !this.state.collapsed })}
         >
           {sandwich.name} {this.state.collapsed ? "+" : "-"}
-        </button>
+        </Button>
 
         {
           this.state.collapsed

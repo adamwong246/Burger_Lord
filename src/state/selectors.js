@@ -33,7 +33,9 @@ export const NewOrderSelector = createSelector([baseSelector], (base) => {
     gratuity: base.gratuity,
     stagedSandwich: base.stagedSandwich,
 
-    subTotal, grandTotal, runningTally
+    subTotal, grandTotal, runningTally,
+
+    orderDisabled: base.sandwiches.length === 0 
   }
 });
 

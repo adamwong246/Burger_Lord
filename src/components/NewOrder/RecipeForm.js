@@ -1,4 +1,5 @@
 import React from "react";
+import Button from '@material-ui/core/Button';
 
 import IngredientPicker from "./IngredientPicker.js";
 
@@ -39,7 +40,11 @@ class RecipeForm extends React.Component {
 
             <td>{
               ndx === sandwich.recipe.length - 1 ?
-                <button onClick={() => popIngredient(sandwich.name)}> Pop Ingredient</button>
+                <Button
+                  variant="contained"
+                  color="warning"
+                  size="small"
+                  onClick={() => popIngredient(sandwich.name)}> Pop Ingredient</Button>
                 : <div />
             }</td>
           </tr>);
@@ -61,7 +66,12 @@ class RecipeForm extends React.Component {
           }</td>
 
           <td>{
-            sandwich.toPush ? (<button onClick={(e) => pushIngredient()}> Push Ingredient!</button>) : (<div />)
+            sandwich.toPush ? (<Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={(e) => pushIngredient()}
+            > Push Ingredient!</Button>) : (<div />)
           }</td>
 
         </tr>

@@ -1,4 +1,5 @@
 import React from "react";
+import Button from '@material-ui/core/Button';
 
 class Check extends React.Component {
 
@@ -22,12 +23,14 @@ class Check extends React.Component {
         <tr>
           <td>GRAND TOTAL</td>
           <td>
-            <button
+            <Button
+              variant="contained"
+              color="warning"
               disabled={disabled}
               onClick={placeOrder}
             >
-              Submit Order for ${grandTotal}
-            </button>
+              {disabled ? "order not valid" : `Submit Order for $${grandTotal}`}
+            </Button>
           </td>
         </tr>
       </table>

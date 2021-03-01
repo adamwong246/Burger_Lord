@@ -1,4 +1,4 @@
-./components holds all the React classes, broken into 2 folders by route. These components are meant to be so simple that testing of React components is not necessary.
+./components holds all the React classes, broken into 2 folders by route, with a few extras. These components are meant to be so simple that testing of React components is not necessary.
 
 ./state holds the redux store and selectors. `selectors.js` and `store.js` comprise the (near) totality of test-worthy logic. 
 

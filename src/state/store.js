@@ -1,5 +1,7 @@
 import { createStore } from 'redux'
 
+import {ADD_SANDWICH} from "./Actions.js";
+
 export default (initialState) => createStore((state = [], action) => {
 
   switch (action.type) {
@@ -66,7 +68,7 @@ export default (initialState) => createStore((state = [], action) => {
         })
       }
 
-    case 'ADD_SANDWICH':
+    case ADD_SANDWICH:
       return {
         ...state,
         stagedSandwich: "",

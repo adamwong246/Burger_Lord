@@ -3,18 +3,20 @@ import ReactDOM from 'react-dom'
 import {
   HashRouter as Router,
   Switch,
-  Route,
-  Link
+  Route
 } from "react-router-dom";
 import 'normalize.css';
 
 import NewOrder from "./components/NewOrder/Index.js";
 import Orders from "./components/Orders/Index.js";
+import Navigation from "./components/Navigation.js";
 
 import storeCreator from "./state/store.js";
 import initialState from "./state/initialState.js";
 
 import { NewOrderSelector, OrdersSelector } from "./state/selectors.js";
+
+
 
 import './style.scss';
 
@@ -30,21 +32,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
       ? ReactDOM.render(
         <Router>
           <div id="app">
-            <header>
-              <nav>
-                <ul>
-                  <li>
-                    <Link to="/">Home</Link>
-                  </li>
-                  <li>
-                    <Link to="/orders/new">Order some Sandwiches!</Link>
-                  </li>
-                  <li>
-                    <Link to="/orders">View and complete orders!</Link>
-                  </li>
-                </ul>
-              </nav>
-            </header>
+            <Navigation />
 
             <main>
               <Switch>

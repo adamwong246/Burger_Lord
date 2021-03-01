@@ -1,4 +1,5 @@
 import React from "react";
+import Button from '@material-ui/core/Button';
 
 import Recipe from "./Recipe.js";
 
@@ -40,7 +41,11 @@ class OrdersList extends React.Component {
                 <td>{
                   order.status === "open"
                     ?
-                    <button onClick={() => this.props.completeOrder(orderKey)}> Complete Order {orderKey}</button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={() => this.props.completeOrder(orderKey)}
+                    > Complete Order {orderKey}</Button>
                     :
                     "picked-up"}
                 </td>

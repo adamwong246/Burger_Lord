@@ -1,4 +1,5 @@
 import React from "react";
+import Button from '@material-ui/core/Button';
 
 import RecipeForm from "./RecipeForm.js";
 
@@ -32,11 +33,14 @@ class RecipeForms extends React.Component {
             value={sandwich.name}
             onChange={(event) => onChangeSandwichName(ndx, event.target.value)}
           />
-          <button
+          <Button
+            variant="contained"
+            color="warning"
+            size="small"
             onClick={(e) => removeSandwich(ndx)}
           >
             Remove "{sandwich.name}" (${sandwich.cost})
-          </button>
+          </Button>
 
           <RecipeForm
             ingredients={ingredients}
@@ -57,7 +61,12 @@ class RecipeForms extends React.Component {
           placeholder="sandwich description"
           onChange={(e) => changeStagedSandwich(e.target.value)}
         />
-        <button onClick={() => {addSandwich()}}> Add a sandwich</button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => {addSandwich()}}
+        >
+          Add a sandwich</Button>
       </li>
     </ul>);
   }

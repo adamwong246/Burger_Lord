@@ -24,8 +24,10 @@ class NewOrder extends React.Component {
           stagedSandwich={this.props.stagedSandwich}
         />
 
+        <hr/>
+
         <Check
-          disabled={false}
+          disabled={this.props.orderDisabled}
           grandTotal={this.props.grandTotal}
           gratuity={this.props.gratuity}
           onChangeGratuity={this.props.onChangeGratuity}
