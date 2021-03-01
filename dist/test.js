@@ -1943,6 +1943,8 @@ var POP_INGREDIENT = "POP_INGREDIENT";
 var PUSH_INGREDIENT = "PUSH_INGREDIENT";
 var REMOVE_SANDWICH = "REMOVE_SANDWICH";
 var SELECT_INGREDIENT_TO_PUSH = "SELECT_INGREDIENT_TO_PUSH";
+var INITIALIZE = "INITIALIZE";
+var COMPLETE_ORDER = "COMPLETE_ORDER";
 ;// CONCATENATED MODULE: ./src/state/store.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -1970,24 +1972,24 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
     var action = arguments.length > 1 ? arguments[1] : undefined;
 
     switch (action.type) {
-      case 'INITIALIZE':
+      case INITIALIZE:
         return _objectSpread(_objectSpread({}, state), {}, {
           INITAILIZED: true
         });
 
-      case 'REMOVE_SANDWICH':
+      case REMOVE_SANDWICH:
         return _objectSpread(_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.filter(function (s, ndx) {
             return ndx !== action.payload;
           })
         });
 
-      case 'CHANGE_GRATUITY':
+      case CHANGE_GRATUITY:
         return _objectSpread(_objectSpread({}, state), {}, {
           gratuity: action.payload
         });
 
-      case 'SELECT_INGREDIENT_TO_PUSH':
+      case SELECT_INGREDIENT_TO_PUSH:
         return _objectSpread(_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.map(function (sandwich) {
             if (sandwich.name === action.payload.sandwichName) {
@@ -1998,7 +2000,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
           })
         });
 
-      case 'PUSH_INGREDIENT':
+      case PUSH_INGREDIENT:
         return _objectSpread(_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.map(function (sandwich, ndx) {
             if (ndx === action.payload) {
@@ -2010,7 +2012,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
           })
         });
 
-      case 'POP_INGREDIENT':
+      case POP_INGREDIENT:
         return _objectSpread(_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.map(function (s) {
             if (s.name === action.payload) {
@@ -2021,7 +2023,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
           })
         });
 
-      case 'CHANGE_SANDWICH_NAME':
+      case CHANGE_SANDWICH_NAME:
         return _objectSpread(_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.map(function (s, ndx) {
             if (ndx === action.payload.index) {
@@ -2042,12 +2044,12 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
           }])
         });
 
-      case 'CHANGE_STAGED_SANDWICH_NAME':
+      case CHANGE_STAGED_SANDWICH_NAME:
         return _objectSpread(_objectSpread({}, state), {}, {
           stagedSandwich: action.payload
         });
 
-      case 'NEW_ORDER':
+      case NEW_ORDER:
         var existingKeys = Object.keys(state.orders);
         return _objectSpread(_objectSpread({}, state), {}, {
           sandwiches: [],
@@ -2074,7 +2076,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
           })
         });
 
-      case 'COMPLETE_ORDER':
+      case COMPLETE_ORDER:
         var newOrders = {};
         Object.keys(state.orders).forEach(function (ok) {
           newOrders[ok] = state.orders[ok];
@@ -2299,12 +2301,12 @@ function createStructuredSelector(selectors) {
     }, {});
   });
 }
-;// CONCATENATED MODULE: ./src/state/selectors.js
-function selectors_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+;// CONCATENATED MODULE: ./src/components/newOrderSelector.js
+function newOrderSelector_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function selectors_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { selectors_ownKeys(Object(source), true).forEach(function (key) { selectors_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { selectors_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function newOrderSelector_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { newOrderSelector_ownKeys(Object(source), true).forEach(function (key) { newOrderSelector_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { newOrderSelector_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
-function selectors_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function newOrderSelector_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
 
@@ -2333,7 +2335,7 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
   return {
     orders: base.orders,
     sandwiches: base.sandwiches.map(function (sandwich) {
-      return selectors_objectSpread(selectors_objectSpread({}, sandwich), {}, {
+      return newOrderSelector_objectSpread(newOrderSelector_objectSpread({}, sandwich), {}, {
         cost: sandwich.recipe.reduce(function (mm, id) {
           return mm + base.ingredients.find(function (ingredient) {
             return ingredient.id === id;
@@ -2350,14 +2352,22 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
     orderDisabled: base.sandwiches.length === 0
   };
 });
-var OrdersSelector = createSelector([baseSelector], function (base) {
+;// CONCATENATED MODULE: ./src/components/ordersSelector.js
+
+
+var ordersSelector_baseSelector = function baseSelector(state) {
+  return state;
+};
+
+var OrdersSelector = createSelector([ordersSelector_baseSelector], function (base) {
   return {
     orders: base.orders,
     sandwiches: base.sandwiches,
     ingredients: base.ingredients
   };
 });
-;// CONCATENATED MODULE: ./src/state/test.js
+;// CONCATENATED MODULE: ./src/test.js
+
 
 
 

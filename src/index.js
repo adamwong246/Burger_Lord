@@ -15,34 +15,27 @@ import {
   Route
 } from "react-router-dom";
 
-// Make CSS sane across browsers
-import 'normalize.css';
-
-import NewOrder from "./view/NewOrder/Index.js";
-import Orders from "./view/Orders/Index.js";
-import Navigation from "./view/Navigation.js";
-
 import storeCreator from "./state/store.js";
 import initialState from "./state/initialState.js";
-import {
-  ADD_SANDWICH,
-  CHANGE_GRATUITY,
-  CHANGE_SANDWICH_NAME,
-  CHANGE_STAGED_SANDWICH_NAME,
-  NEW_ORDER,
-  POP_INGREDIENT,
-  PUSH_INGREDIENT,
-  REMOVE_SANDWICH,
-  SELECT_INGREDIENT_TO_PUSH,
-} from "./state/Actions.js";
+import { OrdersSelector } from "./components/ordersSelector.js";
 
-import { NewOrderSelector, OrdersSelector } from "./state/selectors.js";
+import newOrder from "./components/newOrderComponent.js";
+import orders from "./components/ordersComponent.js";
+
+import Navigation from "./view/Navigation.js";
+
+// Make CSS sane across browsers
+import 'normalize.css';
 
 // Add our own styling. We could use modules but it's not necessary.
 import './style.scss';
 
 // create the redux store
 const store = storeCreator(initialState);
+
+// We wrap these top level component in a function so we can attach the store.dispatch callback
+const NewOrder = newOrder(store.dispatch)
+const Orders = orders(store.dispatch)
 
 // when the page is ready...
 document.addEventListener('DOMContentLoaded', (event) => {
@@ -70,43 +63,14 @@ document.addEventListener('DOMContentLoaded', (event) => {
               {/* Our app only has 3 routes */}
               <Switch>
 
+                {/*The page from where a user places an order.*/}
                 <Route path="/orders/new">
-
-                  {/*
-                    The page from where a user places an order.
-                    We pass in props combining the output of a selector of the curent state and the dispatchers
-                  */}
-                  <NewOrder
-                    {
-                      // All the props, nicely memoized and easily tested
-                    ...NewOrderSelector(storeState)
-                    }
-                    
-                    // All the dispatcher's hooks to trigger on button presses, form submission, etc
-                    addSandwich={(sandwichName) => store.dispatch({ type: ADD_SANDWICH, payload: sandwichName })}
-                    changeStagedSandwich={(sandwichName) => store.dispatch({ type: CHANGE_STAGED_SANDWICH_NAME, payload: sandwichName })}
-                    newOrder={(sandwiches) => store.dispatch({ type: NEW_ORDER, payload: sandwiches })}
-                    onChangeGratuity={(gratuity) => store.dispatch({ type: CHANGE_GRATUITY, payload: gratuity })}
-                    onChangeSandwichName={(index, sandwichName) => store.dispatch({ type: CHANGE_SANDWICH_NAME, payload: { index, sandwichName } })}
-                    placeOrder={(grandTotal) => store.dispatch({ type: NEW_ORDER, payload: grandTotal })}
-                    popIngredient={(name) => store.dispatch({ type: POP_INGREDIENT, payload: name })}
-                    pushIngredient={(name) => store.dispatch({ type: PUSH_INGREDIENT, payload: name })}
-                    removeSandwich={(ndx) => store.dispatch({ type: REMOVE_SANDWICH, payload: ndx })}
-                    selectIngredientToPush={(sandwichName, ingredientId) => store.dispatch({ type: SELECT_INGREDIENT_TO_PUSH, payload: { sandwichName, ingredientId } })}
-                  />
+                  <NewOrder storeState={storeState}/>
                 </Route>
 
+                {/* The page from where an admin completes an order.*/}
                 <Route path="/orders">
-                  {/* 
-                    The page from where an admin completes an order.
-                    Do the same thing with the admin Order page- Combining the output of the selector with any dispatch hooks
-                  */}
-                  <Orders
-                    {
-                    ...OrdersSelector(storeState)
-                    }
-                    completeOrder={(orderId) => store.dispatch({ type: "COMPLETE_ORDER", payload: orderId })}
-                  />
+                  <Orders storeState={storeState}/>
                 </Route>
 
                 {/* The landing page */}

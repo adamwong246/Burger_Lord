@@ -1,8 +1,9 @@
 import assert from "assert";
 
-import storeCreator from "./store.js";
-import initialState from "./initialState.js";
-import { NewOrderSelector, OrdersSelector } from "./selectors.js";
+import storeCreator from "./state/store.js";
+import initialState from "./state/initialState.js";
+import { NewOrderSelector } from "./components/newOrderSelector.js";
+import { OrdersSelector } from "./components/ordersSelector.js";
 
 describe('Initial state', () => {
   it('gratuity should be 25', () => {

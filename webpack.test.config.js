@@ -12,7 +12,7 @@ module.exports = {
         ]
       },
 
-    entry: './src/state/test.js',
+    entry: './src/test.js',
     output: {
         filename: 'test.js',
         path: path.resolve(__dirname, 'dist'),

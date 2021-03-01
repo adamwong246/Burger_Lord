@@ -1,0 +1,1 @@
+This file is devoted to top-level components which are connected to the store's dispatch function, as well as a selector

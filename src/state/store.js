@@ -1,29 +1,41 @@
 import { createStore } from 'redux'
 
-import {ADD_SANDWICH} from "./Actions.js";
+import {
+  ADD_SANDWICH,
+  CHANGE_GRATUITY,
+  CHANGE_SANDWICH_NAME,
+  CHANGE_STAGED_SANDWICH_NAME,
+  NEW_ORDER,
+  POP_INGREDIENT,
+  PUSH_INGREDIENT,
+  REMOVE_SANDWICH,
+  SELECT_INGREDIENT_TO_PUSH,
+  INITIALIZE,
+  COMPLETE_ORDER
+} from "../state/Actions.js";
 
 export default (initialState) => createStore((state = [], action) => {
 
   switch (action.type) {
-    case 'INITIALIZE':
+    case INITIALIZE:
       return {
         ...state,
         INITAILIZED: true
       }
 
-    case 'REMOVE_SANDWICH':
+    case REMOVE_SANDWICH:
       return {
         ...state,
         sandwiches: state.sandwiches.filter((s, ndx) => ndx !== action.payload)
       }
 
-    case 'CHANGE_GRATUITY':
+    case CHANGE_GRATUITY:
       return {
         ...state,
         gratuity: action.payload
       }
 
-    case 'SELECT_INGREDIENT_TO_PUSH':
+    case SELECT_INGREDIENT_TO_PUSH:
       return {
         ...state,
         sandwiches: state.sandwiches.map((sandwich) => {
@@ -34,7 +46,7 @@ export default (initialState) => createStore((state = [], action) => {
         })
       }
 
-    case 'PUSH_INGREDIENT':
+    case PUSH_INGREDIENT:
       return {
         ...state,
         sandwiches: state.sandwiches.map((sandwich, ndx) => {
@@ -46,7 +58,7 @@ export default (initialState) => createStore((state = [], action) => {
         }),
       }
 
-    case 'POP_INGREDIENT':
+    case POP_INGREDIENT:
       return {
         ...state,
         sandwiches: state.sandwiches.map((s) => {
@@ -57,7 +69,7 @@ export default (initialState) => createStore((state = [], action) => {
         })
       }
 
-    case 'CHANGE_SANDWICH_NAME':
+    case CHANGE_SANDWICH_NAME:
       return {
         ...state,
         sandwiches: state.sandwiches.map((s, ndx) => {
@@ -80,13 +92,13 @@ export default (initialState) => createStore((state = [], action) => {
         ]
       }
 
-    case 'CHANGE_STAGED_SANDWICH_NAME':
+    case CHANGE_STAGED_SANDWICH_NAME:
       return {
         ...state,
         stagedSandwich: action.payload
       }
 
-    case 'NEW_ORDER':
+    case NEW_ORDER:
       const existingKeys = Object.keys(state.orders)
       return {
         ...state,
@@ -113,7 +125,7 @@ export default (initialState) => createStore((state = [], action) => {
         })
       }
 
-    case 'COMPLETE_ORDER':
+    case COMPLETE_ORDER:
       const newOrders = {};
       Object.keys(state.orders).forEach((ok) => {
         newOrders[ok] = state.orders[ok];

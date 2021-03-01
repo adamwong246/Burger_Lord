@@ -38,11 +38,3 @@ export const NewOrderSelector = createSelector([baseSelector], (base) => {
     orderDisabled: base.sandwiches.length === 0 
   }
 });
-
-export const OrdersSelector = createSelector([baseSelector], (base) => {
-  return {
-    orders: base.orders,
-    sandwiches: base.sandwiches,
-    ingredients: base.ingredients
-  }
-});
