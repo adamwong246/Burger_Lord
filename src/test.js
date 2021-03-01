@@ -7,13 +7,11 @@
 import assert from "assert";
 
 import { NewOrderSelector } from "./components/newOrder/selector.js";
-import newOrderSelectorScenarios from "./components/newOrder/scenarios.js";
-import thensMatchers from "./components/newOrder/thens.js";
-import givensMatchers from "./state/givens.js";
+import newOrderTests from "./components/newOrder/test/index.js";
+import stateTests from "./state/test/index.js";
+import reduxReselectCucumber from "./reduxReselectCucumber.js";
 import initialState from "./state/initialState.js";
 import storeCreator from "./state/store.js";
-import whensMatchers from "./state/whens.js";
-import reduxReselectCucumber from "./reduxReselectCucumber.js";
 
 // we can do unit-ish tests
 describe('Initial state', () => {
@@ -80,5 +78,5 @@ describe('Selectors', () => {
   // });
 });
 
-// we can also do cucumber-ish tests
-reduxReselectCucumber(newOrderSelectorScenarios, NewOrderSelector, givensMatchers, whensMatchers, thensMatchers)
+// we can also do cucumber-ish tests combining a component's and it's associated state's test configurations
+reduxReselectCucumber(newOrderTests, stateTests)

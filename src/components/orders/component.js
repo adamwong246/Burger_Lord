@@ -14,7 +14,6 @@ export default (dispatcher) => {
       const childProps = OrdersSelector(this.props.storeState)
 
       return (<div>
-        <h1>Please complete some orders</h1>
         <OrdersList
           {
             ...childProps

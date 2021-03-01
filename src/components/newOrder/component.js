@@ -26,7 +26,6 @@ export default (dispatcher) => {
 
       return (
         <div>
-          <h1>Please place an order</h1>
           <RecipeForms
 
             {

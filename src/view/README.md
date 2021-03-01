@@ -1,1 +1,3 @@
-This folder contains simple react classes. Unlike Components, they don't have access to the stores dispatch function. They should have very little logic or state, though some is permitted. Effort should be made to keep logic in the selectors and state in the redux store, but niether in the views. For this reason, this code ought to be so simple that component-testing is not necessary.
+This folder contains simple react classes. Unlike Components, they don't have access to the store's dispatch function. They should have very little logic or state, though some is permitted.
+
+Everything in this folder *should* have a react stoybook

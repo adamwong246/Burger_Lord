@@ -1,4 +1,4 @@
-// With some modest effort, as cucumber DSL is achieved for interogating the store via the selector. 
+// With some modest effort, a cucumber DSL is achieved for interogating the store via the selector. 
 
 import storeCreator from "./state/store.js";
 import initialState from "./state/initialState.js";
@@ -31,7 +31,6 @@ const cucumber = (selector, { givens, whens, thens }, scenarioKey, givensMatcher
     thensMatchers.forEach((thensMatcher) => {
       const matches = [...then.matchAll(thensMatcher.matcher)]
       if (matches.length === 1) {
-
         it(scenarioKey, () => {
           thensMatcher.assert(matches, computed)
         });
@@ -41,11 +40,16 @@ const cucumber = (selector, { givens, whens, thens }, scenarioKey, givensMatcher
   });
 }
 
-export default (scenarios, selector, givensMatchers, whensMatchers, thensMatchers) => {
+export default (
+  componentTest, stateTest
+  ) => {
+  const {scenarios, selector, thens} = componentTest;
+  const {givens, whens} = stateTest;
+
   Object.keys(scenarios).forEach((descriptionKey) => {
     describe(descriptionKey, () => {
       Object.keys(scenarios[descriptionKey]).forEach((itKey) => {
-        cucumber(selector, scenarios[descriptionKey][itKey], itKey, givensMatchers, whensMatchers, thensMatchers)
+        cucumber(selector, scenarios[descriptionKey][itKey], itKey, givens, whens, thens)
       })
     });
   })

@@ -1452,7 +1452,7 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
     orderDisabled: base.sandwiches.length === 0
   };
 });
-;// CONCATENATED MODULE: ./src/components/newOrder/scenarios.js
+;// CONCATENATED MODULE: ./src/components/newOrder/test/scenarios.js
 // These scenarios use cucumber syntax to interogate selectors. 
 // Given statements setup the initial state.
 // When statements make actions
@@ -1471,7 +1471,7 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
     }
   }
 });
-;// CONCATENATED MODULE: ./src/components/newOrder/thens.js
+;// CONCATENATED MODULE: ./src/components/newOrder/test/thens.js
 // This file holds the "then" statements.
 // "Thens" always correspond to an assertion on the output of a selector
 
@@ -1481,7 +1481,16 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
     assert_default().equal(computed.runningTally[match[0][1]], parseInt(match[0][2]));
   }
 }]);
-;// CONCATENATED MODULE: ./src/state/givens.js
+;// CONCATENATED MODULE: ./src/components/newOrder/test/index.js
+
+
+
+/* harmony default export */ const test = ({
+  scenarios: scenarios,
+  thens: thens,
+  selector: NewOrderSelector
+});
+;// CONCATENATED MODULE: ./src/state/test/givens.js
 // This file holds the "given" statements.
 // "Givens" always correspond to an alteration of the initial state of the store
 /* harmony default export */ const givens = ([{
@@ -1490,107 +1499,56 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
     return state;
   }
 }]);
-;// CONCATENATED MODULE: ./src/state/initialState.js
-/* harmony default export */ const initialState = ({
-  INITAILIZED: false,
-  gratuity: 25,
-  ingredients: [{
-    id: 1,
-    name: 'WHITE BREAD',
-    amount: 100,
-    cost: 1,
-    fg: "#ffffff",
-    bg: "#bb992c"
-  }, {
-    id: 2,
-    name: 'WHOLE WHEAT BREAD',
-    amount: 0,
-    cost: 1,
-    fg: "#ffffff",
-    bg: "#947923"
-  }, {
-    id: 3,
-    name: 'PEANUT BUTTER',
-    amount: 1,
-    cost: 2,
-    fg: "yellow",
-    bg: "947923"
-  }, {
-    id: 4,
-    name: 'JELLY',
-    amount: 1,
-    cost: 2,
-    fg: "pink",
-    bg: "#ec15e0"
-  }, {
-    id: 5,
-    name: 'EGG SALAD',
-    amount: 5,
-    cost: 5,
-    fg: "green",
-    bg: "yellow"
-  }, {
-    id: 6,
-    name: 'HAM',
-    amount: 1,
-    cost: 2,
-    fg: "red",
-    bg: "pink"
-  }, {
-    id: 7,
-    name: 'CHEESE',
-    amount: 1,
-    cost: 2,
-    fg: "yellow",
-    bg: "orange"
-  }],
-  sandwiches: [// {
-    //   name: "mine",
-    //   recipe: [1]
-    // },
-    // {
-    //   name: "his",
-    //   recipe: [1, 2, 1]
-    // }
-  ],
-  orders: {// "2": {
-    //   "status": "closed",
-    //   "grandTotal": "9.99",
-    //   "sandwiches": [
-    //     {
-    //       "name": "adams",
-    //       "recipe": [
-    //         1, 2, 3
-    //       ]
-    //     },
-    //     {
-    //       "name": "chaches",
-    //       "recipe": [
-    //         2, 3, 4
-    //       ]
-    //     },
-    //     {
-    //       "name": "Kary's",
-    //       "recipe": [
-    //         3, 4, 5
-    //       ]
-    //     }
-    //   ],
-    // },
-    //   "1": {
-    //     "status": "open",
-    //     "sandwiches": [
-    //       {
-    //         "name": "someone's sandwich",
-    //         "recipe": [
-    //           1
-    //         ],
-    //         "toPush": ""
-    //       }
-    //     ],
-    //     "grandTotal": "1.25"
-    //   }
+;// CONCATENATED MODULE: ./src/state/Actions.js
+var ADD_SANDWICH = "ADD_SANDWICH";
+var CHANGE_GRATUITY = "CHANGE_GRATUITY";
+var CHANGE_SANDWICH_NAME = "CHANGE_SANDWICH_NAME";
+var CHANGE_STAGED_SANDWICH_NAME = "CHANGE_STAGED_SANDWICH_NAME";
+var NEW_ORDER = "NEW_ORDER";
+var POP_INGREDIENT = "POP_INGREDIENT";
+var PUSH_INGREDIENT = "PUSH_INGREDIENT";
+var REMOVE_SANDWICH = "REMOVE_SANDWICH";
+var SELECT_INGREDIENT_TO_PUSH = "SELECT_INGREDIENT_TO_PUSH";
+var INITIALIZE = "INITIALIZE";
+var COMPLETE_ORDER = "COMPLETE_ORDER";
+;// CONCATENATED MODULE: ./src/state/test/whens.js
+// This file holds the "when" statements.
+// "Whens" always correspond to a redux action and payload
+
+/* harmony default export */ const whens = ([{
+  matcher: /I change the staged sandwich name to '(.*)'/gm,
+  action: CHANGE_STAGED_SANDWICH_NAME,
+  payload: function payload(match) {
+    return match[0][1];
   }
+}, {
+  matcher: /I select the ingredient '(.*)' for '(.*)'/gm,
+  action: SELECT_INGREDIENT_TO_PUSH,
+  payload: function payload(match) {
+    return {
+      sandwichName: match[0][2],
+      ingredientId: parseInt(match[0][1])
+    };
+  }
+}, {
+  matcher: /I push the selected ingredient for sandwich '(.*)'/gm,
+  action: PUSH_INGREDIENT,
+  payload: function payload(match) {
+    return parseInt(match[0][1]);
+  }
+}, {
+  matcher: /I add the sandwich/gm,
+  action: ADD_SANDWICH,
+  payload: function payload() {
+    return true;
+  }
+}]);
+;// CONCATENATED MODULE: ./src/state/test/index.js
+
+
+/* harmony default export */ const state_test = ({
+  givens: givens,
+  whens: whens
 });
 // EXTERNAL MODULE: ./node_modules/symbol-observable/es/index.js + 1 modules
 var es = __webpack_require__(121);
@@ -2245,18 +2203,6 @@ if (false) {}
 
 
 
-;// CONCATENATED MODULE: ./src/state/Actions.js
-var ADD_SANDWICH = "ADD_SANDWICH";
-var CHANGE_GRATUITY = "CHANGE_GRATUITY";
-var CHANGE_SANDWICH_NAME = "CHANGE_SANDWICH_NAME";
-var CHANGE_STAGED_SANDWICH_NAME = "CHANGE_STAGED_SANDWICH_NAME";
-var NEW_ORDER = "NEW_ORDER";
-var POP_INGREDIENT = "POP_INGREDIENT";
-var PUSH_INGREDIENT = "PUSH_INGREDIENT";
-var REMOVE_SANDWICH = "REMOVE_SANDWICH";
-var SELECT_INGREDIENT_TO_PUSH = "SELECT_INGREDIENT_TO_PUSH";
-var INITIALIZE = "INITIALIZE";
-var COMPLETE_ORDER = "COMPLETE_ORDER";
 ;// CONCATENATED MODULE: ./src/state/store.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
@@ -2407,37 +2353,108 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
     }
   }, initialState);
 });
-;// CONCATENATED MODULE: ./src/state/whens.js
-// This file holds the "when" statements.
-// "Whens" always correspond to a redux action and payload
-/* harmony default export */ const whens = ([{
-  matcher: /I change the staged sandwich name to '(.*)'/gm,
-  action: "CHANGE_STAGED_SANDWICH_NAME",
-  payload: function payload(match) {
-    return match[0][1];
+;// CONCATENATED MODULE: ./src/state/initialState.js
+/* harmony default export */ const initialState = ({
+  INITAILIZED: false,
+  gratuity: 25,
+  ingredients: [{
+    id: 1,
+    name: 'WHITE BREAD',
+    amount: 100,
+    cost: 1,
+    fg: "#ffffff",
+    bg: "#bb992c"
+  }, {
+    id: 2,
+    name: 'WHOLE WHEAT BREAD',
+    amount: 0,
+    cost: 1,
+    fg: "#ffffff",
+    bg: "#947923"
+  }, {
+    id: 3,
+    name: 'PEANUT BUTTER',
+    amount: 1,
+    cost: 2,
+    fg: "yellow",
+    bg: "947923"
+  }, {
+    id: 4,
+    name: 'JELLY',
+    amount: 1,
+    cost: 2,
+    fg: "pink",
+    bg: "#ec15e0"
+  }, {
+    id: 5,
+    name: 'EGG SALAD',
+    amount: 5,
+    cost: 5,
+    fg: "green",
+    bg: "yellow"
+  }, {
+    id: 6,
+    name: 'HAM',
+    amount: 1,
+    cost: 2,
+    fg: "red",
+    bg: "pink"
+  }, {
+    id: 7,
+    name: 'CHEESE',
+    amount: 1,
+    cost: 2,
+    fg: "yellow",
+    bg: "orange"
+  }],
+  sandwiches: [// {
+    //   name: "mine",
+    //   recipe: [1]
+    // },
+    // {
+    //   name: "his",
+    //   recipe: [1, 2, 1]
+    // }
+  ],
+  orders: {// "2": {
+    //   "status": "closed",
+    //   "grandTotal": "9.99",
+    //   "sandwiches": [
+    //     {
+    //       "name": "adams",
+    //       "recipe": [
+    //         1, 2, 3
+    //       ]
+    //     },
+    //     {
+    //       "name": "chaches",
+    //       "recipe": [
+    //         2, 3, 4
+    //       ]
+    //     },
+    //     {
+    //       "name": "Kary's",
+    //       "recipe": [
+    //         3, 4, 5
+    //       ]
+    //     }
+    //   ],
+    // },
+    //   "1": {
+    //     "status": "open",
+    //     "sandwiches": [
+    //       {
+    //         "name": "someone's sandwich",
+    //         "recipe": [
+    //           1
+    //         ],
+    //         "toPush": ""
+    //       }
+    //     ],
+    //     "grandTotal": "1.25"
+    //   }
   }
-}, {
-  matcher: /I select the ingredient '(.*)' for '(.*)'/gm,
-  action: "SELECT_INGREDIENT_TO_PUSH",
-  payload: function payload(match) {
-    return {
-      sandwichName: match[0][2],
-      ingredientId: parseInt(match[0][1])
-    };
-  }
-}, {
-  matcher: /I push the selected ingredient for sandwich '(.*)'/gm,
-  action: "PUSH_INGREDIENT",
-  payload: function payload(match) {
-    return parseInt(match[0][1]);
-  }
-}, {
-  matcher: /I add the sandwich/gm,
-  action: "ADD_SANDWICH",
-  payload: function payload() {
-    return true;
-  }
-}]);
+});
 ;// CONCATENATED MODULE: ./src/reduxReselectCucumber.js
 function reduxReselectCucumber_toConsumableArray(arr) { return reduxReselectCucumber_arrayWithoutHoles(arr) || reduxReselectCucumber_iterableToArray(arr) || reduxReselectCucumber_unsupportedIterableToArray(arr) || reduxReselectCucumber_nonIterableSpread(); }
 
@@ -2451,7 +2468,7 @@ function reduxReselectCucumber_arrayWithoutHoles(arr) { if (Array.isArray(arr)) 
 
 function reduxReselectCucumber_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-// With some modest effort, as cucumber DSL is achieved for interogating the store via the selector. 
+// With some modest effort, a cucumber DSL is achieved for interogating the store via the selector. 
 
 
 
@@ -2495,11 +2512,16 @@ var cucumber = function cucumber(selector, _ref, scenarioKey, givensMatchers, wh
   });
 };
 
-/* harmony default export */ const reduxReselectCucumber = (function (scenarios, selector, givensMatchers, whensMatchers, thensMatchers) {
+/* harmony default export */ const reduxReselectCucumber = (function (componentTest, stateTest) {
+  var scenarios = componentTest.scenarios,
+      selector = componentTest.selector,
+      thens = componentTest.thens;
+  var givens = stateTest.givens,
+      whens = stateTest.whens;
   Object.keys(scenarios).forEach(function (descriptionKey) {
     describe(descriptionKey, function () {
       Object.keys(scenarios[descriptionKey]).forEach(function (itKey) {
-        cucumber(selector, scenarios[descriptionKey][itKey], itKey, givensMatchers, whensMatchers, thensMatchers);
+        cucumber(selector, scenarios[descriptionKey][itKey], itKey, givens, whens, thens);
       });
     });
   });
@@ -2507,11 +2529,9 @@ var cucumber = function cucumber(selector, _ref, scenarioKey, givensMatchers, wh
 ;// CONCATENATED MODULE: ./src/test.js
 // adam wong 2020
 // 
-// The testing strategy focuses on state-tests, which are much easier than integration tests, a bit easier than component tests and almost as fast as unit tests.
+// The testing strategy focuses on state-tests.
 // Each test should create the store, then pass the state of that store to a selector, then test the output of that selector.
 // don't forget to recreate the store for every test!
-
-
 
 
 
@@ -2585,9 +2605,9 @@ describe('Selectors', function () {
   //   store.dispatch({ type: "PUSH_INGREDIENT", payload: 0 })
   //   assert.equal(NewOrderSelector(store.getState()).runningTally['1'], 99);
   // });
-}); // we can also do cucumber-ish tests
+}); // we can also do cucumber-ish tests combining a component's and it's associated state's test configurations
 
-reduxReselectCucumber(scenarios, NewOrderSelector, givens, whens, thens);
+reduxReselectCucumber(test, state_test);
 })();
 
 /******/ })()

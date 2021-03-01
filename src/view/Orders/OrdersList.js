@@ -7,6 +7,8 @@ class OrdersList extends React.Component {
   render() {
     return (<div>
 
+      <h1>Please complete some orders</h1>
+
       {
         !Object.keys(this.props.orders).length ? <p>You've got no orders</p> : <table>
 
