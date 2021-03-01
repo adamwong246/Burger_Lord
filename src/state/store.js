@@ -15,6 +15,7 @@ import {
 } from "../state/Actions.js";
 
 export default (initialState) => createStore((state = [], action) => {
+  // console.log(action)
   switch (action.type) {
     
     case INITIALIZE:

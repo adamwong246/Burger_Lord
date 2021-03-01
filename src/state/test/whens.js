@@ -11,12 +11,32 @@ import {
   PUSH_INGREDIENT,
   REMOVE_SANDWICH,
   SELECT_INGREDIENT_TO_PUSH,
-  INITIALIZE,
   COMPLETE_ORDER
 } from "../Actions.js";
 
 export default [
-
+  {
+    matcher: /I remove sandwich #(.*)/gm,
+    action: REMOVE_SANDWICH,
+    payload: (match) => parseInt(match[0][1])
+  },
+  {
+    matcher: /I pop the top of sandwich '(.*)'/gm,
+    action: POP_INGREDIENT,
+    payload: (match) => match[0][1]
+  },
+  {
+    matcher: /I change the name of sandwich #(.*) to '(.*)'/gm,
+    action: CHANGE_SANDWICH_NAME,
+    payload: (match) => {
+      return {index: parseInt(match[0][1]), sandwichName: (match[0][2]) };
+    }
+  },
+  {
+    matcher: /I change the gratuity name to '(.*)'/gm,
+    action: CHANGE_GRATUITY,
+    payload: (match) => parseInt(match[0][1])
+  },
   {
     matcher: /I change the staged sandwich name to '(.*)'/gm,
     action: CHANGE_STAGED_SANDWICH_NAME,

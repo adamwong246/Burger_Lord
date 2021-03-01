@@ -27,17 +27,21 @@ const cucumber = (selector, { givens, whens, thens }, scenarioKey, givensMatcher
 
   const computed = selector(store.getState());
 
+  let ran = false;
   thens.forEach(then => {
     thensMatchers.forEach((thensMatcher) => {
       const matches = [...then.matchAll(thensMatcher.matcher)]
       if (matches.length === 1) {
         it(scenarioKey, () => {
           thensMatcher.assert(matches, computed)
+          ran = true
         });
 
       }
     })
   });
+
+  // if (ran === false) throw Error("no thens?!")
 }
 
 export default (

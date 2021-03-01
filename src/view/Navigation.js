@@ -12,7 +12,7 @@ class Navigation extends React.Component {
 
         </IconButton>
 
-        <Typography variant="h5" >
+        <Typography>
           <Link to="/">BURGER LORD</Link>
         </Typography>
 

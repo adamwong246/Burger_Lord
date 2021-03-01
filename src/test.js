@@ -53,30 +53,31 @@ describe('Selectors', () => {
     assert.equal(NewOrderSelector(store.getState()).sandwiches.length, 3);
   });
 
-  // it('you compute the cost of a sandwich', () => {
-  //   const store = storeCreator(initialState);
-  //   const sandwichName = "The new name of a sandwich";
+  it('you compute the cost of a sandwich', () => {
+    const store = storeCreator(initialState);
+    const sandwichName = "The new name of a sandwich";
 
-  //   assert.equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
-  //   store.dispatch({ type: "CHANGE_STAGED_SANDWICH_NAME", payload: sandwichName })
-  //   store.dispatch({ type: "ADD_SANDWICH" })
-  //   store.dispatch({ type: "SELECT_INGREDIENT_TO_PUSH", payload: { sandwichName: sandwichName, ingredientId: 5 } })
-  //   store.dispatch({ type: "PUSH_INGREDIENT", payload: 0 })
-  //   assert.equal(NewOrderSelector(store.getState()).sandwiches[0].cost, 5);
-  // });
+    assert.equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
+    store.dispatch({ type: "CHANGE_STAGED_SANDWICH_NAME", payload: sandwichName })
+    store.dispatch({ type: "ADD_SANDWICH" })
+    store.dispatch({ type: "SELECT_INGREDIENT_TO_PUSH", payload: { sandwichName: sandwichName, ingredientId: 5 } })
+    store.dispatch({ type: "PUSH_INGREDIENT", payload: 0 })
+    assert.equal(NewOrderSelector(store.getState()).sandwiches[0].cost, 5);
+  });
 
-  // it('you compute the remaining stock', () => {
-  //   const store = storeCreator(initialState);
-  //   const sandwichName = "The new name of a sandwich";
+  it('you compute the remaining stock', () => {
+    const store = storeCreator(initialState);
+    const sandwichName = "The new name of a sandwich";
 
-  //   assert.equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
-  //   store.dispatch({ type: "CHANGE_STAGED_SANDWICH_NAME", payload: sandwichName })
-  //   store.dispatch({ type: "ADD_SANDWICH" })
-  //   store.dispatch({ type: "SELECT_INGREDIENT_TO_PUSH", payload: { sandwichName: sandwichName, ingredientId: 1 } })
-  //   store.dispatch({ type: "PUSH_INGREDIENT", payload: 0 })
-  //   assert.equal(NewOrderSelector(store.getState()).runningTally['1'], 99);
-  // });
+    assert.equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
+    store.dispatch({ type: "CHANGE_STAGED_SANDWICH_NAME", payload: sandwichName })
+    store.dispatch({ type: "ADD_SANDWICH" })
+    store.dispatch({ type: "SELECT_INGREDIENT_TO_PUSH", payload: { sandwichName: sandwichName, ingredientId: 1 } })
+    store.dispatch({ type: "PUSH_INGREDIENT", payload: 0 })
+    assert.equal(NewOrderSelector(store.getState()).runningTally['1'], 99);
+  });
 });
 
 // we can also do cucumber-ish tests combining a component's and it's associated state's test configurations
 reduxReselectCucumber(newOrderTests, stateTests)
+ 

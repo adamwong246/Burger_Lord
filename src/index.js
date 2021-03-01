@@ -78,6 +78,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                     <h2>Things I did not have the time/energy to complete</h2>
                     <ul>
                       <li>Eggegrious use of tables should be replaced with css grid</li>
+                      <li>Styling is lacking</li>
                       <li>.jsx files are not yet supported</li>
                       <li>TS is not yet supported</li>
                       <li>MORE TESTS</li>

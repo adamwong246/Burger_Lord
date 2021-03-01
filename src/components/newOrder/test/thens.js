@@ -4,9 +4,49 @@
 import assert from "assert";
 
 export default [
-    {
-      matcher: /the running tally for ingredient '(.*)' should be '(.*)/gm,
-      assert: (match, computed) => {assert.equal(computed.runningTally[match[0][1]], parseInt(match[0][2]))}
+  {
+    matcher: /sandwich #(.*) should have name '(.*)'/gm,
+    assert: (match, computed) => {
+      assert.equal(
+        computed.sandwiches[parseInt(match[0][1])].name,
+        match[0][2]
+      )
     }
-  ]
-  
+  },
+
+  {
+    matcher: /there should be (.*) sandwiches/gm,
+    assert: (match, computed) => {
+      assert.equal(
+        computed.sandwiches.length,
+        parseInt(match[0][1])
+      )
+    }
+  },
+
+  {
+    matcher: /sandwich #(.*) should have (.*) ingredients/gm,
+    assert: (match, computed) => {
+      assert.equal(
+        computed.sandwiches[parseInt(match[0][1])].recipe.length,
+        parseInt(match[0][2])
+      )
+    }
+  },
+
+  {
+    matcher: /the running tally for ingredient '(.*)' should be '(.*)'/gm,
+    assert: (match, computed) => { assert.equal(computed.runningTally[match[0][1]], parseInt(match[0][2])) }
+  },
+  {
+    matcher: /the gratuity should be '(.*)'/gm,
+    assert: (match, computed) => assert.equal(computed.gratuity, parseInt(match[0][1]))
+  },
+  {
+    matcher: /sandwich #(.*) should have name '(.*)'/gm,
+    assert: (match, computed) => {
+      assert.equal(computed.sandwiches[parseInt(match[0][1])].name, match[0][2] )
+    }
+  }
+
+]
