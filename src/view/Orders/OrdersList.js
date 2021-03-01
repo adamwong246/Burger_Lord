@@ -11,16 +11,15 @@ class OrdersList extends React.Component {
         !Object.keys(this.props.orders).length ? <p>You've got no orders</p> : <table>
 
           <tr>
-            <th>#</th>
+
             <th>sandwiches</th>
-            <th>cost</th>
             <th>status</th>
           </tr>
           {
             Object.keys(this.props.orders || {}).map((orderKey) => {
               const order = this.props.orders[orderKey];
               return (<tr>
-                <td>{orderKey}</td>
+
 
                 <td>
                   <ul>
@@ -35,9 +34,6 @@ class OrdersList extends React.Component {
                   </ul>
                 </td>
 
-                <td>${
-                  order.grandTotal
-                }</td>
                 <td>{
                   order.status === "open"
                     ?
@@ -45,9 +41,9 @@ class OrdersList extends React.Component {
                       variant="contained"
                       color="primary"
                       onClick={() => this.props.completeOrder(orderKey)}
-                    > Complete Order {orderKey}</Button>
+                    > Complete Order #{orderKey} for ${order.grandTotal}</Button>
                     :
-                    "picked-up"}
+                    `#${orderKey} was picked-up for $${order.grandTotal}`}
                 </td>
 
               </tr>)

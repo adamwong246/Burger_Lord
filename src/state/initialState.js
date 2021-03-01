@@ -22,29 +22,42 @@ export default {
     // }
   ],
   orders: {
-    "1": {
-      "status": "open",
-      "sandwiches": [
-        {
-          "name": "someone's sandwich",
-          "recipe": [
-            1
-          ],
-          "toPush": ""
-        }
-      ],
-      "gratuity": 25,
-      "runningTally": {
-        "1": 99,
-        "2": 0,
-        "3": 1,
-        "4": 1,
-        "5": 5,
-        "6": 1,
-        "7": 1
-      },
-      "stagedSandwich": "",
-      "grandTotal": "1.25"
-    }
+    // "2": {
+    //   "status": "closed",
+    //   "grandTotal": "9.99",
+    //   "sandwiches": [
+    //     {
+    //       "name": "adams",
+    //       "recipe": [
+    //         1, 2, 3
+    //       ]
+    //     },
+    //     {
+    //       "name": "chaches",
+    //       "recipe": [
+    //         2, 3, 4
+    //       ]
+    //     },
+    //     {
+    //       "name": "Kary's",
+    //       "recipe": [
+    //         3, 4, 5
+    //       ]
+    //     }
+    //   ],
+    // },
+  //   "1": {
+  //     "status": "open",
+  //     "sandwiches": [
+  //       {
+  //         "name": "someone's sandwich",
+  //         "recipe": [
+  //           1
+  //         ],
+  //         "toPush": ""
+  //       }
+  //     ],
+  //     "grandTotal": "1.25"
+  //   }
   }
 }

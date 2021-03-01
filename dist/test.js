@@ -1278,8 +1278,8 @@ var __webpack_exports__ = {};
 "use strict";
 
 // EXTERNAL MODULE: ../../node_modules/assert/assert.js
-var assert = __webpack_require__(778);
-var assert_default = /*#__PURE__*/__webpack_require__.n(assert);
+var assert_assert = __webpack_require__(778);
+var assert_default = /*#__PURE__*/__webpack_require__.n(assert_assert);
 // EXTERNAL MODULE: ./node_modules/symbol-observable/es/index.js + 1 modules
 var es = __webpack_require__(121);
 ;// CONCATENATED MODULE: ./node_modules/redux/es/redux.js
@@ -1986,7 +1986,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
 
       case CHANGE_GRATUITY:
         return _objectSpread(_objectSpread({}, state), {}, {
-          gratuity: action.payload
+          gratuity: Math.max(action.payload, 0)
         });
 
       case SELECT_INGREDIENT_TO_PUSH:
@@ -2056,6 +2056,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
           orders: _objectSpread(_objectSpread({}, state.orders), {}, store_defineProperty({}, Math.max.apply(Math, _toConsumableArray(existingKeys.length ? existingKeys.map(function (oid) {
             return parseInt(oid);
           }) : [0])) + 1, {
+            grandTotal: action.payload,
             status: "open",
             sandwiches: state.sandwiches.map(function (s) {
               return {
@@ -2157,27 +2158,43 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
     //   recipe: [1, 2, 1]
     // }
   ],
-  orders: {
-    "1": {
-      "status": "open",
-      "sandwiches": [{
-        "name": "someone's sandwich",
-        "recipe": [1],
-        "toPush": ""
-      }],
-      "gratuity": 25,
-      "runningTally": {
-        "1": 99,
-        "2": 0,
-        "3": 1,
-        "4": 1,
-        "5": 5,
-        "6": 1,
-        "7": 1
-      },
-      "stagedSandwich": "",
-      "grandTotal": "1.25"
-    }
+  orders: {// "2": {
+    //   "status": "closed",
+    //   "grandTotal": "9.99",
+    //   "sandwiches": [
+    //     {
+    //       "name": "adams",
+    //       "recipe": [
+    //         1, 2, 3
+    //       ]
+    //     },
+    //     {
+    //       "name": "chaches",
+    //       "recipe": [
+    //         2, 3, 4
+    //       ]
+    //     },
+    //     {
+    //       "name": "Kary's",
+    //       "recipe": [
+    //         3, 4, 5
+    //       ]
+    //     }
+    //   ],
+    // },
+    //   "1": {
+    //     "status": "open",
+    //     "sandwiches": [
+    //       {
+    //         "name": "someone's sandwich",
+    //         "recipe": [
+    //           1
+    //         ],
+    //         "toPush": ""
+    //       }
+    //     ],
+    //     "grandTotal": "1.25"
+    //   }
   }
 });
 ;// CONCATENATED MODULE: ./node_modules/reselect/es/index.js
@@ -2322,7 +2339,7 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
       }).cost;
     }, 0);
   }, 0);
-  var grandTotal = subTotal * (1 + base.gratuity / 100);
+  var grandTotal = (subTotal * (1 + base.gratuity / 100)).toFixed(2);
   var runningTally = {};
   base.ingredients.forEach(function (ingredient) {
     return runningTally[ingredient.id] = ingredient.amount;
@@ -2352,6 +2369,144 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
     orderDisabled: base.sandwiches.length === 0
   };
 });
+;// CONCATENATED MODULE: ./src/components/newOrderSelectorScenarios.js
+// These scenarios use cucumber syntax to interogate selectors. 
+// Given statements setup the initial state.
+// When statements make actions
+// Then statements make assertions on the output of the selector.
+/* harmony default export */ const newOrderSelectorScenarios = ({
+  "very simple scenarios": {
+    "My first scenario": {
+      givens: ["an inital store with ingredient #1 amount '100'"],
+      whens: ["I change the staged sandwich name to 'Adams sandwich'", "I add the sandwich", "I select the ingredient '1' for 'Adams sandwich'", "I push the selected ingredient for sandwich '0'"],
+      thens: ["the running tally for ingredient '1' should be '99'"]
+    },
+    "Test 2": {
+      givens: ["an inital store with ingredient #1 amount '100'"],
+      whens: ["I change the staged sandwich name to 'Chaches sandwich'", "I add the sandwich", "I select the ingredient '1' for 'Chaches sandwich'", "I push the selected ingredient for sandwich '0'"],
+      thens: ["the running tally for ingredient '1' should be '99'"]
+    }
+  }
+});
+;// CONCATENATED MODULE: ./src/reduxReselectCucumber.js
+function reduxReselectCucumber_toConsumableArray(arr) { return reduxReselectCucumber_arrayWithoutHoles(arr) || reduxReselectCucumber_iterableToArray(arr) || reduxReselectCucumber_unsupportedIterableToArray(arr) || reduxReselectCucumber_nonIterableSpread(); }
+
+function reduxReselectCucumber_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function reduxReselectCucumber_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return reduxReselectCucumber_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return reduxReselectCucumber_arrayLikeToArray(o, minLen); }
+
+function reduxReselectCucumber_iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function reduxReselectCucumber_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return reduxReselectCucumber_arrayLikeToArray(arr); }
+
+function reduxReselectCucumber_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+// test2.js
+// adam wong 2020
+// 
+// With some modest effort, as cucumber DSL is achieved for interogating the store via the selector. 
+
+
+
+var cucumber = function cucumber(selector, _ref, scenarioKey, givensMatchers, whensMatchers, thensMatchers) {
+  var givens = _ref.givens,
+      whens = _ref.whens,
+      thens = _ref.thens;
+  var store;
+  givens.forEach(function (given) {
+    givensMatchers.forEach(function (givenMatcher) {
+      var matches = reduxReselectCucumber_toConsumableArray(given.matchAll(givenMatcher.matcher));
+
+      if (matches.length === 1) {
+        store = state_store(initialState);
+      }
+    });
+  });
+  whens.forEach(function (when) {
+    whensMatchers.forEach(function (whensMatcher) {
+      var matches = reduxReselectCucumber_toConsumableArray(when.matchAll(whensMatcher.matcher));
+
+      if (matches.length === 1) {
+        store.dispatch({
+          type: whensMatcher.action,
+          payload: whensMatcher.payload(matches)
+        });
+      }
+    });
+  });
+  var computed = selector(store.getState());
+  thens.forEach(function (then) {
+    thensMatchers.forEach(function (thensMatcher) {
+      var matches = reduxReselectCucumber_toConsumableArray(then.matchAll(thensMatcher.matcher));
+
+      if (matches.length === 1) {
+        it(scenarioKey, function () {
+          thensMatcher.assert(matches, computed);
+        });
+      }
+    });
+  });
+};
+
+/* harmony default export */ const reduxReselectCucumber = (function (scenarios, selector, givensMatchers, whensMatchers, thensMatchers) {
+  Object.keys(scenarios).forEach(function (descriptionKey) {
+    describe(descriptionKey, function () {
+      Object.keys(scenarios[descriptionKey]).forEach(function (itKey) {
+        cucumber(selector, scenarios[descriptionKey][itKey], itKey, givensMatchers, whensMatchers, thensMatchers);
+      });
+    });
+  });
+});
+;// CONCATENATED MODULE: ./src/state/givens.js
+// This file holds the "given" statements.
+// "Givens" always correspond to an alteration of the initial state of the store
+/* harmony default export */ const givens = ([{
+  matcher: /an inital store with ingredient #(\d*) amount '(\d*)'/gm,
+  modifier: function modifier(state) {
+    return state;
+  }
+}]);
+;// CONCATENATED MODULE: ./src/components/newOrderSelectorThens.js
+// This file holds the "then" statements.
+// "Thens" always correspond to an assertion on the output of a selector
+
+/* harmony default export */ const newOrderSelectorThens = ([{
+  matcher: /the running tally for ingredient '(.*)' should be '(.*)/gm,
+  assert: function assert(match, computed) {
+    assert_default().equal(computed.runningTally[match[0][1]], parseInt(match[0][2]));
+  }
+}]);
+;// CONCATENATED MODULE: ./src/state/whens.js
+// This file holds the "when" statements.
+// "Whens" always correspond to a redux action and payload
+/* harmony default export */ const whens = ([{
+  matcher: /I change the staged sandwich name to '(.*)'/gm,
+  action: "CHANGE_STAGED_SANDWICH_NAME",
+  payload: function payload(match) {
+    return match[0][1];
+  }
+}, {
+  matcher: /I select the ingredient '(.*)' for '(.*)'/gm,
+  action: "SELECT_INGREDIENT_TO_PUSH",
+  payload: function payload(match) {
+    return {
+      sandwichName: match[0][2],
+      ingredientId: parseInt(match[0][1])
+    };
+  }
+}, {
+  matcher: /I push the selected ingredient for sandwich '(.*)'/gm,
+  action: "PUSH_INGREDIENT",
+  payload: function payload(match) {
+    return parseInt(match[0][1]);
+  }
+}, {
+  matcher: /I add the sandwich/gm,
+  action: "ADD_SANDWICH",
+  payload: function payload() {
+    return true;
+  }
+}]);
 ;// CONCATENATED MODULE: ./src/test.js
 // test.js
 // adam wong 2020
@@ -2362,6 +2517,12 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
 
 
 
+
+
+
+
+
+ // we can do unit-ish tests
 
 describe('Initial state', function () {
   it('gratuity should be 25', function () {
@@ -2408,56 +2569,29 @@ describe('Selectors', function () {
       type: "ADD_SANDWICH"
     });
     assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 3);
-  });
-  it('you compute the cost of a sandwich', function () {
-    var store = state_store(initialState);
-    var sandwichName = "The new name of a sandwich";
-    assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
-    store.dispatch({
-      type: "CHANGE_STAGED_SANDWICH_NAME",
-      payload: sandwichName
-    });
-    store.dispatch({
-      type: "ADD_SANDWICH"
-    });
-    store.dispatch({
-      type: "SELECT_INGREDIENT_TO_PUSH",
-      payload: {
-        sandwichName: sandwichName,
-        ingredientId: 5
-      }
-    });
-    store.dispatch({
-      type: "PUSH_INGREDIENT",
-      payload: 0
-    });
-    assert_default().equal(NewOrderSelector(store.getState()).sandwiches[0].cost, 5);
-  });
-  it('you compute the remaining stock', function () {
-    var store = state_store(initialState);
-    var sandwichName = "The new name of a sandwich";
-    assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
-    store.dispatch({
-      type: "CHANGE_STAGED_SANDWICH_NAME",
-      payload: sandwichName
-    });
-    store.dispatch({
-      type: "ADD_SANDWICH"
-    });
-    store.dispatch({
-      type: "SELECT_INGREDIENT_TO_PUSH",
-      payload: {
-        sandwichName: sandwichName,
-        ingredientId: 1
-      }
-    });
-    store.dispatch({
-      type: "PUSH_INGREDIENT",
-      payload: 0
-    });
-    assert_default().equal(NewOrderSelector(store.getState()).runningTally['1'], 99);
-  });
-});
+  }); // it('you compute the cost of a sandwich', () => {
+  //   const store = storeCreator(initialState);
+  //   const sandwichName = "The new name of a sandwich";
+  //   assert.equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
+  //   store.dispatch({ type: "CHANGE_STAGED_SANDWICH_NAME", payload: sandwichName })
+  //   store.dispatch({ type: "ADD_SANDWICH" })
+  //   store.dispatch({ type: "SELECT_INGREDIENT_TO_PUSH", payload: { sandwichName: sandwichName, ingredientId: 5 } })
+  //   store.dispatch({ type: "PUSH_INGREDIENT", payload: 0 })
+  //   assert.equal(NewOrderSelector(store.getState()).sandwiches[0].cost, 5);
+  // });
+  // it('you compute the remaining stock', () => {
+  //   const store = storeCreator(initialState);
+  //   const sandwichName = "The new name of a sandwich";
+  //   assert.equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
+  //   store.dispatch({ type: "CHANGE_STAGED_SANDWICH_NAME", payload: sandwichName })
+  //   store.dispatch({ type: "ADD_SANDWICH" })
+  //   store.dispatch({ type: "SELECT_INGREDIENT_TO_PUSH", payload: { sandwichName: sandwichName, ingredientId: 1 } })
+  //   store.dispatch({ type: "PUSH_INGREDIENT", payload: 0 })
+  //   assert.equal(NewOrderSelector(store.getState()).runningTally['1'], 99);
+  // });
+}); // we can also do cucumber-ish tests
+
+reduxReselectCucumber(newOrderSelectorScenarios, NewOrderSelector, givens, whens, newOrderSelectorThens);
 })();
 
 /******/ })()

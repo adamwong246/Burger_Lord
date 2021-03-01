@@ -15,17 +15,14 @@ import {
   Route
 } from "react-router-dom";
 
-import storeCreator from "./state/store.js";
-import initialState from "./state/initialState.js";
-import { OrdersSelector } from "./components/ordersSelector.js";
+// Make CSS sane across browsers
+import 'normalize.css';
 
 import newOrder from "./components/newOrderComponent.js";
 import orders from "./components/ordersComponent.js";
-
+import storeCreator from "./state/store.js";
+import initialState from "./state/initialState.js";
 import Navigation from "./view/Navigation.js";
-
-// Make CSS sane across browsers
-import 'normalize.css';
 
 // Add our own styling. We could use modules but it's not necessary.
 import './style.scss';
@@ -75,8 +72,17 @@ document.addEventListener('DOMContentLoaded', (event) => {
 
                 {/* The landing page */}
                 <Route path="/">
-                  <h1>Welcome to BURGER LORD</h1>
-                  <p> Here at BURGER LORD, we believe the customer is always right. That's why you can order a sandwich with ANY ingredients (provided we have them in stock). You can make a boring White bread + Peanut Butter + Jelly + White Bread Sandwich, or you could have 99 slices of cheese on top of a pile of Ham Salad. "Have it _your_ way!" (tm)</p>
+                  <>
+                    <p> Here at BURGER LORD, we believe the customer is always right. That's why you can order a sandwich with ANY ingredients (provided we have them in stock). You can make a boring White bread + Peanut Butter + Jelly + White Bread Sandwich, or you could have 99 slices of cheese on top of a pile of Ham Salad. "Have it _your_ way!" (tm)</p>
+
+                    <h2>Things I did not have the time/energy to complete</h2>
+                    <ul>
+                      <li>Eggegrious use of tables should be replaced with css grid</li>
+                      <li>.jsx files are not yet supported</li>
+                      <li>TS is not yet supported</li>
+                      <li>MORE TESTS</li>
+                    </ul>
+                  </>
                 </Route>
               </Switch>
             </main>

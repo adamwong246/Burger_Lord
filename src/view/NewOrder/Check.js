@@ -27,7 +27,7 @@ class Check extends React.Component {
               variant="contained"
               color="warning"
               disabled={disabled}
-              onClick={placeOrder}
+              onClick={(e) => placeOrder(grandTotal)}
             >
               {disabled ? "order not valid" : `Submit Order for $${grandTotal}`}
             </Button>

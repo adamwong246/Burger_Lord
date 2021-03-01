@@ -21,27 +21,43 @@ export default (dispatcher) => {
   return class NewOrder extends React.Component {
 
     render() {
-  
+
       const childProps = NewOrderSelector(this.props.storeState)
 
       return (
         <div>
           <h1>Please place an order</h1>
           <RecipeForms
+
             {
-              ...childProps
+            ...childProps
             }
-            addSandwich={(sandwichName) => dispatcher({ type: ADD_SANDWICH, payload: sandwichName })}
-            changeStagedSandwich={(sandwichName) => dispatcher({ type: CHANGE_STAGED_SANDWICH_NAME, payload: sandwichName })}
-            onChangeSandwichName={(index, sandwichName) => dispatcher({ type: CHANGE_SANDWICH_NAME, payload: { index, sandwichName } })}
-            popIngredient={(name) => dispatcher({ type: POP_INGREDIENT, payload: name })}
-            pushIngredient={(name) => dispatcher({ type: PUSH_INGREDIENT, payload: name })}
-            removeSandwich={(ndx) => dispatcher({ type: REMOVE_SANDWICH, payload: ndx })}
-            selectIngredientToPush={(sandwichName, ingredientId) => dispatcher({ type: SELECT_INGREDIENT_TO_PUSH, payload: { sandwichName, ingredientId } })}
+
+            addSandwich={(sandwichName) => dispatcher({
+              type: ADD_SANDWICH, payload: sandwichName
+            })}
+            changeStagedSandwich={(sandwichName) => dispatcher({
+              type: CHANGE_STAGED_SANDWICH_NAME, payload: sandwichName
+            })}
+            onChangeSandwichName={(index, sandwichName) => dispatcher({
+              type: CHANGE_SANDWICH_NAME, payload: { index, sandwichName }
+            })}
+            popIngredient={(name) => dispatcher({
+              type: POP_INGREDIENT, payload: name
+            })}
+            pushIngredient={(name) => dispatcher({
+              type: PUSH_INGREDIENT, payload: name
+            })}
+            removeSandwich={(ndx) => dispatcher({
+              type: REMOVE_SANDWICH, payload: ndx
+            })}
+            selectIngredientToPush={(sandwichName, ingredientId) => dispatcher({
+              type: SELECT_INGREDIENT_TO_PUSH, payload: { sandwichName, ingredientId }
+            })}
           />
-  
-          <hr/>
-  
+
+          <hr />
+
           <Check
             disabled={childProps.orderDisabled}
             grandTotal={childProps.grandTotal}

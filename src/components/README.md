@@ -1,1 +1,1 @@
-This folder is devoted to top-level components which are connected to the store's dispatch function, as well as a selector.
+This folder is devoted to top-level components which are connected to the store's dispatch function, as well as a selector. 

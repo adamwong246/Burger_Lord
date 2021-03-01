@@ -2,7 +2,7 @@ Arguments:
   /Users/adam/.nvm/versions/node/v15.8.0/bin/node /usr/local/Cellar/yarn/1.5.1_1/libexec/bin/yarn.js test
 
 PATH: 
-  /Users/adam/.rbenv/shims:/Users/adam/.nvm/versions/node/v15.8.0/bin:/Users/adam/Programming/ImageMagick-7.0.11/bin:/Users/adam/Programming/ImageMagick-7.0.11/bin:/Users/adam/.rbenv/shims:/Users/adam/.rbenv/shims:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/adam/.rvm/bin:/Users/adam/.rvm/bin:/Users/adam/.rvm/bin
+  /Users/adam/.rbenv/shims:/Users/adam/.nvm/versions/node/v15.8.0/bin:/Users/adam/.rbenv/shims:/Users/adam/.rbenv/shims:/Library/Frameworks/Python.framework/Versions/3.7/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Users/adam/.rvm/bin:/Users/adam/.rvm/bin:/Users/adam/.rvm/bin
 
 Yarn version: 
   1.5.1
@@ -5102,7 +5102,7 @@ Lockfile:
 
 Trace: 
   Error: Command failed.
-  Exit code: 6
+  Exit code: 1
   Command: sh
   Arguments: -c webpack --config webpack.test.config.js && mocha dist/test.js
   Directory: /Users/adam/Programming/deliverrChallenge

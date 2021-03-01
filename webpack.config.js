@@ -1,31 +1,32 @@
 var path = require('path');
 
 module.exports = {
-  
-    module: {
-        rules: [
-          {
-            test: /\.js$/,
-            exclude: /node_modules/,
-            use: ["babel-loader"]
-          },
 
-          {
-            test: /\.(scss|css)$/,
-            use: ['style-loader', 'css-loader', 'sass-loader'],
-          }
 
-        ]
+  module: {
+    rules: [
+      {
+        test: /\.js*$/,
+        exclude: /node_modules/,
+        use: ["babel-loader"]
       },
 
-    entry: './src/index.js',
-    output: {
-        filename: 'main.js',
-        path: path.resolve(__dirname, 'dist'),
-    },
+      {
+        test: /\.(scss|css)$/,
+        use: ['style-loader', 'css-loader', 'sass-loader'],
+      }
 
-    optimization: {
-      minimize: false
+    ]
+  },
+
+  entry: './src/index.js',
+  output: {
+    filename: 'main.js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+
+  optimization: {
+    minimize: false
   },
 
 };

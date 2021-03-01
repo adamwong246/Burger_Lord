@@ -15,8 +15,8 @@ import {
 } from "../state/Actions.js";
 
 export default (initialState) => createStore((state = [], action) => {
-
   switch (action.type) {
+    
     case INITIALIZE:
       return {
         ...state,
@@ -32,7 +32,7 @@ export default (initialState) => createStore((state = [], action) => {
     case CHANGE_GRATUITY:
       return {
         ...state,
-        gratuity: action.payload
+        gratuity: Math.max(action.payload, 0)
       }
 
     case SELECT_INGREDIENT_TO_PUSH:
@@ -106,6 +106,7 @@ export default (initialState) => createStore((state = [], action) => {
         orders: {
           ...state.orders,
           [Math.max(...(existingKeys.length ? existingKeys.map((oid) => parseInt(oid)) : [0])) + 1]: {
+            grandTotal: action.payload,
             status: "open",
             sandwiches: state.sandwiches.map((s) => {
               return { name: s.name, recipe: s.recipe }

@@ -9,7 +9,7 @@ class Link extends React.Component {
   render() {
     return (
       <Typography>
-        <MaterialLink color="inherit">
+        <MaterialLink color="primary">
           <RouterLink to={this.props.to}>
             {this.props.children}
           </RouterLink>

@@ -6,11 +6,11 @@ export const NewOrderSelector = createSelector([baseSelector], (base) => {
 
   const subTotal = base.sandwiches.reduce((mm, sandwich) => {
     return mm + sandwich.recipe.reduce((mm2, recipeIngredientId) => {
-      return mm2 + base.ingredients.find((ingredient) => ingredient.id === recipeIngredientId).cost
+      return (mm2 + (base.ingredients.find((ingredient) => ingredient.id === recipeIngredientId).cost) )
     }, 0)
-  }, 0);
+  }, 0)
 
-  const grandTotal = (subTotal * (1 + (base.gratuity / 100)))
+  const grandTotal = (subTotal * (1 + (base.gratuity / 100))).toFixed(2);
 
   const runningTally = {};
   base.ingredients.forEach((ingredient) => runningTally[ingredient.id] = ingredient.amount)

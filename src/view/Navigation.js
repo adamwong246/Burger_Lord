@@ -6,7 +6,7 @@ import Link from "./Link.js";
 class Navigation extends React.Component {
 
   render() {
-    return (<AppBar position="static">
+    return (<AppBar position="static" color="secondary">
       <Toolbar>
         <IconButton edge="start" color="inherit" aria-label="menu">
 
