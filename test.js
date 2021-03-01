@@ -2148,7 +2148,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
     "1": {
       "status": "open",
       "sandwiches": [{
-        "name": "asdasd",
+        "name": "someone's sandwich",
         "recipe": [1],
         "toPush": ""
       }],
@@ -2289,6 +2289,10 @@ function createStructuredSelector(selectors) {
   });
 }
 ;// CONCATENATED MODULE: ./src/state/selectors.js
+function selectors_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function selectors_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { selectors_ownKeys(Object(source), true).forEach(function (key) { selectors_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { selectors_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 function selectors_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 
@@ -2298,8 +2302,6 @@ var baseSelector = function baseSelector(state) {
 };
 
 var NewOrderSelector = createSelector([baseSelector], function (base) {
-  var _ref;
-
   var subTotal = base.sandwiches.reduce(function (mm, sandwich) {
     return mm + sandwich.recipe.reduce(function (mm2, recipeIngredientId) {
       return mm2 + base.ingredients.find(function (ingredient) {
@@ -2317,18 +2319,31 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
       runningTally[recipeIngredientId] = runningTally[recipeIngredientId] - 1;
     });
   });
-  return _ref = {
-    ingredients: base.orders,
-    sandwiches: base.sandwiches
-  }, selectors_defineProperty(_ref, "ingredients", base.ingredients), selectors_defineProperty(_ref, "gratuity", base.gratuity), selectors_defineProperty(_ref, "stagedSandwich", base.stagedSandwich), selectors_defineProperty(_ref, "subTotal", subTotal), selectors_defineProperty(_ref, "grandTotal", grandTotal), selectors_defineProperty(_ref, "runningTally", runningTally), _ref;
+  return {
+    orders: base.orders,
+    sandwiches: base.sandwiches.map(function (sandwich) {
+      return selectors_objectSpread(selectors_objectSpread({}, sandwich), {}, {
+        cost: sandwich.recipe.reduce(function (mm, id) {
+          return mm + base.ingredients.find(function (ingredient) {
+            return ingredient.id === id;
+          }).cost;
+        }, 0)
+      });
+    }),
+    ingredients: base.ingredients,
+    gratuity: base.gratuity,
+    stagedSandwich: base.stagedSandwich,
+    subTotal: subTotal,
+    grandTotal: grandTotal,
+    runningTally: runningTally
+  };
 });
 var OrdersSelector = createSelector([baseSelector], function (base) {
-  var _ref2;
-
-  return _ref2 = {
-    ingredients: base.orders,
-    sandwiches: base.sandwiches
-  }, selectors_defineProperty(_ref2, "ingredients", base.ingredients), selectors_defineProperty(_ref2, "orders", base.orders), _ref2;
+  return {
+    orders: base.orders,
+    sandwiches: base.sandwiches,
+    ingredients: base.ingredients
+  };
 });
 ;// CONCATENATED MODULE: ./src/state/test.js
 
@@ -2361,7 +2376,7 @@ describe('Selectors', function () {
     });
     assert_default().equal(NewOrderSelector(store.getState()).stagedSandwich, sandwichName);
   });
-  it('you can add a sandwich', function () {
+  it('you can add sandwiches', function () {
     var store = state_store(initialState);
     var sandwichName = "The new name of a sandwich";
     assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
@@ -2380,6 +2395,54 @@ describe('Selectors', function () {
       type: "ADD_SANDWICH"
     });
     assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 3);
+  });
+  it('you compute the cost of a sandwich', function () {
+    var store = state_store(initialState);
+    var sandwichName = "The new name of a sandwich";
+    assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
+    store.dispatch({
+      type: "CHANGE_STAGED_SANDWICH_NAME",
+      payload: sandwichName
+    });
+    store.dispatch({
+      type: "ADD_SANDWICH"
+    });
+    store.dispatch({
+      type: "SELECT_INGREDIENT_TO_PUSH",
+      payload: {
+        sandwichName: sandwichName,
+        ingredientId: 5
+      }
+    });
+    store.dispatch({
+      type: "PUSH_INGREDIENT",
+      payload: 0
+    });
+    assert_default().equal(NewOrderSelector(store.getState()).sandwiches[0].cost, 5);
+  });
+  it('you compute the remaining stock', function () {
+    var store = state_store(initialState);
+    var sandwichName = "The new name of a sandwich";
+    assert_default().equal(NewOrderSelector(store.getState()).sandwiches.length, 0);
+    store.dispatch({
+      type: "CHANGE_STAGED_SANDWICH_NAME",
+      payload: sandwichName
+    });
+    store.dispatch({
+      type: "ADD_SANDWICH"
+    });
+    store.dispatch({
+      type: "SELECT_INGREDIENT_TO_PUSH",
+      payload: {
+        sandwichName: sandwichName,
+        ingredientId: 1
+      }
+    });
+    store.dispatch({
+      type: "PUSH_INGREDIENT",
+      payload: 0
+    });
+    assert_default().equal(NewOrderSelector(store.getState()).runningTally['1'], 99);
   });
 });
 })();
