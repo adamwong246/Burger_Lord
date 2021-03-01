@@ -1,6 +1,3 @@
-// test2.js
-// adam wong 2020
-// 
 // With some modest effort, as cucumber DSL is achieved for interogating the store via the selector. 
 
 import storeCreator from "./state/store.js";

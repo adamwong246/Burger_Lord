@@ -1,6 +1,6 @@
 import React from "react";
 
-import { NewOrderSelector } from "./newOrderSelector.js";
+import { NewOrderSelector } from "./selector.js";
 
 import {
   ADD_SANDWICH,
@@ -12,10 +12,10 @@ import {
   PUSH_INGREDIENT,
   REMOVE_SANDWICH,
   SELECT_INGREDIENT_TO_PUSH,
-} from "../state/Actions.js";
+} from "../../state/Actions.js";
 
-import RecipeForms from "../view/NewOrder/RecipeForms.js";
-import Check from "../view/NewOrder/Check.js";
+import RecipeForms from "../../view/NewOrder/RecipeForms.js";
+import Check from "../../view/NewOrder/Check.js";
 
 export default (dispatcher) => {
   return class NewOrder extends React.Component {

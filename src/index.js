@@ -18,8 +18,8 @@ import {
 // Make CSS sane across browsers
 import 'normalize.css';
 
-import newOrder from "./components/newOrderComponent.js";
-import orders from "./components/ordersComponent.js";
+import newOrder from "./components/newOrder/component.js";
+import orders from "./components/orders/component.js";
 import storeCreator from "./state/store.js";
 import initialState from "./state/initialState.js";
 import Navigation from "./view/Navigation.js";

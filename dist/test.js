@@ -1280,6 +1280,318 @@ var __webpack_exports__ = {};
 // EXTERNAL MODULE: ../../node_modules/assert/assert.js
 var assert_assert = __webpack_require__(778);
 var assert_default = /*#__PURE__*/__webpack_require__.n(assert_assert);
+;// CONCATENATED MODULE: ./node_modules/reselect/es/index.js
+function defaultEqualityCheck(a, b) {
+  return a === b;
+}
+
+function areArgumentsShallowlyEqual(equalityCheck, prev, next) {
+  if (prev === null || next === null || prev.length !== next.length) {
+    return false;
+  }
+
+  // Do this in a for loop (and not a `forEach` or an `every`) so we can determine equality as fast as possible.
+  var length = prev.length;
+  for (var i = 0; i < length; i++) {
+    if (!equalityCheck(prev[i], next[i])) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+function defaultMemoize(func) {
+  var equalityCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultEqualityCheck;
+
+  var lastArgs = null;
+  var lastResult = null;
+  // we reference arguments instead of spreading them for performance reasons
+  return function () {
+    if (!areArgumentsShallowlyEqual(equalityCheck, lastArgs, arguments)) {
+      // apply arguments instead of spreading for performance.
+      lastResult = func.apply(null, arguments);
+    }
+
+    lastArgs = arguments;
+    return lastResult;
+  };
+}
+
+function getDependencies(funcs) {
+  var dependencies = Array.isArray(funcs[0]) ? funcs[0] : funcs;
+
+  if (!dependencies.every(function (dep) {
+    return typeof dep === 'function';
+  })) {
+    var dependencyTypes = dependencies.map(function (dep) {
+      return typeof dep;
+    }).join(', ');
+    throw new Error('Selector creators expect all input-selectors to be functions, ' + ('instead received the following types: [' + dependencyTypes + ']'));
+  }
+
+  return dependencies;
+}
+
+function createSelectorCreator(memoize) {
+  for (var _len = arguments.length, memoizeOptions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+    memoizeOptions[_key - 1] = arguments[_key];
+  }
+
+  return function () {
+    for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      funcs[_key2] = arguments[_key2];
+    }
+
+    var recomputations = 0;
+    var resultFunc = funcs.pop();
+    var dependencies = getDependencies(funcs);
+
+    var memoizedResultFunc = memoize.apply(undefined, [function () {
+      recomputations++;
+      // apply arguments instead of spreading for performance.
+      return resultFunc.apply(null, arguments);
+    }].concat(memoizeOptions));
+
+    // If a selector is called with the exact same arguments we don't need to traverse our dependencies again.
+    var selector = memoize(function () {
+      var params = [];
+      var length = dependencies.length;
+
+      for (var i = 0; i < length; i++) {
+        // apply arguments instead of spreading and mutate a local list of params for performance.
+        params.push(dependencies[i].apply(null, arguments));
+      }
+
+      // apply arguments instead of spreading for performance.
+      return memoizedResultFunc.apply(null, params);
+    });
+
+    selector.resultFunc = resultFunc;
+    selector.dependencies = dependencies;
+    selector.recomputations = function () {
+      return recomputations;
+    };
+    selector.resetRecomputations = function () {
+      return recomputations = 0;
+    };
+    return selector;
+  };
+}
+
+var createSelector = createSelectorCreator(defaultMemoize);
+
+function createStructuredSelector(selectors) {
+  var selectorCreator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : createSelector;
+
+  if (typeof selectors !== 'object') {
+    throw new Error('createStructuredSelector expects first argument to be an object ' + ('where each property is a selector, instead received a ' + typeof selectors));
+  }
+  var objectKeys = Object.keys(selectors);
+  return selectorCreator(objectKeys.map(function (key) {
+    return selectors[key];
+  }), function () {
+    for (var _len3 = arguments.length, values = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      values[_key3] = arguments[_key3];
+    }
+
+    return values.reduce(function (composition, value, index) {
+      composition[objectKeys[index]] = value;
+      return composition;
+    }, {});
+  });
+}
+;// CONCATENATED MODULE: ./src/components/newOrder/selector.js
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
+
+var baseSelector = function baseSelector(state) {
+  return state;
+};
+
+var NewOrderSelector = createSelector([baseSelector], function (base) {
+  var subTotal = base.sandwiches.reduce(function (mm, sandwich) {
+    return mm + sandwich.recipe.reduce(function (mm2, recipeIngredientId) {
+      return mm2 + base.ingredients.find(function (ingredient) {
+        return ingredient.id === recipeIngredientId;
+      }).cost;
+    }, 0);
+  }, 0);
+  var grandTotal = (subTotal * (1 + base.gratuity / 100)).toFixed(2);
+  var runningTally = {};
+  base.ingredients.forEach(function (ingredient) {
+    return runningTally[ingredient.id] = ingredient.amount;
+  });
+  base.sandwiches.forEach(function (sandwich) {
+    sandwich.recipe.forEach(function (recipeIngredientId) {
+      runningTally[recipeIngredientId] = runningTally[recipeIngredientId] - 1;
+    });
+  });
+  return {
+    orders: base.orders,
+    sandwiches: base.sandwiches.map(function (sandwich) {
+      return _objectSpread(_objectSpread({}, sandwich), {}, {
+        cost: sandwich.recipe.reduce(function (mm, id) {
+          return mm + base.ingredients.find(function (ingredient) {
+            return ingredient.id === id;
+          }).cost;
+        }, 0)
+      });
+    }),
+    ingredients: base.ingredients,
+    gratuity: base.gratuity,
+    stagedSandwich: base.stagedSandwich,
+    subTotal: subTotal,
+    grandTotal: grandTotal,
+    runningTally: runningTally,
+    orderDisabled: base.sandwiches.length === 0
+  };
+});
+;// CONCATENATED MODULE: ./src/components/newOrder/scenarios.js
+// These scenarios use cucumber syntax to interogate selectors. 
+// Given statements setup the initial state.
+// When statements make actions
+// Then statements make assertions on the output of the selector.
+/* harmony default export */ const scenarios = ({
+  "very simple scenarios": {
+    "My first scenario": {
+      givens: ["an inital store with ingredient #1 amount '100'"],
+      whens: ["I change the staged sandwich name to 'Adams sandwich'", "I add the sandwich", "I select the ingredient '1' for 'Adams sandwich'", "I push the selected ingredient for sandwich '0'"],
+      thens: ["the running tally for ingredient '1' should be '99'"]
+    },
+    "Test 2": {
+      givens: ["an inital store with ingredient #1 amount '100'"],
+      whens: ["I change the staged sandwich name to 'Chaches sandwich'", "I add the sandwich", "I select the ingredient '1' for 'Chaches sandwich'", "I push the selected ingredient for sandwich '0'"],
+      thens: ["the running tally for ingredient '1' should be '99'"]
+    }
+  }
+});
+;// CONCATENATED MODULE: ./src/components/newOrder/thens.js
+// This file holds the "then" statements.
+// "Thens" always correspond to an assertion on the output of a selector
+
+/* harmony default export */ const thens = ([{
+  matcher: /the running tally for ingredient '(.*)' should be '(.*)/gm,
+  assert: function assert(match, computed) {
+    assert_default().equal(computed.runningTally[match[0][1]], parseInt(match[0][2]));
+  }
+}]);
+;// CONCATENATED MODULE: ./src/state/givens.js
+// This file holds the "given" statements.
+// "Givens" always correspond to an alteration of the initial state of the store
+/* harmony default export */ const givens = ([{
+  matcher: /an inital store with ingredient #(\d*) amount '(\d*)'/gm,
+  modifier: function modifier(state) {
+    return state;
+  }
+}]);
+;// CONCATENATED MODULE: ./src/state/initialState.js
+/* harmony default export */ const initialState = ({
+  INITAILIZED: false,
+  gratuity: 25,
+  ingredients: [{
+    id: 1,
+    name: 'WHITE BREAD',
+    amount: 100,
+    cost: 1,
+    fg: "#ffffff",
+    bg: "#bb992c"
+  }, {
+    id: 2,
+    name: 'WHOLE WHEAT BREAD',
+    amount: 0,
+    cost: 1,
+    fg: "#ffffff",
+    bg: "#947923"
+  }, {
+    id: 3,
+    name: 'PEANUT BUTTER',
+    amount: 1,
+    cost: 2,
+    fg: "yellow",
+    bg: "947923"
+  }, {
+    id: 4,
+    name: 'JELLY',
+    amount: 1,
+    cost: 2,
+    fg: "pink",
+    bg: "#ec15e0"
+  }, {
+    id: 5,
+    name: 'EGG SALAD',
+    amount: 5,
+    cost: 5,
+    fg: "green",
+    bg: "yellow"
+  }, {
+    id: 6,
+    name: 'HAM',
+    amount: 1,
+    cost: 2,
+    fg: "red",
+    bg: "pink"
+  }, {
+    id: 7,
+    name: 'CHEESE',
+    amount: 1,
+    cost: 2,
+    fg: "yellow",
+    bg: "orange"
+  }],
+  sandwiches: [// {
+    //   name: "mine",
+    //   recipe: [1]
+    // },
+    // {
+    //   name: "his",
+    //   recipe: [1, 2, 1]
+    // }
+  ],
+  orders: {// "2": {
+    //   "status": "closed",
+    //   "grandTotal": "9.99",
+    //   "sandwiches": [
+    //     {
+    //       "name": "adams",
+    //       "recipe": [
+    //         1, 2, 3
+    //       ]
+    //     },
+    //     {
+    //       "name": "chaches",
+    //       "recipe": [
+    //         2, 3, 4
+    //       ]
+    //     },
+    //     {
+    //       "name": "Kary's",
+    //       "recipe": [
+    //         3, 4, 5
+    //       ]
+    //     }
+    //   ],
+    // },
+    //   "1": {
+    //     "status": "open",
+    //     "sandwiches": [
+    //       {
+    //         "name": "someone's sandwich",
+    //         "recipe": [
+    //           1
+    //         ],
+    //         "toPush": ""
+    //       }
+    //     ],
+    //     "grandTotal": "1.25"
+    //   }
+  }
+});
 // EXTERNAL MODULE: ./node_modules/symbol-observable/es/index.js + 1 modules
 var es = __webpack_require__(121);
 ;// CONCATENATED MODULE: ./node_modules/redux/es/redux.js
@@ -1795,7 +2107,7 @@ function bindActionCreators(actionCreators, dispatch) {
   return boundActionCreators;
 }
 
-function _defineProperty(obj, key, value) {
+function redux_defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -1810,7 +2122,7 @@ function _defineProperty(obj, key, value) {
   return obj;
 }
 
-function ownKeys(object, enumerableOnly) {
+function redux_ownKeys(object, enumerableOnly) {
   var keys = Object.keys(object);
 
   if (Object.getOwnPropertySymbols) {
@@ -1828,13 +2140,13 @@ function _objectSpread2(target) {
     var source = arguments[i] != null ? arguments[i] : {};
 
     if (i % 2) {
-      ownKeys(source, true).forEach(function (key) {
-        _defineProperty(target, key, source[key]);
+      redux_ownKeys(source, true).forEach(function (key) {
+        redux_defineProperty(target, key, source[key]);
       });
     } else if (Object.getOwnPropertyDescriptors) {
       Object.defineProperties(target, Object.getOwnPropertyDescriptors(source));
     } else {
-      ownKeys(source).forEach(function (key) {
+      redux_ownKeys(source).forEach(function (key) {
         Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key));
       });
     }
@@ -1960,7 +2272,7 @@ function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len 
 
 function store_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { store_ownKeys(Object(source), true).forEach(function (key) { store_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { store_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function store_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { store_ownKeys(Object(source), true).forEach(function (key) { store_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { store_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function store_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -1973,24 +2285,24 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
 
     switch (action.type) {
       case INITIALIZE:
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           INITAILIZED: true
         });
 
       case REMOVE_SANDWICH:
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.filter(function (s, ndx) {
             return ndx !== action.payload;
           })
         });
 
       case CHANGE_GRATUITY:
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           gratuity: Math.max(action.payload, 0)
         });
 
       case SELECT_INGREDIENT_TO_PUSH:
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.map(function (sandwich) {
             if (sandwich.name === action.payload.sandwichName) {
               sandwich.toPush = action.payload.ingredientId;
@@ -2001,7 +2313,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
         });
 
       case PUSH_INGREDIENT:
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.map(function (sandwich, ndx) {
             if (ndx === action.payload) {
               sandwich.recipe.push(sandwich.toPush);
@@ -2013,7 +2325,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
         });
 
       case POP_INGREDIENT:
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.map(function (s) {
             if (s.name === action.payload) {
               s.recipe.pop();
@@ -2024,7 +2336,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
         });
 
       case CHANGE_SANDWICH_NAME:
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           sandwiches: state.sandwiches.map(function (s, ndx) {
             if (ndx === action.payload.index) {
               s.name = action.payload.sandwichName;
@@ -2035,7 +2347,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
         });
 
       case ADD_SANDWICH:
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           stagedSandwich: "",
           sandwiches: [].concat(_toConsumableArray(state.sandwiches), [{
             name: state.stagedSandwich,
@@ -2045,15 +2357,15 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
         });
 
       case CHANGE_STAGED_SANDWICH_NAME:
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           stagedSandwich: action.payload
         });
 
       case NEW_ORDER:
         var existingKeys = Object.keys(state.orders);
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           sandwiches: [],
-          orders: _objectSpread(_objectSpread({}, state.orders), {}, store_defineProperty({}, Math.max.apply(Math, _toConsumableArray(existingKeys.length ? existingKeys.map(function (oid) {
+          orders: store_objectSpread(store_objectSpread({}, state.orders), {}, store_defineProperty({}, Math.max.apply(Math, _toConsumableArray(existingKeys.length ? existingKeys.map(function (oid) {
             return parseInt(oid);
           }) : [0])) + 1, {
             grandTotal: action.payload,
@@ -2086,7 +2398,7 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
             newOrders[ok].status = "closed";
           }
         });
-        return _objectSpread(_objectSpread({}, state), {}, {
+        return store_objectSpread(store_objectSpread({}, state), {}, {
           orders: newOrders
         });
 
@@ -2095,299 +2407,37 @@ function store_defineProperty(obj, key, value) { if (key in obj) { Object.define
     }
   }, initialState);
 });
-;// CONCATENATED MODULE: ./src/state/initialState.js
-/* harmony default export */ const initialState = ({
-  INITAILIZED: false,
-  gratuity: 25,
-  ingredients: [{
-    id: 1,
-    name: 'WHITE BREAD',
-    amount: 100,
-    cost: 1,
-    fg: "#ffffff",
-    bg: "#bb992c"
-  }, {
-    id: 2,
-    name: 'WHOLE WHEAT BREAD',
-    amount: 0,
-    cost: 1,
-    fg: "#ffffff",
-    bg: "#947923"
-  }, {
-    id: 3,
-    name: 'PEANUT BUTTER',
-    amount: 1,
-    cost: 2,
-    fg: "yellow",
-    bg: "947923"
-  }, {
-    id: 4,
-    name: 'JELLY',
-    amount: 1,
-    cost: 2,
-    fg: "pink",
-    bg: "#ec15e0"
-  }, {
-    id: 5,
-    name: 'EGG SALAD',
-    amount: 5,
-    cost: 5,
-    fg: "green",
-    bg: "yellow"
-  }, {
-    id: 6,
-    name: 'HAM',
-    amount: 1,
-    cost: 2,
-    fg: "red",
-    bg: "pink"
-  }, {
-    id: 7,
-    name: 'CHEESE',
-    amount: 1,
-    cost: 2,
-    fg: "yellow",
-    bg: "orange"
-  }],
-  sandwiches: [// {
-    //   name: "mine",
-    //   recipe: [1]
-    // },
-    // {
-    //   name: "his",
-    //   recipe: [1, 2, 1]
-    // }
-  ],
-  orders: {// "2": {
-    //   "status": "closed",
-    //   "grandTotal": "9.99",
-    //   "sandwiches": [
-    //     {
-    //       "name": "adams",
-    //       "recipe": [
-    //         1, 2, 3
-    //       ]
-    //     },
-    //     {
-    //       "name": "chaches",
-    //       "recipe": [
-    //         2, 3, 4
-    //       ]
-    //     },
-    //     {
-    //       "name": "Kary's",
-    //       "recipe": [
-    //         3, 4, 5
-    //       ]
-    //     }
-    //   ],
-    // },
-    //   "1": {
-    //     "status": "open",
-    //     "sandwiches": [
-    //       {
-    //         "name": "someone's sandwich",
-    //         "recipe": [
-    //           1
-    //         ],
-    //         "toPush": ""
-    //       }
-    //     ],
-    //     "grandTotal": "1.25"
-    //   }
+;// CONCATENATED MODULE: ./src/state/whens.js
+// This file holds the "when" statements.
+// "Whens" always correspond to a redux action and payload
+/* harmony default export */ const whens = ([{
+  matcher: /I change the staged sandwich name to '(.*)'/gm,
+  action: "CHANGE_STAGED_SANDWICH_NAME",
+  payload: function payload(match) {
+    return match[0][1];
   }
-});
-;// CONCATENATED MODULE: ./node_modules/reselect/es/index.js
-function defaultEqualityCheck(a, b) {
-  return a === b;
-}
-
-function areArgumentsShallowlyEqual(equalityCheck, prev, next) {
-  if (prev === null || next === null || prev.length !== next.length) {
-    return false;
-  }
-
-  // Do this in a for loop (and not a `forEach` or an `every`) so we can determine equality as fast as possible.
-  var length = prev.length;
-  for (var i = 0; i < length; i++) {
-    if (!equalityCheck(prev[i], next[i])) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function defaultMemoize(func) {
-  var equalityCheck = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultEqualityCheck;
-
-  var lastArgs = null;
-  var lastResult = null;
-  // we reference arguments instead of spreading them for performance reasons
-  return function () {
-    if (!areArgumentsShallowlyEqual(equalityCheck, lastArgs, arguments)) {
-      // apply arguments instead of spreading for performance.
-      lastResult = func.apply(null, arguments);
-    }
-
-    lastArgs = arguments;
-    return lastResult;
-  };
-}
-
-function getDependencies(funcs) {
-  var dependencies = Array.isArray(funcs[0]) ? funcs[0] : funcs;
-
-  if (!dependencies.every(function (dep) {
-    return typeof dep === 'function';
-  })) {
-    var dependencyTypes = dependencies.map(function (dep) {
-      return typeof dep;
-    }).join(', ');
-    throw new Error('Selector creators expect all input-selectors to be functions, ' + ('instead received the following types: [' + dependencyTypes + ']'));
-  }
-
-  return dependencies;
-}
-
-function createSelectorCreator(memoize) {
-  for (var _len = arguments.length, memoizeOptions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-    memoizeOptions[_key - 1] = arguments[_key];
-  }
-
-  return function () {
-    for (var _len2 = arguments.length, funcs = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-      funcs[_key2] = arguments[_key2];
-    }
-
-    var recomputations = 0;
-    var resultFunc = funcs.pop();
-    var dependencies = getDependencies(funcs);
-
-    var memoizedResultFunc = memoize.apply(undefined, [function () {
-      recomputations++;
-      // apply arguments instead of spreading for performance.
-      return resultFunc.apply(null, arguments);
-    }].concat(memoizeOptions));
-
-    // If a selector is called with the exact same arguments we don't need to traverse our dependencies again.
-    var selector = memoize(function () {
-      var params = [];
-      var length = dependencies.length;
-
-      for (var i = 0; i < length; i++) {
-        // apply arguments instead of spreading and mutate a local list of params for performance.
-        params.push(dependencies[i].apply(null, arguments));
-      }
-
-      // apply arguments instead of spreading for performance.
-      return memoizedResultFunc.apply(null, params);
-    });
-
-    selector.resultFunc = resultFunc;
-    selector.dependencies = dependencies;
-    selector.recomputations = function () {
-      return recomputations;
+}, {
+  matcher: /I select the ingredient '(.*)' for '(.*)'/gm,
+  action: "SELECT_INGREDIENT_TO_PUSH",
+  payload: function payload(match) {
+    return {
+      sandwichName: match[0][2],
+      ingredientId: parseInt(match[0][1])
     };
-    selector.resetRecomputations = function () {
-      return recomputations = 0;
-    };
-    return selector;
-  };
-}
-
-var createSelector = createSelectorCreator(defaultMemoize);
-
-function createStructuredSelector(selectors) {
-  var selectorCreator = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : createSelector;
-
-  if (typeof selectors !== 'object') {
-    throw new Error('createStructuredSelector expects first argument to be an object ' + ('where each property is a selector, instead received a ' + typeof selectors));
   }
-  var objectKeys = Object.keys(selectors);
-  return selectorCreator(objectKeys.map(function (key) {
-    return selectors[key];
-  }), function () {
-    for (var _len3 = arguments.length, values = Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-      values[_key3] = arguments[_key3];
-    }
-
-    return values.reduce(function (composition, value, index) {
-      composition[objectKeys[index]] = value;
-      return composition;
-    }, {});
-  });
-}
-;// CONCATENATED MODULE: ./src/components/newOrderSelector.js
-function newOrderSelector_ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function newOrderSelector_objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { newOrderSelector_ownKeys(Object(source), true).forEach(function (key) { newOrderSelector_defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { newOrderSelector_ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function newOrderSelector_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-var baseSelector = function baseSelector(state) {
-  return state;
-};
-
-var NewOrderSelector = createSelector([baseSelector], function (base) {
-  var subTotal = base.sandwiches.reduce(function (mm, sandwich) {
-    return mm + sandwich.recipe.reduce(function (mm2, recipeIngredientId) {
-      return mm2 + base.ingredients.find(function (ingredient) {
-        return ingredient.id === recipeIngredientId;
-      }).cost;
-    }, 0);
-  }, 0);
-  var grandTotal = (subTotal * (1 + base.gratuity / 100)).toFixed(2);
-  var runningTally = {};
-  base.ingredients.forEach(function (ingredient) {
-    return runningTally[ingredient.id] = ingredient.amount;
-  });
-  base.sandwiches.forEach(function (sandwich) {
-    sandwich.recipe.forEach(function (recipeIngredientId) {
-      runningTally[recipeIngredientId] = runningTally[recipeIngredientId] - 1;
-    });
-  });
-  return {
-    orders: base.orders,
-    sandwiches: base.sandwiches.map(function (sandwich) {
-      return newOrderSelector_objectSpread(newOrderSelector_objectSpread({}, sandwich), {}, {
-        cost: sandwich.recipe.reduce(function (mm, id) {
-          return mm + base.ingredients.find(function (ingredient) {
-            return ingredient.id === id;
-          }).cost;
-        }, 0)
-      });
-    }),
-    ingredients: base.ingredients,
-    gratuity: base.gratuity,
-    stagedSandwich: base.stagedSandwich,
-    subTotal: subTotal,
-    grandTotal: grandTotal,
-    runningTally: runningTally,
-    orderDisabled: base.sandwiches.length === 0
-  };
-});
-;// CONCATENATED MODULE: ./src/components/newOrderSelectorScenarios.js
-// These scenarios use cucumber syntax to interogate selectors. 
-// Given statements setup the initial state.
-// When statements make actions
-// Then statements make assertions on the output of the selector.
-/* harmony default export */ const newOrderSelectorScenarios = ({
-  "very simple scenarios": {
-    "My first scenario": {
-      givens: ["an inital store with ingredient #1 amount '100'"],
-      whens: ["I change the staged sandwich name to 'Adams sandwich'", "I add the sandwich", "I select the ingredient '1' for 'Adams sandwich'", "I push the selected ingredient for sandwich '0'"],
-      thens: ["the running tally for ingredient '1' should be '99'"]
-    },
-    "Test 2": {
-      givens: ["an inital store with ingredient #1 amount '100'"],
-      whens: ["I change the staged sandwich name to 'Chaches sandwich'", "I add the sandwich", "I select the ingredient '1' for 'Chaches sandwich'", "I push the selected ingredient for sandwich '0'"],
-      thens: ["the running tally for ingredient '1' should be '99'"]
-    }
+}, {
+  matcher: /I push the selected ingredient for sandwich '(.*)'/gm,
+  action: "PUSH_INGREDIENT",
+  payload: function payload(match) {
+    return parseInt(match[0][1]);
   }
-});
+}, {
+  matcher: /I add the sandwich/gm,
+  action: "ADD_SANDWICH",
+  payload: function payload() {
+    return true;
+  }
+}]);
 ;// CONCATENATED MODULE: ./src/reduxReselectCucumber.js
 function reduxReselectCucumber_toConsumableArray(arr) { return reduxReselectCucumber_arrayWithoutHoles(arr) || reduxReselectCucumber_iterableToArray(arr) || reduxReselectCucumber_unsupportedIterableToArray(arr) || reduxReselectCucumber_nonIterableSpread(); }
 
@@ -2401,9 +2451,6 @@ function reduxReselectCucumber_arrayWithoutHoles(arr) { if (Array.isArray(arr)) 
 
 function reduxReselectCucumber_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-// test2.js
-// adam wong 2020
-// 
 // With some modest effort, as cucumber DSL is achieved for interogating the store via the selector. 
 
 
@@ -2457,58 +2504,7 @@ var cucumber = function cucumber(selector, _ref, scenarioKey, givensMatchers, wh
     });
   });
 });
-;// CONCATENATED MODULE: ./src/state/givens.js
-// This file holds the "given" statements.
-// "Givens" always correspond to an alteration of the initial state of the store
-/* harmony default export */ const givens = ([{
-  matcher: /an inital store with ingredient #(\d*) amount '(\d*)'/gm,
-  modifier: function modifier(state) {
-    return state;
-  }
-}]);
-;// CONCATENATED MODULE: ./src/components/newOrderSelectorThens.js
-// This file holds the "then" statements.
-// "Thens" always correspond to an assertion on the output of a selector
-
-/* harmony default export */ const newOrderSelectorThens = ([{
-  matcher: /the running tally for ingredient '(.*)' should be '(.*)/gm,
-  assert: function assert(match, computed) {
-    assert_default().equal(computed.runningTally[match[0][1]], parseInt(match[0][2]));
-  }
-}]);
-;// CONCATENATED MODULE: ./src/state/whens.js
-// This file holds the "when" statements.
-// "Whens" always correspond to a redux action and payload
-/* harmony default export */ const whens = ([{
-  matcher: /I change the staged sandwich name to '(.*)'/gm,
-  action: "CHANGE_STAGED_SANDWICH_NAME",
-  payload: function payload(match) {
-    return match[0][1];
-  }
-}, {
-  matcher: /I select the ingredient '(.*)' for '(.*)'/gm,
-  action: "SELECT_INGREDIENT_TO_PUSH",
-  payload: function payload(match) {
-    return {
-      sandwichName: match[0][2],
-      ingredientId: parseInt(match[0][1])
-    };
-  }
-}, {
-  matcher: /I push the selected ingredient for sandwich '(.*)'/gm,
-  action: "PUSH_INGREDIENT",
-  payload: function payload(match) {
-    return parseInt(match[0][1]);
-  }
-}, {
-  matcher: /I add the sandwich/gm,
-  action: "ADD_SANDWICH",
-  payload: function payload() {
-    return true;
-  }
-}]);
 ;// CONCATENATED MODULE: ./src/test.js
-// test.js
 // adam wong 2020
 // 
 // The testing strategy focuses on state-tests, which are much easier than integration tests, a bit easier than component tests and almost as fast as unit tests.
@@ -2591,7 +2587,7 @@ describe('Selectors', function () {
   // });
 }); // we can also do cucumber-ish tests
 
-reduxReselectCucumber(newOrderSelectorScenarios, NewOrderSelector, givens, whens, newOrderSelectorThens);
+reduxReselectCucumber(scenarios, NewOrderSelector, givens, whens, thens);
 })();
 
 /******/ })()

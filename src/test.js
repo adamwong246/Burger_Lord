@@ -1,21 +1,19 @@
-// test.js
 // adam wong 2020
 // 
-// The testing strategy focuses on state-tests, which are much easier than integration tests, a bit easier than component tests and almost as fast as unit tests.
+// The testing strategy focuses on state-tests.
 // Each test should create the store, then pass the state of that store to a selector, then test the output of that selector.
 // don't forget to recreate the store for every test!
 
 import assert from "assert";
 
-import storeCreator from "./state/store.js";
-import initialState from "./state/initialState.js";
-import { NewOrderSelector } from "./components/newOrderSelector.js";
-import newOrderSelectorScenarios from "./components/newOrderSelectorScenarios.js";
-
-import reduxReselectCucumber from "./reduxReselectCucumber.js";
+import { NewOrderSelector } from "./components/newOrder/selector.js";
+import newOrderSelectorScenarios from "./components/newOrder/scenarios.js";
+import thensMatchers from "./components/newOrder/thens.js";
 import givensMatchers from "./state/givens.js";
-import thensMatchers from "./components/newOrderSelectorThens.js";
+import initialState from "./state/initialState.js";
+import storeCreator from "./state/store.js";
 import whensMatchers from "./state/whens.js";
+import reduxReselectCucumber from "./reduxReselectCucumber.js";
 
 // we can do unit-ish tests
 describe('Initial state', () => {
