@@ -1935,6 +1935,14 @@ if (false) {}
 
 ;// CONCATENATED MODULE: ./src/state/Actions.js
 var ADD_SANDWICH = "ADD_SANDWICH";
+var CHANGE_GRATUITY = "CHANGE_GRATUITY";
+var CHANGE_SANDWICH_NAME = "CHANGE_SANDWICH_NAME";
+var CHANGE_STAGED_SANDWICH_NAME = "CHANGE_STAGED_SANDWICH_NAME";
+var NEW_ORDER = "NEW_ORDER";
+var POP_INGREDIENT = "POP_INGREDIENT";
+var PUSH_INGREDIENT = "PUSH_INGREDIENT";
+var REMOVE_SANDWICH = "REMOVE_SANDWICH";
+var SELECT_INGREDIENT_TO_PUSH = "SELECT_INGREDIENT_TO_PUSH";
 ;// CONCATENATED MODULE: ./src/state/store.js
 function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
