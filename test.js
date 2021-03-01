@@ -2352,22 +2352,13 @@ var NewOrderSelector = createSelector([baseSelector], function (base) {
     orderDisabled: base.sandwiches.length === 0
   };
 });
-;// CONCATENATED MODULE: ./src/components/ordersSelector.js
-
-
-var ordersSelector_baseSelector = function baseSelector(state) {
-  return state;
-};
-
-var OrdersSelector = createSelector([ordersSelector_baseSelector], function (base) {
-  return {
-    orders: base.orders,
-    sandwiches: base.sandwiches,
-    ingredients: base.ingredients
-  };
-});
 ;// CONCATENATED MODULE: ./src/test.js
-
+// test.js
+// adam wong 2020
+// 
+// The testing strategy focuses on state-tests, which are much easier than integration tests, a bit easier than component tests and almost as fast as unit tests.
+// Each test should create the store, then pass the state of that store to a selector, then test the output of that selector.
+// don't forget to recreate the store for every test!
 
 
 
